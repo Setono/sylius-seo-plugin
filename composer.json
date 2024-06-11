@@ -1,6 +1,6 @@
 {
     "name": "setono/sylius-seo-plugin",
-    "description": "Setono example plugin for Sylius.",
+    "description": "SEO plugin for your Sylius store",
     "license": "MIT",
     "type": "sylius-plugin",
     "keywords": [
