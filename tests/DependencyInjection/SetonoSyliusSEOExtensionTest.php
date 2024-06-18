@@ -6,6 +6,8 @@ namespace Setono\SyliusSEOPlugin\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Setono\SyliusSEOPlugin\DependencyInjection\SetonoSyliusSEOExtension;
+use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGenerator;
+use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
 
 /**
  * See examples of tests and configuration options here: https://github.com/SymfonyTest/SymfonyDependencyInjectionTest
@@ -19,13 +21,6 @@ final class SetonoSyliusSEOExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    protected function getMinimalConfiguration(): array
-    {
-        return [
-            'option' => 'option_value',
-        ];
-    }
-
     /**
      * @test
      */
@@ -33,6 +28,6 @@ final class SetonoSyliusSEOExtensionTest extends AbstractExtensionTestCase
     {
         $this->load();
 
-        $this->assertContainerBuilderHasParameter('setono_sylius_seo.option', 'option_value');
+        $this->assertContainerBuilderHasAlias(ProductVariantUrlGeneratorInterface::class, ProductVariantUrlGenerator::class);
     }
 }

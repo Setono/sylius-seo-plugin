@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- Product Data Mappers -->
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"
+                 alias="Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapper">
+            <tag name="setono_sylius_seo.product_data_mapper" priority="100"/>
+        </service>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\OffersProductDataMapper">
+            <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface"/>
+
+            <tag name="setono_sylius_seo.product_data_mapper" priority="90"/>
+        </service>
+
+        <!-- Product Group Data Mappers -->
+        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"
+                 alias="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapper">
+            <argument type="service" id="router"/>
+
+            <tag name="setono_sylius_seo.product_group_data_mapper" priority="100"/>
+        </service>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\HasVariantProductGroupDataMapper">
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"/>
+
+            <tag name="setono_sylius_seo.product_group_data_mapper" priority="90"/>
+        </service>
+    </services>
+</container>
