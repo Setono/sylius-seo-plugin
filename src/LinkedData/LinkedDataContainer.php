@@ -7,40 +7,36 @@ namespace Setono\SyliusSEOPlugin\LinkedData;
 use Setono\SyliusSEOPlugin\LinkedData\DTO\LinkedData;
 
 /**
- * @implements \IteratorAggregate<class-string<LinkedData>, LinkedData>
+ * @implements \IteratorAggregate<class-string<LinkedData>, list<LinkedData>>
  */
 final class LinkedDataContainer implements LinkedDataContainerInterface, \IteratorAggregate
 {
-    /** @var array<class-string<LinkedData>, LinkedData> */
+    /** @var array<class-string<LinkedData>, list<LinkedData>> */
     private array $data = [];
 
     /**
-     * @psalm-assert-if-true LinkedData $this->data[$linkedData]
+     * @psalm-assert-if-true non-empty-list<LinkedData> $this->data[$linkedData]
      */
     public function has(string $linkedData): bool
     {
-        return isset($this->data[$linkedData]);
+        return isset($this->data[$linkedData]) && [] !== $this->data[$linkedData];
     }
 
-    public function get(string $linkedData): LinkedData
+    public function get(string $linkedData): array
     {
-        if (!$this->has($linkedData)) {
-            throw new \InvalidArgumentException(sprintf('Linked data with type "%s" does not exist', $linkedData));
-        }
+        return $this->data[$linkedData] ?? [];
+    }
 
-        return $this->data[$linkedData];
+    public function set(LinkedData $linkedData, bool $append = false): void
+    {
+        $data = $append ? $this->get($linkedData::class) : [];
+        $data[] = $linkedData;
+
+        $this->data[$linkedData::class] = $data;
     }
 
     /**
-     * @psalm-assert LinkedData $this->data[$linkedData]
-     */
-    public function set(LinkedData $linkedData): void
-    {
-        $this->data[$linkedData::class] = $linkedData;
-    }
-
-    /**
-     * @return \ArrayIterator<class-string<LinkedData>, LinkedData>
+     * @return \ArrayIterator<class-string<LinkedData>, list<LinkedData>>
      */
     public function getIterator(): \ArrayIterator
     {
@@ -54,6 +50,12 @@ final class LinkedDataContainer implements LinkedDataContainerInterface, \Iterat
 
     public function count(): int
     {
-        return count($this->data);
+        $c = 0;
+
+        foreach ($this->data as $members) {
+            $c += count($members);
+        }
+
+        return $c;
     }
 }

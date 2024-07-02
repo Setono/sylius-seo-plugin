@@ -7,7 +7,7 @@ namespace Setono\SyliusSEOPlugin\LinkedData;
 use Setono\SyliusSEOPlugin\LinkedData\DTO\LinkedData;
 
 /**
- * @extends \Traversable<string, LinkedData>
+ * @extends \Traversable<class-string<LinkedData>, list<LinkedData>>
  */
 interface LinkedDataContainerInterface extends \Traversable, \Countable
 {
@@ -17,21 +17,18 @@ interface LinkedDataContainerInterface extends \Traversable, \Countable
     public function has(string $linkedData): bool;
 
     /**
-     * If the $linkedData does not exist already, it will be created and returned, so you can do:
-     *
-     * $linkedDataContainer->get(Product::class)->sku = 'BLUE_T_SHIRT_123';
-     *
      * @template T of LinkedData
      *
      * @param class-string<T> $linkedData
      *
-     * @throws \InvalidArgumentException if the linked data does not exist
-     *
-     * @return T
+     * @return list<T>
      */
-    public function get(string $linkedData): LinkedData;
+    public function get(string $linkedData): array;
 
-    public function set(LinkedData $linkedData): void;
+    /**
+     * @param bool $append If true, the linked data will be appended to the container, otherwise it will overwrite any existing linked data
+     */
+    public function set(LinkedData $linkedData, bool $append = false): void;
 
     /**
      * Returns true if the container is empty
