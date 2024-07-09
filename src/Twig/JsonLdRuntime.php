@@ -7,7 +7,7 @@ namespace Setono\SyliusSEOPlugin\Twig;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface;
 use Symfony\Component\Serializer\Context\Encoder\JsonEncoderContextBuilder;
 use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Context\SerializerContextBuilder;
@@ -19,7 +19,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
     private LoggerInterface $logger;
 
     public function __construct(
-        private readonly LinkedDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $linkedDataContainer,
         private readonly SerializerInterface $serializer,
     ) {
         $this->logger = new NullLogger();

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\LinkedData;
 
 /**
- * @implements LinkedDataContainerInterface<LinkedData>
+ * @implements StructuredDataContainerInterface<LinkedData>
  * @implements \IteratorAggregate<class-string<LinkedData>, list<LinkedData>>
  */
-final class LinkedDataContainer implements LinkedDataContainerInterface, \IteratorAggregate
+final class StructuredDataContainer implements StructuredDataContainerInterface, \IteratorAggregate
 {
     /** @var array<class-string<LinkedData>, list<LinkedData>> */
     private array $data = [];

@@ -9,7 +9,7 @@ namespace Setono\SyliusSEOPlugin\LinkedData;
  *
  * @extends \Traversable<class-string<T>, list<T>>
  */
-interface LinkedDataContainerInterface extends \Traversable, \Countable
+interface StructuredDataContainerInterface extends \Traversable, \Countable
 {
     /**
      * @param class-string<LinkedData> $linkedData

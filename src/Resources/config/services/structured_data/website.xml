@@ -17,7 +17,7 @@
 
         <!-- Event subscriber that will add the website structured data to the homepage -->
         <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddWebsiteSubscriber">
-            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface"/>
             <argument type="service" id="sylius.context.channel"/>
 

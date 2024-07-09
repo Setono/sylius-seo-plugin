@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
 use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface;
-use Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Organization\OnlineBusiness\OnlineStore;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 final class AddOnlineStoreSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly LinkedDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $linkedDataContainer,
         private readonly OnlineStoreDataMapperInterface $onlineStoreDataMapper,
         private readonly ChannelContextInterface $channelContext,
     ) {
