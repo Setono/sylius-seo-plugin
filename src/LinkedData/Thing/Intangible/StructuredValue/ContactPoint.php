@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 
-class ContactPoint extends LinkedData
+class ContactPoint extends StructuredData
 {
     public function __construct(
         public ?string $email = null,

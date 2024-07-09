@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Brand;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer\AggregateOffer;
@@ -14,7 +14,7 @@ use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer\AggregateOffer;
  * - https://developers.google.com/search/docs/appearance/structured-data/merchant-listing
  * - https://schema.org/Product
  */
-class Product extends LinkedData
+class Product extends StructuredData
 {
     public function __construct(
         public ?string $name = null,

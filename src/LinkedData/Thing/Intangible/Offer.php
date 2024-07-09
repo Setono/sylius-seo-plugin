@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue\QuantitativeValue;
 
-class Offer extends LinkedData
+class Offer extends StructuredData
 {
     public function __construct(
         public ?string $url = null,

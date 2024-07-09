@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Organization\OnlineBusiness;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\MerchantReturnPolicy;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue\ContactPoint;
 
 /**
  * See https://schema.org/OnlineStore
  */
-class OnlineStore extends LinkedData
+class OnlineStore extends StructuredData
 {
     public function __construct(
         public ?string $name = null,

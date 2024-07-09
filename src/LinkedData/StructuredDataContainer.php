@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\LinkedData;
 
 /**
- * @implements StructuredDataContainerInterface<LinkedData>
- * @implements \IteratorAggregate<class-string<LinkedData>, list<LinkedData>>
+ * @implements StructuredDataContainerInterface<StructuredData>
+ * @implements \IteratorAggregate<class-string<StructuredData>, list<StructuredData>>
  */
 final class StructuredDataContainer implements StructuredDataContainerInterface, \IteratorAggregate
 {
-    /** @var array<class-string<LinkedData>, list<LinkedData>> */
+    /** @var array<class-string<StructuredData>, list<StructuredData>> */
     private array $data = [];
 
     /**
-     * @psalm-assert-if-true non-empty-list<LinkedData> $this->data[$linkedData]
+     * @psalm-assert-if-true non-empty-list<StructuredData> $this->data[$linkedData]
      */
     public function has(string $linkedData): bool
     {
@@ -26,7 +26,7 @@ final class StructuredDataContainer implements StructuredDataContainerInterface,
         return $this->data[$linkedData] ?? [];
     }
 
-    public function set(LinkedData $linkedData, bool $append = false): void
+    public function set(StructuredData $linkedData, bool $append = false): void
     {
         $data = $append ? $this->get($linkedData::class) : [];
         $data[] = $linkedData;
@@ -35,7 +35,7 @@ final class StructuredDataContainer implements StructuredDataContainerInterface,
     }
 
     /**
-     * @return \ArrayIterator<class-string<LinkedData>, list<LinkedData>>
+     * @return \ArrayIterator<class-string<StructuredData>, list<StructuredData>>
      */
     public function getIterator(): \ArrayIterator
     {

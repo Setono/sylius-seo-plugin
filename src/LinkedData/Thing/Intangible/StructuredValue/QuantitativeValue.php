@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 
-final class QuantitativeValue extends LinkedData
+final class QuantitativeValue extends StructuredData
 {
     public function __construct(
         public ?float $maxValue = null,

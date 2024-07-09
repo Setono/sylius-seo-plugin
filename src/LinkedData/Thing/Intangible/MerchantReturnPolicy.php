@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 
-class MerchantReturnPolicy extends LinkedData
+class MerchantReturnPolicy extends StructuredData
 {
     public function __construct(
         public ?array $applicableCountry = null,

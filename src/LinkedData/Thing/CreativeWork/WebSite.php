@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\CreativeWork;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Action\SearchAction;
 
-class WebSite extends LinkedData
+class WebSite extends StructuredData
 {
     public function __construct(
         public ?string $url = null,

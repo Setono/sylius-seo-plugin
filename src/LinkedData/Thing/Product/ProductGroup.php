@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
 
-use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\StructuredData;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Brand;
 use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
 
@@ -13,7 +13,7 @@ use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
  * - https://developers.google.com/search/docs/appearance/structured-data/product-variants
  * - https://schema.org/ProductGroup
  */
-final class ProductGroup extends LinkedData
+final class ProductGroup extends StructuredData
 {
     public ?string $name = null;
 
