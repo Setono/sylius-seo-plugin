@@ -29,6 +29,7 @@ final class AddProductSubscriber implements EventSubscriberInterface
 
     public function populate(ResourceControllerEvent $event): void
     {
+        /** @var mixed $product */
         $product = $event->getSubject();
         Assert::isInstanceOf($product, ProductInterface::class);
 
