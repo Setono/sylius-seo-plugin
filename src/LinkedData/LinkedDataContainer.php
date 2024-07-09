@@ -7,6 +7,7 @@ namespace Setono\SyliusSEOPlugin\LinkedData;
 use Setono\SyliusSEOPlugin\LinkedData\DTO\LinkedData;
 
 /**
+ * @implements LinkedDataContainerInterface<LinkedData>
  * @implements \IteratorAggregate<class-string<LinkedData>, list<LinkedData>>
  */
 final class LinkedDataContainer implements LinkedDataContainerInterface, \IteratorAggregate

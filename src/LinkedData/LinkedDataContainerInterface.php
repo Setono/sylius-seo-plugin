@@ -7,7 +7,9 @@ namespace Setono\SyliusSEOPlugin\LinkedData;
 use Setono\SyliusSEOPlugin\LinkedData\DTO\LinkedData;
 
 /**
- * @extends \Traversable<class-string<LinkedData>, list<LinkedData>>
+ * @template T of LinkedData
+ *
+ * @extends \Traversable<class-string<T>, list<T>>
  */
 interface LinkedDataContainerInterface extends \Traversable, \Countable
 {
@@ -17,8 +19,6 @@ interface LinkedDataContainerInterface extends \Traversable, \Countable
     public function has(string $linkedData): bool;
 
     /**
-     * @template T of LinkedData
-     *
      * @param class-string<T> $linkedData
      *
      * @return list<T>
