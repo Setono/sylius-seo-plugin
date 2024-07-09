@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 final class AddOnlineStoreSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StructuredDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $structuredDataContainer,
         private readonly OnlineStoreDataMapperInterface $onlineStoreDataMapper,
         private readonly ChannelContextInterface $channelContext,
         private readonly string $route = 'sylius_shop_homepage',
@@ -52,6 +52,6 @@ final class AddOnlineStoreSubscriber implements EventSubscriberInterface
         $onlineStore = new OnlineStore();
         $this->onlineStoreDataMapper->map($channel, $onlineStore);
 
-        $this->linkedDataContainer->set($onlineStore);
+        $this->structuredDataContainer->set($onlineStore);
     }
 }

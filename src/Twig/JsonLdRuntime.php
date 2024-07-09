@@ -19,7 +19,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
     private LoggerInterface $logger;
 
     public function __construct(
-        private readonly StructuredDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $structuredDataContainer,
         private readonly SerializerInterface $serializer,
     ) {
         $this->logger = new NullLogger();
@@ -27,7 +27,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
 
     public function renderJsonLd(): string
     {
-        if ($this->linkedDataContainer->empty()) {
+        if ($this->structuredDataContainer->empty()) {
             return '';
         }
 
@@ -35,7 +35,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
 
         try {
             $context = self::serializerContext();
-            foreach ($this->linkedDataContainer as $linkedData) {
+            foreach ($this->structuredDataContainer as $linkedData) {
                 foreach ($linkedData as $value) {
                     $output[] = $this->serializer->serialize($value, 'json', $context);
                 }

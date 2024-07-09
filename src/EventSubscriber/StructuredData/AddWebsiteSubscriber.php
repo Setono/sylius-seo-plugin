@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
 final class AddWebsiteSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StructuredDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $structuredDataContainer,
         private readonly WebsiteDataMapperInterface $websiteDataMapper,
         private readonly ChannelContextInterface $channelContext,
         private readonly string $route = 'sylius_shop_homepage',
@@ -48,6 +48,6 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
         $webSite = new WebSite();
         $this->websiteDataMapper->map($channel, $webSite);
 
-        $this->linkedDataContainer->set($webSite);
+        $this->structuredDataContainer->set($webSite);
     }
 }

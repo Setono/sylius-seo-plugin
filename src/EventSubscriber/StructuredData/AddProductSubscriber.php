@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
 final class AddProductSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StructuredDataContainerInterface $linkedDataContainer,
+        private readonly StructuredDataContainerInterface $structuredDataContainer,
         private readonly ProductGroupDataMapperInterface $productGroupDataMapper,
     ) {
     }
@@ -36,6 +36,6 @@ final class AddProductSubscriber implements EventSubscriberInterface
         $productGroup = new ProductGroup();
         $this->productGroupDataMapper->map($product, $productGroup);
 
-        $this->linkedDataContainer->set($productGroup);
+        $this->structuredDataContainer->set($productGroup);
     }
 }
