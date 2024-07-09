@@ -1,2 +1,0 @@
-setono_sylius_seo:
-    resource: "@SetonoSyliusSEOPlugin/Resources/config/routes.yaml"
