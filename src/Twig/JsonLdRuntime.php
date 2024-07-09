@@ -7,11 +7,8 @@ namespace Setono\SyliusSEOPlugin\Twig;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializerInterface;
 use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
-use Symfony\Component\Serializer\Context\Encoder\JsonEncoderContextBuilder;
-use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
-use Symfony\Component\Serializer\Context\SerializerContextBuilder;
-use Symfony\Component\Serializer\SerializerInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInterface
@@ -20,7 +17,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
 
     public function __construct(
         private readonly StructuredDataContainerInterface $structuredDataContainer,
-        private readonly SerializerInterface $serializer,
+        private readonly StructuredDataSerializerInterface $serializer,
     ) {
         $this->logger = new NullLogger();
     }
@@ -34,10 +31,9 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
         $output = [];
 
         try {
-            $context = self::serializerContext();
             foreach ($this->structuredDataContainer as $linkedData) {
                 foreach ($linkedData as $value) {
-                    $output[] = $this->serializer->serialize($value, 'json', $context);
+                    $output[] = $this->serializer->serialize($value);
                 }
             }
         } catch (\Throwable $e) {
@@ -53,21 +49,5 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
-    }
-
-    /**
-     * todo move serializer to a service
-     *
-     * @internal
-     *
-     * @return array<string, mixed>
-     */
-    public static function serializerContext(): array
-    {
-        return (new SerializerContextBuilder())
-            ->withContext((new ObjectNormalizerContextBuilder())->withSkipNullValues(true))
-            ->withContext((new JsonEncoderContextBuilder())->withEncodeOptions(\JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_INVALID_UTF8_IGNORE | \JSON_PRESERVE_ZERO_FRACTION))
-            ->toArray()
-        ;
     }
 }

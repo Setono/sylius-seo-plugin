@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\StructuredData;
 
-use Setono\SyliusSEOPlugin\Twig\JsonLdRuntime;
+use Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializer;
+use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,10 +28,11 @@ abstract class AbstractTestCase extends KernelTestCase
      */
     public function it_serializes(): void
     {
-        $this->assertSame($this->getExpectedJson(), $this->serializer->serialize($this->getObject(), 'json', JsonLdRuntime::serializerContext()));
+        $serializer = new StructuredDataSerializer($this->serializer);
+        $this->assertSame($this->getExpectedJson(), $serializer->serialize($this->getObject()));
     }
 
-    abstract protected function getObject(): object;
+    abstract protected function getObject(): StructuredData;
 
     abstract protected function getExpectedJson(): string;
 
