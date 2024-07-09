@@ -37,16 +37,12 @@
             <tag name="setono_sylius_seo.product_group_data_mapper" priority="90"/>
         </service>
 
-        <!-- Online Store Data Mappers -->
-        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"
-                 alias="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+        <!-- Event subscriber on the product show page -->
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\ProductShowSubscriber">
+            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"/>
 
-        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
-
-        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapper">
-            <argument type="service" id="router"/>
-
-            <tag name="setono_sylius_seo.online_store_data_mapper" priority="100"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
     </services>
 </container>

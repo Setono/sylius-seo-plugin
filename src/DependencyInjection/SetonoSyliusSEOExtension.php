@@ -8,6 +8,7 @@ use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -20,7 +21,14 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
         /**
          * @psalm-suppress PossiblyNullArgument
          *
-         * @var array{product_variant_url_generator: string} $config
+         * @var array{
+         *     product_variant_url_generator: string,
+         *     structured_data: array{
+         *         online_store: array{ enabled: bool },
+         *         product: array{ enabled: bool },
+         *         website: array{ enabled: bool, search_url_template?: array{ route: string, query_parameter: string } }
+         *     }
+         * } $config
          */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -38,6 +46,10 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
         $container->setAlias(ProductVariantUrlGeneratorInterface::class, $config['product_variant_url_generator']);
 
         $loader->load('services.xml');
+
+        self::registerOnlineStoreConfig($config['structured_data']['online_store'], $container, $loader);
+        self::registerProductConfig($config['structured_data']['product'], $container, $loader);
+        self::registerWebsiteConfig($config['structured_data']['website'], $container, $loader);
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -53,5 +65,51 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @param array{ enabled: bool } $config
+     */
+    private static function registerOnlineStoreConfig(array $config, ContainerBuilder $container, LoaderInterface $loader): void
+    {
+        $container->setParameter('setono_sylius_seo.structured_data.online_store.enabled', $config['enabled']);
+
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('services/structured_data/online_store.xml');
+    }
+
+    /**
+     * @param array{ enabled: bool } $config
+     */
+    private static function registerProductConfig(array $config, ContainerBuilder $container, LoaderInterface $loader): void
+    {
+        $container->setParameter('setono_sylius_seo.structured_data.product.enabled', $config['enabled']);
+
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('services/structured_data/product.xml');
+    }
+
+    /**
+     * @param array{ enabled: bool, search_url_template?: array{ route: string, query_parameter: string } } $config
+     */
+    private static function registerWebsiteConfig(array $config, ContainerBuilder $container, LoaderInterface $loader): void
+    {
+        $container->setParameter('setono_sylius_seo.structured_data.website.enabled', $config['enabled']);
+
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('services/structured_data/website.xml');
+
+        if (isset($config['search_url_template'])) {
+            $container->setParameter('setono_sylius_seo.structured_data.website.search_url_template', $config['search_url_template']);
+        }
     }
 }

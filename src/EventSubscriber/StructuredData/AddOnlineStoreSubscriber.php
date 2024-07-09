@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\EventSubscriber;
+namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
 use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface;
 use Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface;
@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
  * Google recommends to add the OnlineStore schema to the homepage.
  * See https://developers.google.com/search/docs/appearance/structured-data/organization
  */
-final class HomepageSubscriber implements EventSubscriberInterface
+final class AddOnlineStoreSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly LinkedDataContainerInterface $linkedDataContainer,

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- Online Store Data Mappers -->
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"
+                 alias="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapper">
+            <argument type="service" id="router"/>
+
+            <tag name="setono_sylius_seo.online_store_data_mapper" priority="100"/>
+        </service>
+
+        <!-- Event subscriber that will add the online store structured data to the homepage -->
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddOnlineStoreSubscriber">
+            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"/>
+            <argument type="service" id="sylius.context.channel"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>

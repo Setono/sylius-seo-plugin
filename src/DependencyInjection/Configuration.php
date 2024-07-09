@@ -18,6 +18,7 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
+        /** @psalm-suppress MixedMethodCall,UndefinedInterfaceMethod,PossiblyNullReference */
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
@@ -25,6 +26,28 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue(ProductVariantUrlGenerator::class)
                     ->info('This is the service id of the product variant url generator. You can change this to your own implementation.')
                     ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('structured_data')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('product')
+                            ->canBeDisabled()
+                        ->end()
+                        ->arrayNode('online_store')
+                            ->canBeDisabled()
+                        ->end()
+                        ->arrayNode('website')
+                            ->canBeEnabled()
+                            ->children()
+                            ->arrayNode('search_url_template')
+                                ->children()
+                                    ->scalarNode('route')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                    ->scalarNode('query_parameter')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
         ;
 
         return $treeBuilder;

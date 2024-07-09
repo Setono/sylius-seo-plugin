@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <!-- WebSite Data Mappers -->
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface"
+                 alias="Setono\SyliusSEOPlugin\DataMapper\Website\CompositeWebsiteDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Website\CompositeWebsiteDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapper">
+            <argument type="service" id="router"/>
+            <argument>%setono_sylius_seo.structured_data.website.search_url_template%</argument>
+
+            <tag name="setono_sylius_seo.website_data_mapper" priority="100"/>
+        </service>
+
+        <!-- Event subscriber that will add the website structured data to the homepage -->
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddWebsiteSubscriber">
+            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface"/>
+            <argument type="service" id="sylius.context.channel"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+</container>

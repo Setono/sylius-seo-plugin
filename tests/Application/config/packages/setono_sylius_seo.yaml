@@ -1,0 +1,6 @@
+setono_sylius_seo:
+    structured_data:
+        website:
+            search_url_template:
+                route: sylius_shop_homepage
+                query_parameter: q
