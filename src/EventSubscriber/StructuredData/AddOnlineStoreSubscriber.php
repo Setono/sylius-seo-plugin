@@ -44,6 +44,7 @@ final class AddOnlineStoreSubscriber implements EventSubscriberInterface
             return;
         }
 
+        /** @var ChannelInterface $channel */
         $channel = $this->channelContext->getChannel();
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
