@@ -36,5 +36,17 @@
 
             <tag name="setono_sylius_seo.product_group_data_mapper" priority="90"/>
         </service>
+
+        <!-- Online Store Data Mappers -->
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"
+                 alias="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapper">
+            <argument type="service" id="router"/>
+
+            <tag name="setono_sylius_seo.online_store_data_mapper" priority="100"/>
+        </service>
     </services>
 </container>

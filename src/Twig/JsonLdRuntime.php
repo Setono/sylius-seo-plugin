@@ -36,7 +36,9 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
         try {
             $context = self::serializerContext();
             foreach ($this->linkedDataContainer as $linkedData) {
-                $output[] = $this->serializer->serialize($linkedData, 'json', $context);
+                foreach ($linkedData as $value) {
+                    $output[] = $this->serializer->serialize($value, 'json', $context);
+                }
             }
         } catch (\Throwable $e) {
             $this->logger->error(

@@ -2,6 +2,14 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\HomepageSubscriber">
+            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"/>
+            <argument type="service" id="sylius.context.channel"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
         <service id="Setono\SyliusSEOPlugin\EventSubscriber\ProductShowSubscriber">
             <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"/>

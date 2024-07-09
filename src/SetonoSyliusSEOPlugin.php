@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin;
 
 use Setono\CompositeCompilerPass\CompositeCompilerPass;
+use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper;
 use Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
@@ -27,6 +28,11 @@ final class SetonoSyliusSEOPlugin extends Bundle
         $container->addCompilerPass(new CompositeCompilerPass(
             CompositeProductGroupDataMapper::class,
             'setono_sylius_seo.product_group_data_mapper',
+        ));
+
+        $container->addCompilerPass(new CompositeCompilerPass(
+            CompositeOnlineStoreDataMapper::class,
+            'setono_sylius_seo.online_store_data_mapper',
         ));
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 
 abstract class LinkedData
 {
+    // todo set the type to the class name by default
     #[SerializedName('@type')]
     public string $type;
 
