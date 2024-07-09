@@ -26,7 +26,7 @@ interface LinkedDataContainerInterface extends \Traversable, \Countable
     public function get(string $linkedData): array;
 
     /**
-     * @param bool $append If true, the linked data will be appended to the container, otherwise it will overwrite any existing linked data
+     * @param bool $append If true, the linked data will be appended to the container (the key used on the container is the FQCN), otherwise it will overwrite any existing linked data
      */
     public function set(LinkedData $linkedData, bool $append = false): void;
 
