@@ -20,6 +20,7 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
         private readonly StructuredDataContainerInterface $linkedDataContainer,
         private readonly WebsiteDataMapperInterface $websiteDataMapper,
         private readonly ChannelContextInterface $channelContext,
+        private readonly string $route = 'sylius_shop_homepage',
     ) {
     }
 
@@ -36,7 +37,7 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getRequest()->attributes->get('_route') !== 'sylius_shop_homepage') {
+        if ($event->getRequest()->attributes->get('_route') !== $this->route) {
             return;
         }
 
