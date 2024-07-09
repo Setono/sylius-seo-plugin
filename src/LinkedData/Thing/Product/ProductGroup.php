@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\LinkedData\DTO;
+namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
+
+use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Brand;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
 
 /**
  * See

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\ProductGroup;
 
 use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\Product;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\ProductGroup;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product\ProductGroup;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
-use Setono\SyliusSEOPlugin\LinkedData\DTO\AggregateOffer;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\Offer;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\Product;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer\AggregateOffer;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;

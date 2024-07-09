@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\LinkedData\DTO;
+namespace Setono\SyliusSEOPlugin\LinkedData;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

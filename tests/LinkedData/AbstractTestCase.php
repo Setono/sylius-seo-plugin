@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\Tests\LinkedData\DTO;
+namespace Setono\SyliusSEOPlugin\Tests\LinkedData;
 
 use Setono\SyliusSEOPlugin\Twig\JsonLdRuntime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

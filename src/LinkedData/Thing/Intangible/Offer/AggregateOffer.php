@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\LinkedData\DTO;
+namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer;
+
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer;
 
 /**
  * @implements \ArrayAccess<int, Offer>

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusSEOPlugin\Tests\LinkedData\DTO;
+namespace Setono\SyliusSEOPlugin\Tests\LinkedData\Thing\Intangible;
 
-use Setono\SyliusSEOPlugin\LinkedData\DTO\Offer;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer;
+use Setono\SyliusSEOPlugin\Tests\LinkedData\AbstractTestCase;
 
 final class OfferTest extends AbstractTestCase
 {

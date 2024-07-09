@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
 use Setono\CompositeCompilerPass\CompositeService;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\Product;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 /**

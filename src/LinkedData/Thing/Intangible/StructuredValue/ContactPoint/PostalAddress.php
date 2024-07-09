@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue\ContactPoint;
 
-use Setono\SyliusSEOPlugin\LinkedData\DTO\LinkedData;
+use Setono\SyliusSEOPlugin\LinkedData\LinkedData;
 
 class PostalAddress extends LinkedData
 {

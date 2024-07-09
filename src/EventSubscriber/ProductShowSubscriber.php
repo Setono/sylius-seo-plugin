@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\EventSubscriber;
 
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface;
-use Setono\SyliusSEOPlugin\LinkedData\DTO\ProductGroup;
 use Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface;
+use Setono\SyliusSEOPlugin\LinkedData\Thing\Product\ProductGroup;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
