@@ -31,9 +31,9 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
         $output = [];
 
         try {
-            foreach ($this->structuredDataContainer as $linkedData) {
-                foreach ($linkedData as $value) {
-                    $output[] = $this->serializer->serialize($value);
+            foreach ($this->structuredDataContainer as $structuredDataClass) {
+                foreach ($structuredDataClass as $structuredData) {
+                    $output[] = $this->serializer->serialize($structuredData);
                 }
             }
         } catch (\Throwable $e) {
