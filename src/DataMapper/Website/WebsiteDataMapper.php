@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\Website;
 
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Action\SearchAction;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\CreativeWork\WebSite;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\EntryPoint;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Action\SearchAction;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\CreativeWork\WebSite;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\EntryPoint;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

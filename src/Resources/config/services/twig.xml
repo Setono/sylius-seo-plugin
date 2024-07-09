@@ -7,7 +7,7 @@
         </service>
 
         <service id="Setono\SyliusSEOPlugin\Twig\JsonLdRuntime">
-            <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface"/>
             <argument type="service" id="serializer"/>
 
             <tag name="twig.runtime"/>

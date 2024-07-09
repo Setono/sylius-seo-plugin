@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Serializer;
 
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\Offer\AggregateOffer;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer\AggregateOffer;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

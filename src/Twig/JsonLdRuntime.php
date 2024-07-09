@@ -7,7 +7,7 @@ namespace Setono\SyliusSEOPlugin\Twig;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface;
+use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
 use Symfony\Component\Serializer\Context\Encoder\JsonEncoderContextBuilder;
 use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Context\SerializerContextBuilder;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\OnlineStore;
 
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Intangible\StructuredValue\ContactPoint;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Organization\OnlineBusiness\OnlineStore;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\StructuredValue\ContactPoint;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Organization\OnlineBusiness\OnlineStore;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 

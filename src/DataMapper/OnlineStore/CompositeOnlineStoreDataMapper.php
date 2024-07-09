@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\OnlineStore;
 
 use Setono\CompositeCompilerPass\CompositeService;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Organization\OnlineBusiness\OnlineStore;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Organization\OnlineBusiness\OnlineStore;
 use Sylius\Component\Core\Model\ChannelInterface;
 
 /**

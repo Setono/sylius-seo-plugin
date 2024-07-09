@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
 use Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface;
-use Setono\SyliusSEOPlugin\LinkedData\StructuredDataContainerInterface;
-use Setono\SyliusSEOPlugin\LinkedData\Thing\CreativeWork\WebSite;
+use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\CreativeWork\WebSite;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

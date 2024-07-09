@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
-use Setono\SyliusSEOPlugin\LinkedData\Thing\Product;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class ProductDataMapper implements ProductDataMapperInterface
