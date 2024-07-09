@@ -38,7 +38,7 @@
         </service>
 
         <!-- Event subscriber on the product show page -->
-        <service id="Setono\SyliusSEOPlugin\EventSubscriber\ProductShowSubscriber">
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddProductSubscriber">
             <argument type="service" id="Setono\SyliusSEOPlugin\LinkedData\LinkedDataContainerInterface"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"/>
 
