@@ -11,7 +11,7 @@ final class OfferTest extends AbstractTestCase
 {
     private string $date = '2020-01-01 00:00:00';
 
-    protected function getObject(): object
+    protected function getObject(): Offer
     {
         return new Offer(
             url: 'https://example.com',

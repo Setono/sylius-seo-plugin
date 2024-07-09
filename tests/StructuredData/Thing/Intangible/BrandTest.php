@@ -9,7 +9,7 @@ use Setono\SyliusSEOPlugin\Tests\StructuredData\AbstractTestCase;
 
 final class BrandTest extends AbstractTestCase
 {
-    protected function getObject(): object
+    protected function getObject(): Brand
     {
         return new Brand('Acme');
     }
