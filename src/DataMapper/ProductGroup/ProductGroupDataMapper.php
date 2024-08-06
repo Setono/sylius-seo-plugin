@@ -16,8 +16,10 @@ final class ProductGroupDataMapper implements ProductGroupDataMapperInterface
 
     public function map(ProductInterface $product, ProductGroup $productGroup): void
     {
+        $description = $product->getDescription();
+
         $productGroup->name = $product->getName();
-        $productGroup->description = $product->getDescription();
+        $productGroup->description = null === $description ? null : strip_tags($description);
         $productGroup->productGroupID = $product->getCode();
 
         $productGroup->url = $this->urlGenerator->generate(
