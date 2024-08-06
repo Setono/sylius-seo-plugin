@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
+use function Setono\SyliusSEOPlugin\formatAmount;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer\AggregateOffer;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
@@ -34,7 +35,7 @@ final class OffersProductDataMapper implements ProductDataMapperInterface
             new Offer(
                 url: $this->productVariantUrlGenerator->generate($productVariant),
                 priceCurrency: $channel->getBaseCurrency()?->getCode(),
-                price: $channelPricing->getPrice(),
+                price: formatAmount($channelPricing->getPrice()),
             ),
         ]);
     }
