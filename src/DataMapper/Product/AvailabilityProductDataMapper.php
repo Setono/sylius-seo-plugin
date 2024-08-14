@@ -17,6 +17,10 @@ final class AvailabilityProductDataMapper implements ProductDataMapperInterface
 
     public function map(ProductVariantInterface $productVariant, Product $product): void
     {
+        if (null !== $product->availability) {
+            return;
+        }
+
         $product->availability = $this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock;
     }
 }
