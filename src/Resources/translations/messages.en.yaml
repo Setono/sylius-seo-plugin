@@ -1,0 +1,10 @@
+setono_sylius_seo:
+    form:
+        channel:
+            robots_txt_placeholder: |
+                User-agent: *
+                Allow: /
+    ui:
+        robots_txt: Robots.txt (is rendered as a Twig template)
+        robots_txt_exists: A physical robots.txt file exists
+        robots_txt_exists_body: You have to remove it to use this functionality. The contents of the file is displayed below.

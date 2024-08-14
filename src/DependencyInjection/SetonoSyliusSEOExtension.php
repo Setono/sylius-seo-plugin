@@ -68,6 +68,13 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
     {
         $container->prependExtensionConfig('sylius_ui', [
             'events' => [
+                'sylius.admin.channel.form.first_column_content' => [
+                    'blocks' => [
+                        'setono_sylius_seo_robots_txt' => [
+                            'template' => '@SetonoSyliusSEOPlugin/admin/channel/_robots_txt.html.twig',
+                        ],
+                    ],
+                ],
                 'sylius.shop.layout.head' => [
                     'blocks' => [
                         'setono_sylius_seo_json_ld' => [
@@ -77,6 +84,8 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
                 ],
             ],
         ]);
+
+        // sylius.admin.channel.form.first_column_content
     }
 
     /**

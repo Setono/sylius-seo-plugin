@@ -12,5 +12,11 @@
 
             <tag name="twig.runtime"/>
         </service>
+
+        <service id="Setono\SyliusSEOPlugin\Twig\RobotsTxtExtension">
+            <argument>%sylius_core.public_dir%</argument>
+
+            <tag name="twig.extension"/>
+        </service>
     </services>
 </container>

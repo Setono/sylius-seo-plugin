@@ -1,0 +1,2 @@
+setono_sylius_seo_global:
+    resource: "@SetonoSyliusSEOPlugin/Resources/config/routes/global.yaml"

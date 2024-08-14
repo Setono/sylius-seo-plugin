@@ -1,0 +1,13 @@
+<div class="ui hidden divider"></div>
+<h4 class="ui top attached large header">{{ 'setono_sylius_seo.ui.robots_txt'|trans }}</h4>
+<div class="ui attached segment">
+    {% set existing = setono_sylius_seo_existing_robots_txt() %}
+    {% if existing %}
+        <div class="ui negative message">
+            <div class="header">{{ 'setono_sylius_seo.ui.robots_txt_exists'|trans }}</div>
+            <p>{{ 'setono_sylius_seo.ui.robots_txt_exists_body'|trans }}</p>
+            <pre style="background-color: #fff; border: 1px solid #e0b4b4; border-radius: 0.25rem; padding: 0.5rem 1rem">{{ existing }}</pre>
+        </div>
+    {% endif %}
+    {{ form_row(form.robotsTxt) }}
+</div>

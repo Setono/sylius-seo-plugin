@@ -1,0 +1,7 @@
+setono_sylius_seo_shop_render_robots_txt:
+    path: /robots.txt
+    methods: [GET]
+    # todo comment out the following line when we can ensure the session isn't started
+    #stateless: true
+    defaults:
+        _controller: Setono\SyliusSEOPlugin\Controller\RenderRobotsTxtAction
