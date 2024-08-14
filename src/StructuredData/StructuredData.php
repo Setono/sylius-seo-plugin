@@ -14,4 +14,7 @@ abstract class StructuredData
 
     #[SerializedName('@context')]
     public ?string $context = null;
+
+    #[SerializedName('@id')]
+    public ?string $id = null;
 }
