@@ -6,7 +6,11 @@
         <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"
                  alias="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
 
-        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper"/>
+        <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper">
+            <call method="setLogger">
+                <argument type="service" id="logger"/>
+            </call>
+        </service>
 
         <service id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapper">
             <argument type="service" id="router"/>

@@ -6,7 +6,11 @@
         <service id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"
                  alias="Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper"/>
 
-        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper"/>
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper">
+            <call method="setLogger">
+                <argument type="service" id="logger"/>
+            </call>
+        </service>
 
         <service id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapper">
             <tag name="setono_sylius_seo.product_data_mapper" priority="-100"/>
@@ -30,7 +34,11 @@
         <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"
                  alias="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper"/>
 
-        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper"/>
+        <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper">
+            <call method="setLogger">
+                <argument type="service" id="logger"/>
+            </call>
+        </service>
 
         <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapper">
             <argument type="service" id="router"/>

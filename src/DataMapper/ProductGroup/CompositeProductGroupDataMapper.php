@@ -4,19 +4,27 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\ProductGroup;
 
-use Setono\CompositeCompilerPass\CompositeService;
+use Setono\SyliusSEOPlugin\DataMapper\AbstractDataMapper;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Product\ProductGroup;
 use Sylius\Component\Core\Model\ProductInterface;
 
 /**
- * @extends CompositeService<ProductGroupDataMapperInterface>
+ * @extends AbstractDataMapper<ProductGroupDataMapperInterface>
  */
-final class CompositeProductGroupDataMapper extends CompositeService implements ProductGroupDataMapperInterface
+final class CompositeProductGroupDataMapper extends AbstractDataMapper implements ProductGroupDataMapperInterface
 {
     public function map(ProductInterface $product, ProductGroup $productGroup): void
     {
-        foreach ($this->services as $service) {
-            $service->map($product, $productGroup);
+        try {
+            foreach ($this->services as $service) {
+                $service->map($product, $productGroup);
+            }
+        } catch (\Throwable $e) {
+            $this->logger->error(sprintf(
+                'There was an error mapping the object (%s): %s',
+                $product::class,
+                $e->getMessage(),
+            ), ['exception' => $e]);
         }
     }
 }
