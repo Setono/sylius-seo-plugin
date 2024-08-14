@@ -40,6 +40,7 @@
         <!-- Event subscriber on the product show page -->
         <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddProductSubscriber">
             <argument type="service" id="Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"/>
 
             <tag name="kernel.event_subscriber"/>
