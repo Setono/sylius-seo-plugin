@@ -15,6 +15,7 @@
         <service id="Setono\SyliusSEOPlugin\DataMapper\Product\OffersProductDataMapper">
             <argument type="service" id="sylius.context.channel"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface"/>
+            <argument type="service" id="sylius.availability_checker"/>
 
             <tag name="setono_sylius_seo.product_data_mapper" priority="-110"/>
         </service>
@@ -23,12 +24,6 @@
             <argument type="service" id="liip_imagine.cache.manager"/>
 
             <tag name="setono_sylius_seo.product_data_mapper" priority="-120"/>
-        </service>
-
-        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\AvailabilityProductDataMapper">
-            <argument type="service" id="sylius.availability_checker"/>
-
-            <tag name="setono_sylius_seo.product_data_mapper" priority="-130"/>
         </service>
 
         <!-- Product Group Data Mappers -->
