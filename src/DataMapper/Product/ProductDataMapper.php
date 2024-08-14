@@ -11,9 +11,19 @@ final class ProductDataMapper implements ProductDataMapperInterface
 {
     public function map(ProductVariantInterface $productVariant, Product $product): void
     {
-        $name = $productVariant->getProduct()?->getName();
-        $product->name = null === $name ? null : strip_tags($name);
+        $name = self::getName($productVariant);
+        $product->name = null === $name ? null : trim(strip_tags($name));
 
         $product->sku = $productVariant->getCode();
+    }
+
+    private static function getName(ProductVariantInterface $productVariant): ?string
+    {
+        $name = $productVariant->getName();
+        if (null !== $name && '' !== $name) {
+            return $name;
+        }
+
+        return $productVariant->getProduct()?->getName();
     }
 }
