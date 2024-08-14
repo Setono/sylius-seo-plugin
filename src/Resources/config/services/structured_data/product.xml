@@ -25,6 +25,12 @@
             <tag name="setono_sylius_seo.product_data_mapper" priority="80"/>
         </service>
 
+        <service id="Setono\SyliusSEOPlugin\DataMapper\Product\AvailabilityProductDataMapper">
+            <argument type="service" id="sylius.availability_checker"/>
+
+            <tag name="setono_sylius_seo.product_data_mapper" priority="70"/>
+        </service>
+
         <!-- Product Group Data Mappers -->
         <service id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"
                  alias="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper"/>
