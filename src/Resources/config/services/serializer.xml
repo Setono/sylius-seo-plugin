@@ -2,13 +2,6 @@
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializerInterface"
-                 alias="Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializer"/>
-
-        <service id="Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializer">
-            <argument type="service" id="serializer"/>
-        </service>
-
         <service id="Setono\SyliusSEOPlugin\Serializer\ProductLinkedDataNormalizer">
             <argument type="service" id="serializer.normalizer.object"/>
 

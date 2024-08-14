@@ -7,8 +7,11 @@ namespace Setono\SyliusSEOPlugin\Twig;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Setono\SyliusSEOPlugin\Serializer\StructuredDataSerializerInterface;
 use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
+use Symfony\Component\Serializer\Context\Encoder\JsonEncoderContextBuilder;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
+use Symfony\Component\Serializer\Context\SerializerContextBuilder;
+use Symfony\Component\Serializer\SerializerInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInterface
@@ -17,7 +20,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
 
     public function __construct(
         private readonly StructuredDataContainerInterface $structuredDataContainer,
-        private readonly StructuredDataSerializerInterface $serializer,
+        private readonly SerializerInterface $serializer,
     ) {
         $this->logger = new NullLogger();
     }
@@ -28,14 +31,18 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
             return '';
         }
 
-        $output = [];
-
         try {
-            foreach ($this->structuredDataContainer as $structuredDataClass) {
-                foreach ($structuredDataClass as $structuredData) {
-                    $output[] = $this->serializer->serialize($structuredData);
-                }
-            }
+            return sprintf(
+                '<script type="application/ld+json">%s</script>',
+                $this->serializer->serialize(
+                    $this->structuredDataContainer,
+                    'json',
+                    (new SerializerContextBuilder())
+                    ->withContext((new ObjectNormalizerContextBuilder())->withSkipNullValues(true))
+                    ->withContext((new JsonEncoderContextBuilder())->withEncodeOptions(\JSON_THROW_ON_ERROR | \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE | \JSON_INVALID_UTF8_IGNORE | \JSON_PRESERVE_ZERO_FRACTION))
+                    ->toArray(),
+                ),
+            );
         } catch (\Throwable $e) {
             $this->logger->error(
                 sprintf('An error occurred while rendering JSON-LD: %s', $e->getMessage()),
@@ -43,7 +50,7 @@ final class JsonLdRuntime implements RuntimeExtensionInterface, LoggerAwareInter
             );
         }
 
-        return sprintf('<script type="application/ld+json">[%s]</script>', implode("\n", $output));
+        return '';
     }
 
     public function setLogger(LoggerInterface $logger): void

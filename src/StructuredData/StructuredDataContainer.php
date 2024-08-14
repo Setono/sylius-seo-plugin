@@ -8,7 +8,7 @@ namespace Setono\SyliusSEOPlugin\StructuredData;
  * @implements StructuredDataContainerInterface<StructuredData>
  * @implements \IteratorAggregate<class-string<StructuredData>, list<StructuredData>>
  */
-final class StructuredDataContainer implements StructuredDataContainerInterface, \IteratorAggregate
+final class StructuredDataContainer implements StructuredDataContainerInterface, \IteratorAggregate, \JsonSerializable
 {
     /** @var array<class-string<StructuredData>, list<StructuredData>> */
     private array $data = [];
@@ -56,5 +56,18 @@ final class StructuredDataContainer implements StructuredDataContainerInterface,
         }
 
         return $c;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $output = [];
+
+        foreach ($this->data as $structuredData) {
+            foreach ($structuredData as $data) {
+                $output[] = $data;
+            }
+        }
+
+        return $output;
     }
 }
