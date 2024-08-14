@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible;
 
+use Setono\SyliusSEOPlugin\StructuredData\Reference;
 use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Enumeration\ItemAvailability;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\StructuredValue\QuantitativeValue;
 
 class Offer extends StructuredData
@@ -16,7 +18,8 @@ class Offer extends StructuredData
         public ?\DateTimeInterface $priceValidUntil = null,
         public ?QuantitativeValue $eligibleQuantity = null,
         public ?string $itemCondition = null,
-        public ?string $availability = null,
+        public ?ItemAvailability $availability = null,
+        public null|Reference|MerchantReturnPolicy $hasMerchantReturnPolicy = null,
     ) {
         $this->type = 'Offer';
     }

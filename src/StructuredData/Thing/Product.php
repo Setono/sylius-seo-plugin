@@ -6,7 +6,6 @@ namespace Setono\SyliusSEOPlugin\StructuredData\Thing;
 
 use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Brand;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Enumeration\ItemAvailability;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer\AggregateOffer;
 
@@ -29,7 +28,6 @@ class Product extends StructuredData
         public ?string $color = null,
         public ?string $size = null,
         public Offer|AggregateOffer|null $offers = null,
-        public ?ItemAvailability $availability = null,
     ) {
         $this->type = 'Product';
         $this->context = 'https://schema.org';
