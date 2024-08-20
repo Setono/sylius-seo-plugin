@@ -18,7 +18,7 @@ TODO
 [ico-license]: https://poser.pugx.org/setono/sylius-seo-plugin/license
 [ico-github-actions]: https://github.com/Setono/sylius-seo-plugin/workflows/build/badge.svg
 [ico-code-coverage]: https://codecov.io/gh/Setono/sylius-seo-plugin/graph/badge.svg
-[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2FSyliusPluginSkeleton%2Fmaster
+[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2Fsylius-seo-plugin%2Fmaster
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-seo-plugin
 [link-github-actions]: https://github.com/Setono/sylius-seo-plugin/actions
