@@ -9,7 +9,7 @@ use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class ProductLinkedDataNormalizer implements NormalizerInterface
+final class ProductStructuredDataNormalizer implements NormalizerInterface
 {
     public function __construct(private readonly NormalizerInterface $normalizer)
     {
