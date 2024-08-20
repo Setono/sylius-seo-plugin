@@ -7,7 +7,6 @@ namespace Setono\SyliusSEOPlugin\Controller;
 use Setono\SyliusSEOPlugin\Model\ChannelInterface;
 use Setono\SyliusSEOPlugin\Renderer\RobotsTxtRendererInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Model\ChannelInterface as BaseChannelInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webmozart\Assert\Assert;
@@ -23,7 +22,7 @@ final class RenderRobotsTxtAction
 
     public function __invoke(): Response
     {
-        /** @var ChannelInterface|BaseChannelInterface $channel */
+        /** @var ChannelInterface $channel */
         $channel = $this->channelContext->getChannel();
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
