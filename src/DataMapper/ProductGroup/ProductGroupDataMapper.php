@@ -22,7 +22,7 @@ final class ProductGroupDataMapper implements ProductGroupDataMapperInterface
         $productGroup->name = $product->getName();
         // truncates at 5,000 characters because of this rather random suggestion:
         // https://support.google.com/webmasters/thread/195641191/invalid-string-length-in-field-description?hl=en
-        $productGroup->description = null === $description ? null : u(strip_tags($description))->truncate(5000)->toString();
+        $productGroup->description = null === $description ? null : u(strip_tags($description))->trim()->truncate(5000)->toString();
         $productGroup->productGroupID = $product->getCode();
 
         $productGroup->url = $this->urlGenerator->generate(
