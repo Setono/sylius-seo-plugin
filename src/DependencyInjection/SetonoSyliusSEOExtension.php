@@ -84,8 +84,6 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
                 ],
             ],
         ]);
-
-        // sylius.admin.channel.form.first_column_content
     }
 
     /**
