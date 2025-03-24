@@ -6,13 +6,56 @@
 [![Code Coverage][ico-code-coverage]][link-code-coverage]
 [![Mutation testing][ico-infection]][link-infection]
 
+The intention of this plugin is to add all the missing SEO features to your Sylius store.
+
+For now this plugin has:
+
+- [x] Schema.org data generation
+- [x] robots.txt file creation and management
+
 ## Installation
 
-TODO
+```shell
+composer require setono/sylius-seo-plugin
+```
 
-## Usage
+### Import routing
 
-TODO
+```yaml
+# config/routes/setono_sylius_seo.yaml
+setono_sylius_seo:
+    resource: "@SetonoSyliusSEOPlugin/Resources/config/routes.yaml"
+```
+
+### Implement `ChannelInterface`
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Entity\Channel;
+
+use Doctrine\ORM\Mapping as ORM;
+use Setono\SyliusSEOPlugin\Model\ChannelInterface;
+use Setono\SyliusSEOPlugin\Model\ChannelTrait;
+use Sylius\Component\Core\Model\Channel as BaseChannel;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_channel")
+ */
+class Channel extends BaseChannel implements ChannelInterface
+{
+    use ChannelTrait;
+}
+```
+
+### Update your database schema
+
+```shell
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate -n
+```
 
 [ico-version]: https://poser.pugx.org/setono/sylius-seo-plugin/v/stable
 [ico-license]: https://poser.pugx.org/setono/sylius-seo-plugin/license
