@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
 use function Setono\SyliusSEOPlugin\formatAmount;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Enumeration\ItemAvailability;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer\AggregateOffer;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
+use Spatie\SchemaOrg\ItemAvailability;
+use Spatie\SchemaOrg\Product;
+use Spatie\SchemaOrg\Schema;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -34,14 +33,13 @@ final class OffersProductDataMapper implements ProductDataMapperInterface
             return;
         }
 
-        $aggregateOffer = new AggregateOffer();
-        $aggregateOffer->addOffer(new Offer([
-            'url' => $this->productVariantUrlGenerator->generate($productVariant),
-            'priceCurrency' => $channel->getBaseCurrency()?->getCode(),
-            'price' => formatAmount($channelPricing->getPrice()),
-            'availability' => $this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock,
-        ]));
-
-        $product->offers = $aggregateOffer;
+        /** @psalm-suppress InvalidArgument */
+        $product->offers(Schema::aggregateOffer()->offers(
+            Schema::offer()
+                ->url($this->productVariantUrlGenerator->generate($productVariant))
+                ->priceCurrency((string) $channel->getBaseCurrency()?->getCode())
+                ->price(formatAmount($channelPricing->getPrice()))
+                ->availability($this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock),
+        ));
     }
 }

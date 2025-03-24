@@ -6,9 +6,7 @@ namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
 use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface;
-use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product\ProductGroup;
+use Spatie\SchemaOrg\Graph;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -18,7 +16,7 @@ use Webmozart\Assert\Assert;
 final class AddProductSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly StructuredDataContainerInterface $structuredDataContainer,
+        private readonly Graph $graph,
         private readonly ProductDataMapperInterface $productDataMapper,
         private readonly ProductGroupDataMapperInterface $productGroupDataMapper,
     ) {
@@ -42,20 +40,18 @@ final class AddProductSubscriber implements EventSubscriberInterface
 
     private function handleSimple(ProductInterface $product): void
     {
-        $variant = $product->getvariants()->first();
+        $variant = $product->getEnabledVariants()->first();
         if (!$variant instanceof ProductVariantInterface) {
             return;
         }
 
-        $dto = new Product();
-        $this->productDataMapper->map($variant, $dto);
-        $this->structuredDataContainer->set($dto);
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $this->productDataMapper->map($variant, $this->graph->product());
     }
 
     private function handleConfigurable(ProductInterface $product): void
     {
-        $dto = new ProductGroup();
-        $this->productGroupDataMapper->map($product, $dto);
-        $this->structuredDataContainer->set($dto);
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $this->productGroupDataMapper->map($product, $this->graph->productGroup());
     }
 }

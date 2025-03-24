@@ -20,7 +20,7 @@
 
         <!-- Event subscriber that will add the online store structured data to the homepage -->
         <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddOnlineStoreSubscriber">
-            <argument type="service" id="Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface"/>
+            <argument type="service" id="Spatie\SchemaOrg\Graph"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface"/>
             <argument type="service" id="sylius.context.channel"/>
 

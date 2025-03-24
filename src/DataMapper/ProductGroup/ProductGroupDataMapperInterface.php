@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\ProductGroup;
 
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product\ProductGroup;
+use Spatie\SchemaOrg\ProductGroup;
 use Sylius\Component\Core\Model\ProductInterface;
 
 interface ProductGroupDataMapperInterface

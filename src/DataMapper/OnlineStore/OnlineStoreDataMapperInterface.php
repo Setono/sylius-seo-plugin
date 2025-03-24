@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\OnlineStore;
 
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Organization\OnlineBusiness\OnlineStore;
+use Spatie\SchemaOrg\OnlineStore;
 use Sylius\Component\Core\Model\ChannelInterface;
 
 interface OnlineStoreDataMapperInterface
