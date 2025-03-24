@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\StructuredData\Thing\Action;
 
-use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\EntryPoint;
+use Setono\SyliusSEOPlugin\StructuredData\Thing\Action;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-class SearchAction extends StructuredData
+class SearchAction extends Action
 {
-    public function __construct(
-        public ?EntryPoint $target = null,
-        #[SerializedName('query-input')]
-        public ?string $queryInput = 'required name=query',
-    ) {
-        $this->type = 'SearchAction';
-    }
+    #[SerializedName('query-input')]
+    public ?string $queryInput = 'required name=query';
 }

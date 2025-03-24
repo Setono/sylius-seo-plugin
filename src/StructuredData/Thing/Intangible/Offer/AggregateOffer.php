@@ -11,13 +11,14 @@ use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Offer;
  */
 class AggregateOffer extends Offer implements \Countable, \ArrayAccess
 {
-    public function __construct(
-        /** @var list<Offer> */
-        public array $offers = [],
-    ) {
-        parent::__construct();
+    /** @var list<Offer> */
+    public array $offers = [];
 
-        $this->type = 'AggregateOffer';
+    public function addOffer(Offer $offer): self
+    {
+        $this->offers[] = $offer;
+
+        return $this;
     }
 
     public function getLowPrice(): ?float

@@ -8,9 +8,5 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 class DefinedRegion extends StructuredData
 {
-    public function __construct(
-        public ?string $addressCountry = null,
-    ) {
-        $this->type = 'DefinedRegion';
-    }
+    public ?string $addressCountry = null;
 }

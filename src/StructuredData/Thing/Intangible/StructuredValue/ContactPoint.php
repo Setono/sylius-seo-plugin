@@ -8,10 +8,7 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 class ContactPoint extends StructuredData
 {
-    public function __construct(
-        public ?string $email = null,
-        public ?string $telephone = null,
-    ) {
-        $this->type = 'ContactPoint';
-    }
+    public ?string $email = null;
+
+    public ?string $telephone = null;
 }

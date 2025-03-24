@@ -8,12 +8,10 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 class OfferShippingDetails extends StructuredData
 {
-    public function __construct(
-        public ?MonetaryAmount $shippingRate = null,
-        /** @var DefinedRegion|list<DefinedRegion>|null $shippingDestination */
-        public null|DefinedRegion|array $shippingDestination = null,
-        public ?ShippingDeliveryTime $deliveryTime = null,
-    ) {
-        $this->type = 'OfferShippingDetails';
-    }
+    public ?MonetaryAmount $shippingRate = null;
+
+    /** @var DefinedRegion|list<DefinedRegion>|null */
+    public null|DefinedRegion|array $shippingDestination = null;
+
+    public ?ShippingDeliveryTime $deliveryTime = null;
 }

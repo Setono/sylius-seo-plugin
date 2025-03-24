@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible;
 
-use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
+use Setono\SyliusSEOPlugin\StructuredData\Thing;
 
-final class Brand extends StructuredData
+final class Brand extends Thing
 {
-    public function __construct(public ?string $name = null)
-    {
-        $this->type = 'Brand';
-    }
 }

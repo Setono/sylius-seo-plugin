@@ -11,7 +11,9 @@ final class BrandTest extends AbstractTestCase
 {
     protected function getObject(): Brand
     {
-        return new Brand('Acme');
+        return new Brand([
+            'name' => 'Acme',
+        ]);
     }
 
     protected function getExpectedJson(): string

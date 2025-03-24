@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 
-use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
+use Setono\SyliusSEOPlugin\StructuredData\Thing;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Brand;
 use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
 
@@ -13,14 +13,8 @@ use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
  * - https://developers.google.com/search/docs/appearance/structured-data/product-variants
  * - https://schema.org/ProductGroup
  */
-final class ProductGroup extends StructuredData
+final class ProductGroup extends Thing
 {
-    public ?string $name = null;
-
-    public ?string $description = null;
-
-    public ?string $url = null;
-
     public ?Brand $brand = null;
 
     public ?string $productGroupID = null;
@@ -30,10 +24,4 @@ final class ProductGroup extends StructuredData
 
     /** @var list<Product> */
     public array $hasVariant = [];
-
-    public function __construct()
-    {
-        $this->type = 'ProductGroup';
-        $this->context = 'https://schema.org';
-    }
 }

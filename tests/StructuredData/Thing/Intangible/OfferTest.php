@@ -13,22 +13,22 @@ final class OfferTest extends AbstractTestCase
 
     protected function getObject(): Offer
     {
-        return new Offer(
-            url: 'https://example.com',
-            priceCurrency: 'USD',
-            price: 100.25,
-            priceValidUntil: self::getDate($this->date),
-        );
+        return new Offer([
+            'url' => 'https://example.com',
+            'priceCurrency' => 'USD',
+            'price' => 100.25,
+            'priceValidUntil' => self::getDate($this->date),
+        ]);
     }
 
     protected function getExpectedJson(): string
     {
         return <<<JSON
 {
-    "url": "https://example.com",
     "priceCurrency": "USD",
     "price": 100.25,
     "priceValidUntil": "{$this->date}",
+    "url": "https://example.com",
     "@type": "Offer"
 }
 JSON;

@@ -34,13 +34,14 @@ final class OffersProductDataMapper implements ProductDataMapperInterface
             return;
         }
 
-        $product->offers = new AggregateOffer([
-            new Offer(
-                url: $this->productVariantUrlGenerator->generate($productVariant),
-                priceCurrency: $channel->getBaseCurrency()?->getCode(),
-                price: formatAmount($channelPricing->getPrice()),
-                availability: $this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock,
-            ),
-        ]);
+        $aggregateOffer = new AggregateOffer();
+        $aggregateOffer->addOffer(new Offer([
+            'url' => $this->productVariantUrlGenerator->generate($productVariant),
+            'priceCurrency' => $channel->getBaseCurrency()?->getCode(),
+            'price' => formatAmount($channelPricing->getPrice()),
+            'availability' => $this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock,
+        ]));
+
+        $product->offers = $aggregateOffer;
     }
 }

@@ -19,16 +19,16 @@ final class OnlineStoreDataMapper implements OnlineStoreDataMapperInterface
     {
         $onlineStore->name = $channel->getName();
         $onlineStore->vatID = $channel->getShopBillingData()?->getTaxId();
-        $onlineStore->contactPoint = new ContactPoint(
-            email: $channel->getContactEmail(),
-            telephone: $channel->getContactPhoneNumber(),
-        );
-        $onlineStore->address = new ContactPoint\PostalAddress(
-            streetAddress: $channel->getShopBillingData()?->getStreet(),
-            addressLocality: $channel->getShopBillingData()?->getCity(),
-            addressCountry: $channel->getShopBillingData()?->getCountryCode(),
-            postalCode: $channel->getShopBillingData()?->getPostcode(),
-        );
+        $onlineStore->contactPoint = new ContactPoint([
+            'email' => $channel->getContactEmail(),
+            'telephone' => $channel->getContactPhoneNumber(),
+        ]);
+        $onlineStore->address = new ContactPoint\PostalAddress([
+            'streetAddress' => $channel->getShopBillingData()?->getStreet(),
+            'addressLocality' => $channel->getShopBillingData()?->getCity(),
+            'addressCountry' => $channel->getShopBillingData()?->getCountryCode(),
+            'postalCode' => $channel->getShopBillingData()?->getPostcode(),
+        ]);
 
         $hostname = $channel->getHostname();
         if (null === $hostname) {

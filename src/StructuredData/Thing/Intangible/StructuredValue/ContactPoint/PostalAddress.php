@@ -8,13 +8,13 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 class PostalAddress extends StructuredData
 {
-    public function __construct(
-        public ?string $streetAddress = null,
-        public ?string $addressLocality = null,
-        public ?string $addressCountry = null,
-        public ?string $addressRegion = null,
-        public ?string $postalCode = null,
-    ) {
-        $this->type = 'PostalAddress';
-    }
+    public ?string $streetAddress = null;
+
+    public ?string $addressLocality = null;
+
+    public ?string $addressCountry = null;
+
+    public ?string $addressRegion = null;
+
+    public ?string $postalCode = null;
 }

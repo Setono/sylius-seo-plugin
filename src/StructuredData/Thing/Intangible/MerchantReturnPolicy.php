@@ -12,16 +12,19 @@ use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\Enumeration\ReturnMet
 
 class MerchantReturnPolicy extends StructuredData
 {
-    public function __construct(
-        public ?array $applicableCountry = null,
-        public ?string $returnPolicyCountry = null,
-        public ?MerchantReturnEnumeration $returnPolicyCategory = null,
-        public ?int $merchantReturnDays = null,
-        public ?ReturnMethodEnumeration $returnMethod = null,
-        public ?ReturnFeesEnumeration $returnFees = null,
-        public ?RefundTypeEnumeration $refundType = null,
-        public ?string $merchantReturnLink = null,
-    ) {
-        $this->type = 'MerchantReturnPolicy';
-    }
+    public ?array $applicableCountry = null;
+
+    public ?string $returnPolicyCountry = null;
+
+    public ?MerchantReturnEnumeration $returnPolicyCategory = null;
+
+    public ?int $merchantReturnDays = null;
+
+    public ?ReturnMethodEnumeration $returnMethod = null;
+
+    public ?ReturnFeesEnumeration $returnFees = null;
+
+    public ?RefundTypeEnumeration $refundType = null;
+
+    public ?string $merchantReturnLink = null;
 }

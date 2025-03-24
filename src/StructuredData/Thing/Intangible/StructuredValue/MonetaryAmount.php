@@ -8,10 +8,7 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 class MonetaryAmount extends StructuredData
 {
-    public function __construct(
-        public ?string $currency = null,
-        public ?float $value = null,
-    ) {
-        $this->type = 'MonetaryAmount';
-    }
+    public ?string $currency = null;
+
+    public ?float $value = null;
 }

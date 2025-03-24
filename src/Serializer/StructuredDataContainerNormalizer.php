@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Serializer;
 
-use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainer;
+use Setono\SyliusSEOPlugin\StructuredData\StructuredDataContainerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class StructuredDataContainerNormalizer implements NormalizerInterface
@@ -25,13 +25,13 @@ final class StructuredDataContainerNormalizer implements NormalizerInterface
 
     public function supportsNormalization(mixed $data, ?string $format = null): bool
     {
-        return $data instanceof StructuredDataContainer;
+        return $data instanceof StructuredDataContainerInterface;
     }
 
     public function getSupportedTypes(?string $format): array
     {
         return [
-            StructuredDataContainer::class => true,
+            StructuredDataContainerInterface::class => true,
         ];
     }
 }

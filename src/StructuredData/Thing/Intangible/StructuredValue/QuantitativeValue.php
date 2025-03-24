@@ -8,13 +8,13 @@ use Setono\SyliusSEOPlugin\StructuredData\StructuredData;
 
 final class QuantitativeValue extends StructuredData
 {
-    public function __construct(
-        public ?float $maxValue = null,
-        public ?float $minValue = null,
-        public ?float $value = null,
-        public ?string $unitCode = null,
-        public ?string $unitText = null,
-    ) {
-        $this->type = 'QuantitativeValue';
-    }
+    public ?float $maxValue = null;
+
+    public ?float $minValue = null;
+
+    public ?float $value = null;
+
+    public ?string $unitCode = null;
+
+    public ?string $unitText = null;
 }

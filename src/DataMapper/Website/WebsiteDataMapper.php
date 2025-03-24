@@ -31,14 +31,14 @@ final class WebsiteDataMapper implements WebsiteDataMapperInterface
             $webSite->url = sprintf('https://%s', $hostname);
         }
 
-        $webSite->potentialAction = new SearchAction(
-            target: new EntryPoint(
-                rawurldecode($this->urlGenerator->generate(
+        $webSite->potentialAction = new SearchAction([
+            'target' => new EntryPoint([
+                'urlTemplate' => rawurldecode($this->urlGenerator->generate(
                     $this->searchUrlTemplate['route'],
                     [$this->searchUrlTemplate['query_parameter'] => '{query}'],
                     UrlGeneratorInterface::ABSOLUTE_URL,
                 )),
-            ),
-        );
+            ]),
+        ]);
     }
 }
