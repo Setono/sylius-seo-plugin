@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\ProductGroup;
 
 use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product\ProductGroup;
+use Spatie\SchemaOrg\ProductGroup;
+use Spatie\SchemaOrg\Schema;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
@@ -18,12 +18,16 @@ final class HasVariantProductGroupDataMapper implements ProductGroupDataMapperIn
 
     public function map(ProductInterface $product, ProductGroup $productGroup): void
     {
+        $hasVariant = [];
+
         /** @var ProductVariantInterface $variant */
         foreach ($product->getEnabledVariants() as $variant) {
-            $p = new Product();
+            $p = Schema::product();
             $this->productDataMapper->map($variant, $p);
 
-            $productGroup->hasVariant[] = $p;
+            $hasVariant[] = $p;
         }
+
+        $productGroup->hasVariant($hasVariant);
     }
 }

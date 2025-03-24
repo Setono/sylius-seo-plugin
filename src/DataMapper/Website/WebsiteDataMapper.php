@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DataMapper\Website;
 
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Action\SearchAction;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\CreativeWork\WebSite;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Intangible\EntryPoint;
+use Spatie\SchemaOrg\Schema;
+use Spatie\SchemaOrg\WebSite;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -23,22 +22,18 @@ final class WebsiteDataMapper implements WebsiteDataMapperInterface
     {
         $hostname = $channel->getHostname();
         if (null === $hostname) {
-            $webSite->url = $this->urlGenerator->generate(
+            $webSite->url($this->urlGenerator->generate(
                 name: 'sylius_shop_homepage',
                 referenceType: UrlGeneratorInterface::ABSOLUTE_URL,
-            );
+            ));
         } else {
-            $webSite->url = sprintf('https://%s', $hostname);
+            $webSite->url(sprintf('https://%s', $hostname));
         }
 
-        $webSite->potentialAction = new SearchAction([
-            'target' => new EntryPoint([
-                'urlTemplate' => rawurldecode($this->urlGenerator->generate(
-                    $this->searchUrlTemplate['route'],
-                    [$this->searchUrlTemplate['query_parameter'] => '{query}'],
-                    UrlGeneratorInterface::ABSOLUTE_URL,
-                )),
-            ]),
-        ]);
+        $webSite->potentialAction(Schema::searchAction()->target(Schema::entryPoint()->urlTemplate(rawurldecode($this->urlGenerator->generate(
+            $this->searchUrlTemplate['route'],
+            [$this->searchUrlTemplate['query_parameter'] => '{query}'],
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        )))));
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
 use Setono\SyliusSEOPlugin\DataMapper\AbstractDataMapper;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
+use Spatie\SchemaOrg\Product;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 /**

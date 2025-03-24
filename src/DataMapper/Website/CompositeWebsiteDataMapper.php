@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\Website;
 
 use Setono\SyliusSEOPlugin\DataMapper\AbstractDataMapper;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\CreativeWork\WebSite;
+use Spatie\SchemaOrg\WebSite;
 use Sylius\Component\Core\Model\ChannelInterface;
 
 /**

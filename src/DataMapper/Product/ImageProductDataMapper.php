@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\DataMapper\Product;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Setono\SyliusSEOPlugin\StructuredData\Thing\Product;
+use Spatie\SchemaOrg\Product;
 use Sylius\Component\Core\Model\ImageInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -20,7 +20,7 @@ final class ImageProductDataMapper implements ProductDataMapperInterface
 
     public function map(ProductVariantInterface $productVariant, Product $product): void
     {
-        if (null !== $product->image) {
+        if ($product->getProperty('image') !== null) {
             return;
         }
 
@@ -34,7 +34,7 @@ final class ImageProductDataMapper implements ProductDataMapperInterface
             return;
         }
 
-        $product->image = $this->cacheManager->getBrowserPath($path, $this->filter);
+        $product->image($this->cacheManager->getBrowserPath($path, $this->filter));
     }
 
     private static function getImage(ProductVariantInterface $productVariant): ?ImageInterface

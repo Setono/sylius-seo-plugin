@@ -4,9 +4,8 @@
     <imports>
         <import resource="services/controller.xml"/>
         <import resource="services/form.xml"/>
-        <import resource="services/linked_data.xml"/>
+        <import resource="services/graph.xml"/>
         <import resource="services/renderer.xml"/>
-        <import resource="services/serializer.xml"/>
         <import resource="services/twig.xml"/>
         <import resource="services/url_generator.xml"/>
     </imports>
