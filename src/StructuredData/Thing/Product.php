@@ -24,6 +24,7 @@ class Product extends StructuredData
         public ?string $description = null,
         public ?string $sku = null,
         public ?string $mpn = null,
+        public ?string $gtin = null,
         public ?Brand $brand = null,
         public ?string $color = null,
         public ?string $size = null,
