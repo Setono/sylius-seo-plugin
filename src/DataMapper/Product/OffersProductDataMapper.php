@@ -34,12 +34,12 @@ final class OffersProductDataMapper implements ProductDataMapperInterface
         }
 
         /** @psalm-suppress InvalidArgument */
-        $product->offers(Schema::aggregateOffer()->offers(
+        $product->offers(
             Schema::offer()
                 ->url($this->productVariantUrlGenerator->generate($productVariant))
                 ->priceCurrency((string) $channel->getBaseCurrency()?->getCode())
                 ->price(formatAmount($channelPricing->getPrice()))
                 ->availability($this->availabilityChecker->isStockAvailable($productVariant) ? ItemAvailability::InStock : ItemAvailability::OutOfStock),
-        ));
+        );
     }
 }
