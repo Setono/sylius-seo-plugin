@@ -6,7 +6,6 @@ namespace Setono\SyliusSEOPlugin\StructuredData;
 
 /**
  * @template T of StructuredData
- *
  * @extends \Traversable<class-string<T>, list<T>>
  */
 interface StructuredDataContainerInterface extends \Traversable, \Countable

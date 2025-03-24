@@ -11,7 +11,6 @@ use Setono\CompositeCompilerPass\CompositeService;
 
 /**
  * @template T of object
- *
  * @extends CompositeService<T>
  */
 abstract class AbstractDataMapper extends CompositeService implements LoggerAwareInterface
