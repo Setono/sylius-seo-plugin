@@ -57,6 +57,10 @@ final class AddItemListSubscriber implements EventSubscriberInterface
             $products[] = $product;
         }
 
+        if ([] === $products) {
+            return;
+        }
+
         $itemList = $this->graph->itemList();
         Assert::isInstanceOf($itemList, ItemList::class);
 
