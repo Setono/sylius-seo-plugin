@@ -24,6 +24,7 @@
             <argument type="service" id="Spatie\SchemaOrg\Graph"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface"/>
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="event_dispatcher"/>
 
             <tag name="kernel.event_subscriber"/>
         </service>
