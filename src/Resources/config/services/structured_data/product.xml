@@ -60,5 +60,14 @@
 
             <tag name="kernel.event_subscriber"/>
         </service>
+
+        <!-- Event subscriber on the product index / category page -->
+        <service id="Setono\SyliusSEOPlugin\EventSubscriber\StructuredData\AddItemListSubscriber">
+            <argument type="service" id="Spatie\SchemaOrg\Graph"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"/>
+            <argument type="service" id="sylius.product_variant_resolver.default"/>
+
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>
