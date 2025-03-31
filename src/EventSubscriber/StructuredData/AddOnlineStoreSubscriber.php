@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface;
+use Setono\SyliusSEOPlugin\Event\OnlineStoreAddedToGraph;
 use Spatie\SchemaOrg\Graph;
+use Spatie\SchemaOrg\OnlineStore;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,6 +26,7 @@ final class AddOnlineStoreSubscriber implements EventSubscriberInterface
         private readonly Graph $graph,
         private readonly OnlineStoreDataMapperInterface $onlineStoreDataMapper,
         private readonly ChannelContextInterface $channelContext,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly string $route = 'sylius_shop_homepage',
     ) {
     }
@@ -48,7 +52,11 @@ final class AddOnlineStoreSubscriber implements EventSubscriberInterface
         $channel = $this->channelContext->getChannel();
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $this->onlineStoreDataMapper->map($channel, $this->graph->onlineStore());
+        $onlineStore = $this->graph->onlineStore();
+        Assert::isInstanceOf($onlineStore, OnlineStore::class);
+
+        $this->onlineStoreDataMapper->map($channel, $onlineStore);
+
+        $this->eventDispatcher->dispatch(new OnlineStoreAddedToGraph($onlineStore));
     }
 }

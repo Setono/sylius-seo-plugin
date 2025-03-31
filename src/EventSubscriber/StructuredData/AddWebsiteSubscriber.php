@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface;
+use Setono\SyliusSEOPlugin\Event\WebsiteAddedToGraph;
 use Spatie\SchemaOrg\Graph;
+use Spatie\SchemaOrg\WebSite;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,6 +22,7 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
         private readonly Graph $graph,
         private readonly WebsiteDataMapperInterface $websiteDataMapper,
         private readonly ChannelContextInterface $channelContext,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly string $route = 'sylius_shop_homepage',
     ) {
     }
@@ -44,7 +48,11 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
         $channel = $this->channelContext->getChannel();
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $this->websiteDataMapper->map($channel, $this->graph->webSite());
+        $website = $this->graph->webSite();
+        Assert::isInstanceOf($website, WebSite::class);
+
+        $this->websiteDataMapper->map($channel, $website);
+
+        $this->eventDispatcher->dispatch(new WebsiteAddedToGraph($website));
     }
 }
