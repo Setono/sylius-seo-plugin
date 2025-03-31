@@ -53,6 +53,6 @@ final class AddWebsiteSubscriber implements EventSubscriberInterface
 
         $this->websiteDataMapper->map($channel, $website);
 
-        $this->eventDispatcher->dispatch(new WebsiteAddedToGraph($website));
+        $this->eventDispatcher->dispatch(new WebsiteAddedToGraph($website, $channel));
     }
 }

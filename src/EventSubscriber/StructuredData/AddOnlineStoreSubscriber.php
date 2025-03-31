@@ -57,6 +57,6 @@ final class AddOnlineStoreSubscriber implements EventSubscriberInterface
 
         $this->onlineStoreDataMapper->map($channel, $onlineStore);
 
-        $this->eventDispatcher->dispatch(new OnlineStoreAddedToGraph($onlineStore));
+        $this->eventDispatcher->dispatch(new OnlineStoreAddedToGraph($onlineStore, $channel));
     }
 }
