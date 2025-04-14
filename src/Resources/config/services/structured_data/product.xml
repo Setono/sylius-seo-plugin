@@ -57,6 +57,7 @@
             <argument type="service" id="Spatie\SchemaOrg\Graph"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface"/>
+            <argument type="service" id="event_dispatcher"/>
 
             <tag name="kernel.event_subscriber"/>
         </service>
