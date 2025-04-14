@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\EventSubscriber\StructuredData;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface;
+use Setono\SyliusSEOPlugin\Event\ProductAddedToGraph;
+use Setono\SyliusSEOPlugin\Event\ProductGroupAddedToGraph;
 use Spatie\SchemaOrg\Graph;
+use Spatie\SchemaOrg\Product;
+use Spatie\SchemaOrg\ProductGroup;
 use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -19,6 +24,7 @@ final class AddProductSubscriber implements EventSubscriberInterface
         private readonly Graph $graph,
         private readonly ProductDataMapperInterface $productDataMapper,
         private readonly ProductGroupDataMapperInterface $productGroupDataMapper,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -45,13 +51,21 @@ final class AddProductSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $this->productDataMapper->map($variant, $this->graph->product());
+        $graphProduct = $this->graph->product();
+        Assert::isInstanceOf($graphProduct, Product::class);
+
+        $this->productDataMapper->map($variant, $graphProduct);
+
+        $this->eventDispatcher->dispatch(new ProductAddedToGraph($graphProduct));
     }
 
     private function handleConfigurable(ProductInterface $product): void
     {
-        /** @psalm-suppress PossiblyInvalidArgument */
-        $this->productGroupDataMapper->map($product, $this->graph->productGroup());
+        $graphProductGroup = $this->graph->productGroup();
+        Assert::isInstanceOf($graphProductGroup, ProductGroup::class);
+
+        $this->productGroupDataMapper->map($product, $graphProductGroup);
+
+        $this->eventDispatcher->dispatch(new ProductGroupAddedToGraph($graphProductGroup));
     }
 }
