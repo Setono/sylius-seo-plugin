@@ -24,36 +24,57 @@ final class ImageProductDataMapper implements ProductDataMapperInterface
             return;
         }
 
-        $image = self::getImage($productVariant);
-        if (null === $image) {
+        $images = self::getImages($productVariant);
+        if ([] === $images) {
             return;
         }
 
-        $path = $image->getPath();
-        if (null === $path) {
+        $imageUrls = [];
+        foreach ($images as $image) {
+            $path = $image->getPath();
+            if (null !== $path) {
+                $imageUrls[] = $this->cacheManager->getBrowserPath($path, $this->filter);
+            }
+        }
+
+        if ([] === $imageUrls) {
             return;
         }
 
-        $product->image($this->cacheManager->getBrowserPath($path, $this->filter));
+        $product->image($imageUrls);
     }
 
-    private static function getImage(ProductVariantInterface $productVariant): ?ImageInterface
+    /**
+     * @return list<ImageInterface>
+     */
+    private static function getImages(ProductVariantInterface $productVariant): array
     {
-        $image = $productVariant->getImages()->first();
-        if ($image instanceof ImageInterface) {
-            return $image;
+        $images = [];
+
+        // First, try to get images from the product variant
+        foreach ($productVariant->getImages() as $image) {
+            if ($image instanceof ImageInterface) {
+                $images[] = $image;
+            }
         }
 
+        // If variant has images, use those
+        if ([] !== $images) {
+            return $images;
+        }
+
+        // Otherwise, fall back to product images
         $product = $productVariant->getProduct();
         if (!$product instanceof ProductInterface) {
-            return null;
+            return [];
         }
 
-        $image = $product->getImages()->first();
-        if ($image instanceof ImageInterface) {
-            return $image;
+        foreach ($product->getImages() as $image) {
+            if ($image instanceof ImageInterface) {
+                $images[] = $image;
+            }
         }
 
-        return null;
+        return $images;
     }
 }
