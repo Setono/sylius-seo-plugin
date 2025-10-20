@@ -30,7 +30,7 @@ if (!\function_exists(sanitizeString::class)) {
             $string = strip_tags($string);
         }
 
-        $s = u($string)->trim();
+        $s = u($string)->replaceMatches('/\s+/', ' ')->trim();
         if (null !== $maxLength) {
             $s = $s->truncate($maxLength);
         }
