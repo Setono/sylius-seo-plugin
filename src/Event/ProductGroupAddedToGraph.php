@@ -5,11 +5,16 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Event;
 
 use Spatie\SchemaOrg\ProductGroup;
+use Sylius\Component\Product\Model\ProductInterface;
 
 final class ProductGroupAddedToGraph
 {
     public function __construct(
-        public readonly ProductGroup $productGroup,
+        /** This is the product that was added to the graph */
+        public readonly ProductGroup $schemaProductGroup,
+
+        /** If the 'schema product group' above was added based on a product, this is the product */
+        public readonly ?ProductInterface $product = null,
     ) {
     }
 }

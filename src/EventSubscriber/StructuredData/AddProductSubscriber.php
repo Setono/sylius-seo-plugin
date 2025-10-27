@@ -56,7 +56,7 @@ final class AddProductSubscriber implements EventSubscriberInterface
 
         $this->productDataMapper->map($variant, $graphProduct);
 
-        $this->eventDispatcher->dispatch(new ProductAddedToGraph($graphProduct));
+        $this->eventDispatcher->dispatch(new ProductAddedToGraph($graphProduct, $product, $variant));
     }
 
     private function handleConfigurable(ProductInterface $product): void
@@ -66,6 +66,6 @@ final class AddProductSubscriber implements EventSubscriberInterface
 
         $this->productGroupDataMapper->map($product, $graphProductGroup);
 
-        $this->eventDispatcher->dispatch(new ProductGroupAddedToGraph($graphProductGroup));
+        $this->eventDispatcher->dispatch(new ProductGroupAddedToGraph($graphProductGroup, $product));
     }
 }
