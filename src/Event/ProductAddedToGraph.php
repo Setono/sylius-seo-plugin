@@ -12,13 +12,13 @@ final class ProductAddedToGraph
 {
     public function __construct(
         /** This is the product that was added to the graph */
-        public readonly Product $schemaProduct,
+        public readonly Product $product,
 
         /** If the 'schema product' above was added based on a product, this is the product */
-        public readonly ?ProductInterface $product = null,
+        public readonly ?ProductInterface $storeProduct = null,
 
         /** If the 'schema product' above was added based on a variant, this is the variant */
-        public readonly ?ProductVariantInterface $productVariant = null,
+        public readonly ?ProductVariantInterface $storeProductVariant = null,
     ) {
     }
 }

@@ -11,10 +11,10 @@ final class ProductGroupAddedToGraph
 {
     public function __construct(
         /** This is the product that was added to the graph */
-        public readonly ProductGroup $schemaProductGroup,
+        public readonly ProductGroup $productGroup,
 
         /** If the 'schema product group' above was added based on a product, this is the product */
-        public readonly ?ProductInterface $product = null,
+        public readonly ?ProductInterface $storeProduct = null,
     ) {
     }
 }
