@@ -15,6 +15,9 @@ final class OpenGraphExtension extends AbstractExtension implements GlobalsInter
     {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getGlobals(): array
     {
         return ['openGraph' => $this->openGraph];
