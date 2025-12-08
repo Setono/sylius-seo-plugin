@@ -124,17 +124,17 @@ final class ImageTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_to_array_with_only_url(): void
+    public function it_renders_html_with_only_url(): void
     {
         $image = new Image('https://example.com/image.jpg');
 
-        self::assertSame(['og:image' => 'https://example.com/image.jpg'], $image->toArray());
+        self::assertSame('<meta property="og:image" content="https://example.com/image.jpg">', $image->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_converts_to_array_with_all_properties(): void
+    public function it_renders_html_with_all_properties(): void
     {
         $image = (new Image('https://example.com/image.jpg'))
             ->secureUrl('https://secure.example.com/image.jpg')
@@ -142,15 +142,13 @@ final class ImageTest extends TestCase
             ->dimensions(1200, 630)
             ->alt('Product image');
 
-        $expected = [
-            'og:image' => 'https://example.com/image.jpg',
-            'og:image:secure_url' => 'https://secure.example.com/image.jpg',
-            'og:image:type' => 'image/jpeg',
-            'og:image:width' => 1200,
-            'og:image:height' => 630,
-            'og:image:alt' => 'Product image',
-        ];
+        $expected = '<meta property="og:image" content="https://example.com/image.jpg">' . "\n" .
+            '<meta property="og:image:secure_url" content="https://secure.example.com/image.jpg">' . "\n" .
+            '<meta property="og:image:type" content="image/jpeg">' . "\n" .
+            '<meta property="og:image:width" content="1200">' . "\n" .
+            '<meta property="og:image:height" content="630">' . "\n" .
+            '<meta property="og:image:alt" content="Product image">';
 
-        self::assertSame($expected, $image->toArray());
+        self::assertSame($expected, $image->toHtml());
     }
 }

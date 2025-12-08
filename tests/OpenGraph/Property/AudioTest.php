@@ -71,28 +71,26 @@ final class AudioTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_to_array_with_only_url(): void
+    public function it_renders_html_with_only_url(): void
     {
         $audio = new Audio('https://example.com/audio.mp3');
 
-        self::assertSame(['og:audio' => 'https://example.com/audio.mp3'], $audio->toArray());
+        self::assertSame('<meta property="og:audio" content="https://example.com/audio.mp3">', $audio->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_converts_to_array_with_all_properties(): void
+    public function it_renders_html_with_all_properties(): void
     {
         $audio = (new Audio('https://example.com/audio.mp3'))
             ->secureUrl('https://secure.example.com/audio.mp3')
             ->type('audio/mpeg');
 
-        $expected = [
-            'og:audio' => 'https://example.com/audio.mp3',
-            'og:audio:secure_url' => 'https://secure.example.com/audio.mp3',
-            'og:audio:type' => 'audio/mpeg',
-        ];
+        $expected = '<meta property="og:audio" content="https://example.com/audio.mp3">' . "\n" .
+            '<meta property="og:audio:secure_url" content="https://secure.example.com/audio.mp3">' . "\n" .
+            '<meta property="og:audio:type" content="audio/mpeg">';
 
-        self::assertSame($expected, $audio->toArray());
+        self::assertSame($expected, $audio->toHtml());
     }
 }

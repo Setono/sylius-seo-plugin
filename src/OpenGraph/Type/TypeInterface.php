@@ -12,9 +12,7 @@ interface TypeInterface
     public function getType(): string;
 
     /**
-     * Returns type-specific Open Graph properties.
-     *
-     * @return array<string, scalar|list<scalar>>
+     * Render the type-specific properties as HTML meta tags.
      */
-    public function getProperties(): array;
+    public function toHtml(): string;
 }

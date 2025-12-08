@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Property;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Represents an Open Graph image with optional structured properties.
  *
@@ -105,18 +107,15 @@ final class Image
         return $this->alt;
     }
 
-    /**
-     * @return array<string, scalar>
-     */
-    public function toArray(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'og:image' => $this->url,
-            'og:image:secure_url' => $this->secureUrl,
-            'og:image:type' => $this->type,
-            'og:image:width' => $this->width,
-            'og:image:height' => $this->height,
-            'og:image:alt' => $this->alt,
-        ], static fn ($value) => null !== $value);
+        return implode("\n", array_filter([
+            OpenGraph::renderMetaTag('og:image', $this->url),
+            OpenGraph::renderMetaTag('og:image:secure_url', $this->secureUrl),
+            OpenGraph::renderMetaTag('og:image:type', $this->type),
+            OpenGraph::renderMetaTag('og:image:width', $this->width),
+            OpenGraph::renderMetaTag('og:image:height', $this->height),
+            OpenGraph::renderMetaTag('og:image:alt', $this->alt),
+        ], static fn ($value): bool => $value !== null));
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Open Graph type for books.
  *
@@ -28,13 +30,21 @@ final class Book implements TypeInterface
         return 'book';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'book:author' => [] !== $this->authors ? $this->authors : null,
-            'book:isbn' => $this->isbn,
-            'book:release_date' => $this->releaseDate?->format(\DateTimeInterface::ATOM),
-            'book:tag' => [] !== $this->tags ? $this->tags : null,
-        ], static fn ($value) => null !== $value);
+        $html = [];
+
+        foreach ($this->authors as $author) {
+            $html[] = OpenGraph::renderMetaTag('book:author', $author);
+        }
+
+        $html[] = OpenGraph::renderMetaTag('book:isbn', $this->isbn);
+        $html[] = OpenGraph::renderMetaTag('book:release_date', $this->releaseDate?->format(\DateTimeInterface::ATOM));
+
+        foreach ($this->tags as $tag) {
+            $html[] = OpenGraph::renderMetaTag('book:tag', $tag);
+        }
+
+        return implode("\n", array_filter($html, static fn ($value): bool => $value !== null));
     }
 }

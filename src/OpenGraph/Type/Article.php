@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Open Graph type for articles (news, blog posts, etc.).
  *
@@ -30,15 +32,24 @@ final class Article implements TypeInterface
         return 'article';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'article:published_time' => $this->publishedTime?->format(\DateTimeInterface::ATOM),
-            'article:modified_time' => $this->modifiedTime?->format(\DateTimeInterface::ATOM),
-            'article:expiration_time' => $this->expirationTime?->format(\DateTimeInterface::ATOM),
-            'article:author' => [] !== $this->authors ? $this->authors : null,
-            'article:section' => $this->section,
-            'article:tag' => [] !== $this->tags ? $this->tags : null,
-        ], static fn ($value) => null !== $value);
+        $html = [];
+
+        $html[] = OpenGraph::renderMetaTag('article:published_time', $this->publishedTime?->format(\DateTimeInterface::ATOM));
+        $html[] = OpenGraph::renderMetaTag('article:modified_time', $this->modifiedTime?->format(\DateTimeInterface::ATOM));
+        $html[] = OpenGraph::renderMetaTag('article:expiration_time', $this->expirationTime?->format(\DateTimeInterface::ATOM));
+
+        foreach ($this->authors as $author) {
+            $html[] = OpenGraph::renderMetaTag('article:author', $author);
+        }
+
+        $html[] = OpenGraph::renderMetaTag('article:section', $this->section);
+
+        foreach ($this->tags as $tag) {
+            $html[] = OpenGraph::renderMetaTag('article:tag', $tag);
+        }
+
+        return implode("\n", array_filter($html, static fn ($value): bool => $value !== null));
     }
 }

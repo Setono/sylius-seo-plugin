@@ -228,91 +228,71 @@ final class OpenGraph
     }
 
     /**
-     * Convert the Open Graph data to an array of property => value pairs.
-     *
-     * @return array<string, scalar|list<scalar>>
-     */
-    public function toArray(): array
-    {
-        $data = array_filter([
-            'og:title' => $this->title,
-            'og:type' => $this->type->getType(),
-            'og:url' => $this->url,
-            'og:description' => $this->description,
-            'og:determiner' => $this->determiner,
-            'og:locale' => $this->locale,
-            'og:locale:alternate' => [] !== $this->localeAlternates ? $this->localeAlternates : null,
-            'og:site_name' => $this->siteName,
-        ], static fn ($value) => null !== $value);
-
-        foreach ($this->images as $image) {
-            foreach ($image->toArray() as $property => $value) {
-                $data[$property] = array_key_exists($property, $data)
-                    ? $this->mergeArrayValue($data[$property], $value)
-                    : $value;
-            }
-        }
-
-        foreach ($this->videos as $video) {
-            foreach ($video->toArray() as $property => $value) {
-                $data[$property] = array_key_exists($property, $data)
-                    ? $this->mergeArrayValue($data[$property], $value)
-                    : $value;
-            }
-        }
-
-        foreach ($this->audios as $audio) {
-            foreach ($audio->toArray() as $property => $value) {
-                $data[$property] = array_key_exists($property, $data)
-                    ? $this->mergeArrayValue($data[$property], $value)
-                    : $value;
-            }
-        }
-
-        return array_merge($data, $this->type->getProperties());
-    }
-
-    /**
-     * @param scalar|list<scalar> $existing
-     *
-     * @return list<scalar>
-     */
-    private function mergeArrayValue(array|bool|float|int|string $existing, bool|float|int|string $value): array
-    {
-        if (is_array($existing)) {
-            $existing[] = $value;
-
-            return $existing;
-        }
-
-        return [$existing, $value];
-    }
-
-    /**
      * Render the Open Graph data as HTML meta tags.
      */
     public function toHtml(): string
     {
         $html = [];
 
-        foreach ($this->toArray() as $property => $value) {
-            if (is_array($value)) {
-                foreach ($value as $item) {
-                    $html[] = $this->renderMetaTag($property, $item);
-                }
-            } else {
-                $html[] = $this->renderMetaTag($property, $value);
-            }
+        if (null !== $this->title) {
+            $html[] = self::renderMetaTag('og:title', $this->title);
+        }
+
+        $html[] = self::renderMetaTag('og:type', $this->type->getType());
+
+        if (null !== $this->url) {
+            $html[] = self::renderMetaTag('og:url', $this->url);
+        }
+
+        if (null !== $this->description) {
+            $html[] = self::renderMetaTag('og:description', $this->description);
+        }
+
+        if (null !== $this->determiner) {
+            $html[] = self::renderMetaTag('og:determiner', $this->determiner);
+        }
+
+        if (null !== $this->locale) {
+            $html[] = self::renderMetaTag('og:locale', $this->locale);
+        }
+
+        foreach ($this->localeAlternates as $localeAlternate) {
+            $html[] = self::renderMetaTag('og:locale:alternate', $localeAlternate);
+        }
+
+        if (null !== $this->siteName) {
+            $html[] = self::renderMetaTag('og:site_name', $this->siteName);
+        }
+
+        foreach ($this->images as $image) {
+            $html[] = $image->toHtml();
+        }
+
+        foreach ($this->videos as $video) {
+            $html[] = $video->toHtml();
+        }
+
+        foreach ($this->audios as $audio) {
+            $html[] = $audio->toHtml();
+        }
+
+        $typeHtml = $this->type->toHtml();
+        if ('' !== $typeHtml) {
+            $html[] = $typeHtml;
         }
 
         return implode("\n", $html);
     }
 
-    private function renderMetaTag(string $property, bool|float|int|string $content): string
+    public static function renderMetaTag(string $property, bool|float|int|string|null $content): ?string
     {
+        if (null === $content) {
+            return null;
+        }
+
         return sprintf(
             '<meta property="%s" content="%s">',
-            htmlspecialchars($property, \ENT_QUOTES | \ENT_HTML5, 'UTF-8'),
+            $property,
             htmlspecialchars((string) $content, \ENT_QUOTES | \ENT_HTML5, 'UTF-8'),
         );
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type\Music;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
 
 /**
@@ -33,14 +34,28 @@ final class Song implements TypeInterface
         return 'music.song';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'music:duration' => $this->duration,
-            'music:album' => [] !== $this->albums ? $this->albums : null,
-            'music:album:disc' => [] !== $this->albumDiscs ? $this->albumDiscs : null,
-            'music:album:track' => [] !== $this->albumTracks ? $this->albumTracks : null,
-            'music:musician' => [] !== $this->musicians ? $this->musicians : null,
-        ], static fn ($value) => null !== $value);
+        $html = [];
+
+        $html[] = OpenGraph::renderMetaTag('music:duration', $this->duration);
+
+        foreach ($this->albums as $album) {
+            $html[] = OpenGraph::renderMetaTag('music:album', $album);
+        }
+
+        foreach ($this->albumDiscs as $disc) {
+            $html[] = OpenGraph::renderMetaTag('music:album:disc', $disc);
+        }
+
+        foreach ($this->albumTracks as $track) {
+            $html[] = OpenGraph::renderMetaTag('music:album:track', $track);
+        }
+
+        foreach ($this->musicians as $musician) {
+            $html[] = OpenGraph::renderMetaTag('music:musician', $musician);
+        }
+
+        return implode("\n", array_filter($html, static fn ($value): bool => $value !== null));
     }
 }

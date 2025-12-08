@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Property;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Represents an Open Graph video with optional structured properties.
  *
@@ -91,17 +93,14 @@ final class Video
         return $this;
     }
 
-    /**
-     * @return array<string, scalar>
-     */
-    public function toArray(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'og:video' => $this->url,
-            'og:video:secure_url' => $this->secureUrl,
-            'og:video:type' => $this->type,
-            'og:video:width' => $this->width,
-            'og:video:height' => $this->height,
-        ], static fn ($value) => null !== $value);
+        return implode("\n", array_filter([
+            OpenGraph::renderMetaTag('og:video', $this->url),
+            OpenGraph::renderMetaTag('og:video:secure_url', $this->secureUrl),
+            OpenGraph::renderMetaTag('og:video:type', $this->type),
+            OpenGraph::renderMetaTag('og:video:width', $this->width),
+            OpenGraph::renderMetaTag('og:video:height', $this->height),
+        ], static fn ($value): bool => $value !== null));
     }
 }

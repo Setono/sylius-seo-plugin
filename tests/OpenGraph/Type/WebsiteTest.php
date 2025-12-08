@@ -23,11 +23,11 @@ final class WebsiteTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_properties(): void
+    public function it_returns_empty_html(): void
     {
         $website = new Website();
 
-        self::assertSame([], $website->getProperties());
+        self::assertSame('', $website->toHtml());
     }
 
     /**
@@ -40,25 +40,10 @@ final class WebsiteTest extends TestCase
             ->url('https://example.com')
             ->type(new Website());
 
-        $data = $og->toArray();
-
-        self::assertSame('My Website', $data['og:title']);
-        self::assertSame('website', $data['og:type']);
-        self::assertSame('https://example.com', $data['og:url']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_renders_website_meta_tags(): void
-    {
-        $og = (new OpenGraph())
-            ->title('My Website')
-            ->type(new Website());
-
         $html = $og->toHtml();
 
-        self::assertStringContainsString('<meta property="og:type" content="website">', $html);
         self::assertStringContainsString('<meta property="og:title" content="My Website">', $html);
+        self::assertStringContainsString('<meta property="og:type" content="website">', $html);
+        self::assertStringContainsString('<meta property="og:url" content="https://example.com">', $html);
     }
 }

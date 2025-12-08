@@ -235,28 +235,7 @@ final class OpenGraphTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_basic_data_to_array(): void
-    {
-        $og = (new OpenGraph())
-            ->title('Page Title')
-            ->type(new Website())
-            ->url('https://example.com')
-            ->description('Page description');
-
-        $expected = [
-            'og:title' => 'Page Title',
-            'og:type' => 'website',
-            'og:url' => 'https://example.com',
-            'og:description' => 'Page description',
-        ];
-
-        self::assertSame($expected, $og->toArray());
-    }
-
-    /**
-     * @test
-     */
-    public function it_converts_all_data_to_array(): void
+    public function it_renders_all_basic_properties(): void
     {
         $og = (new OpenGraph())
             ->title('Page Title')
@@ -269,49 +248,54 @@ final class OpenGraphTest extends TestCase
             ->siteName('My Site')
             ->image('https://example.com/image.jpg');
 
-        $data = $og->toArray();
+        $html = $og->toHtml();
 
-        self::assertSame('Page Title', $data['og:title']);
-        self::assertSame('website', $data['og:type']);
-        self::assertSame('https://example.com', $data['og:url']);
-        self::assertSame('Page description', $data['og:description']);
-        self::assertSame('the', $data['og:determiner']);
-        self::assertSame('en_US', $data['og:locale']);
-        self::assertSame(['fr_FR'], $data['og:locale:alternate']);
-        self::assertSame('My Site', $data['og:site_name']);
-        self::assertSame('https://example.com/image.jpg', $data['og:image']);
+        self::assertStringContainsString('<meta property="og:title" content="Page Title">', $html);
+        self::assertStringContainsString('<meta property="og:type" content="website">', $html);
+        self::assertStringContainsString('<meta property="og:url" content="https://example.com">', $html);
+        self::assertStringContainsString('<meta property="og:description" content="Page description">', $html);
+        self::assertStringContainsString('<meta property="og:determiner" content="the">', $html);
+        self::assertStringContainsString('<meta property="og:locale" content="en_US">', $html);
+        self::assertStringContainsString('<meta property="og:locale:alternate" content="fr_FR">', $html);
+        self::assertStringContainsString('<meta property="og:site_name" content="My Site">', $html);
+        self::assertStringContainsString('<meta property="og:image" content="https://example.com/image.jpg">', $html);
     }
 
     /**
      * @test
      */
-    public function it_includes_type_specific_properties(): void
+    public function it_renders_type_specific_properties(): void
     {
         $og = (new OpenGraph())
             ->title('John Doe')
             ->type(new Profile(firstName: 'John', lastName: 'Doe'));
 
-        $data = $og->toArray();
+        $html = $og->toHtml();
 
-        self::assertSame('John Doe', $data['og:title']);
-        self::assertSame('profile', $data['og:type']);
-        self::assertSame('John', $data['profile:first_name']);
-        self::assertSame('Doe', $data['profile:last_name']);
+        self::assertStringContainsString('<meta property="og:title" content="John Doe">', $html);
+        self::assertStringContainsString('<meta property="og:type" content="profile">', $html);
+        self::assertStringContainsString('<meta property="profile:first_name" content="John">', $html);
+        self::assertStringContainsString('<meta property="profile:last_name" content="Doe">', $html);
     }
 
     /**
      * @test
      */
-    public function it_handles_multiple_images_in_array(): void
+    public function it_renders_multiple_images_with_structured_properties_in_correct_order(): void
     {
         $og = (new OpenGraph())
             ->image((new Image('https://example.com/image1.jpg'))->width(100))
             ->image((new Image('https://example.com/image2.jpg'))->width(200));
 
-        $data = $og->toArray();
+        $html = $og->toHtml();
 
-        self::assertSame(['https://example.com/image1.jpg', 'https://example.com/image2.jpg'], $data['og:image']);
-        self::assertSame([100, 200], $data['og:image:width']);
+        // Expected output keeps structured properties with their parent image
+        $expected = '<meta property="og:image" content="https://example.com/image1.jpg">' . "\n" .
+            '<meta property="og:image:width" content="100">' . "\n" .
+            '<meta property="og:image" content="https://example.com/image2.jpg">' . "\n" .
+            '<meta property="og:image:width" content="200">';
+
+        self::assertStringContainsString($expected, $html);
     }
 
     /**

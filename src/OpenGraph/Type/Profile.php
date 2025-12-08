@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Open Graph type for representing a person.
  *
@@ -24,13 +26,13 @@ final class Profile implements TypeInterface
         return 'profile';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'profile:first_name' => $this->firstName,
-            'profile:last_name' => $this->lastName,
-            'profile:username' => $this->username,
-            'profile:gender' => $this->gender,
-        ], static fn ($value) => null !== $value);
+        return implode("\n", array_filter([
+            OpenGraph::renderMetaTag('profile:first_name', $this->firstName),
+            OpenGraph::renderMetaTag('profile:last_name', $this->lastName),
+            OpenGraph::renderMetaTag('profile:username', $this->username),
+            OpenGraph::renderMetaTag('profile:gender', $this->gender),
+        ], static fn ($value): bool => $value !== null));
     }
 }

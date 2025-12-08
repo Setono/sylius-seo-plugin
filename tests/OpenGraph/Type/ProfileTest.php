@@ -23,57 +23,57 @@ final class ProfileTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_properties_by_default(): void
+    public function it_returns_empty_html_by_default(): void
     {
         $profile = new Profile();
 
-        self::assertSame([], $profile->getProperties());
+        self::assertSame('', $profile->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_first_name(): void
+    public function it_renders_first_name(): void
     {
         $profile = new Profile(firstName: 'John');
 
-        self::assertSame(['profile:first_name' => 'John'], $profile->getProperties());
+        self::assertSame('<meta property="profile:first_name" content="John">', $profile->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_last_name(): void
+    public function it_renders_last_name(): void
     {
         $profile = new Profile(lastName: 'Doe');
 
-        self::assertSame(['profile:last_name' => 'Doe'], $profile->getProperties());
+        self::assertSame('<meta property="profile:last_name" content="Doe">', $profile->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_username(): void
+    public function it_renders_username(): void
     {
         $profile = new Profile(username: 'johndoe');
 
-        self::assertSame(['profile:username' => 'johndoe'], $profile->getProperties());
+        self::assertSame('<meta property="profile:username" content="johndoe">', $profile->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_gender(): void
+    public function it_renders_gender(): void
     {
         $profile = new Profile(gender: 'male');
 
-        self::assertSame(['profile:gender' => 'male'], $profile->getProperties());
+        self::assertSame('<meta property="profile:gender" content="male">', $profile->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_all_properties(): void
+    public function it_renders_all_properties(): void
     {
         $profile = new Profile(
             firstName: 'John',
@@ -82,14 +82,12 @@ final class ProfileTest extends TestCase
             gender: 'male',
         );
 
-        $expected = [
-            'profile:first_name' => 'John',
-            'profile:last_name' => 'Doe',
-            'profile:username' => 'johndoe',
-            'profile:gender' => 'male',
-        ];
+        $expected = '<meta property="profile:first_name" content="John">' . "\n" .
+            '<meta property="profile:last_name" content="Doe">' . "\n" .
+            '<meta property="profile:username" content="johndoe">' . "\n" .
+            '<meta property="profile:gender" content="male">';
 
-        self::assertSame($expected, $profile->getProperties());
+        self::assertSame($expected, $profile->toHtml());
     }
 
     /**
@@ -101,25 +99,9 @@ final class ProfileTest extends TestCase
             ->title('John Doe - Profile')
             ->type(new Profile(firstName: 'John', lastName: 'Doe'));
 
-        $data = $og->toArray();
-
-        self::assertSame('John Doe - Profile', $data['og:title']);
-        self::assertSame('profile', $data['og:type']);
-        self::assertSame('John', $data['profile:first_name']);
-        self::assertSame('Doe', $data['profile:last_name']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_renders_profile_meta_tags(): void
-    {
-        $og = (new OpenGraph())
-            ->title('John Doe')
-            ->type(new Profile(firstName: 'John', lastName: 'Doe'));
-
         $html = $og->toHtml();
 
+        self::assertStringContainsString('<meta property="og:title" content="John Doe - Profile">', $html);
         self::assertStringContainsString('<meta property="og:type" content="profile">', $html);
         self::assertStringContainsString('<meta property="profile:first_name" content="John">', $html);
         self::assertStringContainsString('<meta property="profile:last_name" content="Doe">', $html);

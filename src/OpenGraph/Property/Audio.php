@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Property;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
+
 /**
  * Represents an Open Graph audio with optional structured properties.
  *
@@ -55,15 +57,12 @@ final class Audio
         return $this->type;
     }
 
-    /**
-     * @return array<string, string>
-     */
-    public function toArray(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'og:audio' => $this->url,
-            'og:audio:secure_url' => $this->secureUrl,
-            'og:audio:type' => $this->type,
-        ], static fn ($value) => null !== $value);
+        return implode("\n", array_filter([
+            OpenGraph::renderMetaTag('og:audio', $this->url),
+            OpenGraph::renderMetaTag('og:audio:secure_url', $this->secureUrl),
+            OpenGraph::renderMetaTag('og:audio:type', $this->type),
+        ], static fn ($value): bool => $value !== null));
     }
 }

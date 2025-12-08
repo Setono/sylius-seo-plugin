@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type\Music;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
 
 /**
@@ -26,10 +27,14 @@ final class RadioStation implements TypeInterface
         return 'music.radio_station';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'music:creator' => [] !== $this->creators ? $this->creators : null,
-        ], static fn ($value) => null !== $value);
+        $html = [];
+
+        foreach ($this->creators as $creator) {
+            $html[] = OpenGraph::renderMetaTag('music:creator', $creator);
+        }
+
+        return implode("\n", array_filter($html, static fn ($value): bool => $value !== null));
     }
 }

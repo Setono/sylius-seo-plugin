@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\OpenGraph\Type\Video;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
 
 /**
@@ -37,17 +38,35 @@ final class Episode implements TypeInterface
         return 'video.episode';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return array_filter([
-            'video:actor' => [] !== $this->actors ? $this->actors : null,
-            'video:actor:role' => [] !== $this->actorRoles ? $this->actorRoles : null,
-            'video:director' => [] !== $this->directors ? $this->directors : null,
-            'video:writer' => [] !== $this->writers ? $this->writers : null,
-            'video:duration' => $this->duration,
-            'video:release_date' => $this->releaseDate?->format(\DateTimeInterface::ATOM),
-            'video:tag' => [] !== $this->tags ? $this->tags : null,
-            'video:series' => $this->series,
-        ], static fn ($value) => null !== $value);
+        $html = [];
+
+        foreach ($this->actors as $actor) {
+            $html[] = OpenGraph::renderMetaTag('video:actor', $actor);
+        }
+
+        foreach ($this->actorRoles as $role) {
+            $html[] = OpenGraph::renderMetaTag('video:actor:role', $role);
+        }
+
+        foreach ($this->directors as $director) {
+            $html[] = OpenGraph::renderMetaTag('video:director', $director);
+        }
+
+        foreach ($this->writers as $writer) {
+            $html[] = OpenGraph::renderMetaTag('video:writer', $writer);
+        }
+
+        $html[] = OpenGraph::renderMetaTag('video:duration', $this->duration);
+        $html[] = OpenGraph::renderMetaTag('video:release_date', $this->releaseDate?->format(\DateTimeInterface::ATOM));
+
+        foreach ($this->tags as $tag) {
+            $html[] = OpenGraph::renderMetaTag('video:tag', $tag);
+        }
+
+        $html[] = OpenGraph::renderMetaTag('video:series', $this->series);
+
+        return implode("\n", array_filter($html, static fn ($value): bool => $value !== null));
     }
 }

@@ -110,31 +110,29 @@ final class VideoTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_to_array_with_only_url(): void
+    public function it_renders_html_with_only_url(): void
     {
         $video = new Video('https://example.com/video.mp4');
 
-        self::assertSame(['og:video' => 'https://example.com/video.mp4'], $video->toArray());
+        self::assertSame('<meta property="og:video" content="https://example.com/video.mp4">', $video->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_converts_to_array_with_all_properties(): void
+    public function it_renders_html_with_all_properties(): void
     {
         $video = (new Video('https://example.com/video.mp4'))
             ->secureUrl('https://secure.example.com/video.mp4')
             ->type('video/mp4')
             ->dimensions(1920, 1080);
 
-        $expected = [
-            'og:video' => 'https://example.com/video.mp4',
-            'og:video:secure_url' => 'https://secure.example.com/video.mp4',
-            'og:video:type' => 'video/mp4',
-            'og:video:width' => 1920,
-            'og:video:height' => 1080,
-        ];
+        $expected = '<meta property="og:video" content="https://example.com/video.mp4">' . "\n" .
+            '<meta property="og:video:secure_url" content="https://secure.example.com/video.mp4">' . "\n" .
+            '<meta property="og:video:type" content="video/mp4">' . "\n" .
+            '<meta property="og:video:width" content="1920">' . "\n" .
+            '<meta property="og:video:height" content="1080">';
 
-        self::assertSame($expected, $video->toArray());
+        self::assertSame($expected, $video->toHtml());
     }
 }

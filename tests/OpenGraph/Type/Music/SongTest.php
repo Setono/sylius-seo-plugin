@@ -23,49 +23,47 @@ final class SongTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_empty_properties_by_default(): void
+    public function it_returns_empty_html_by_default(): void
     {
         $song = new Song();
 
-        self::assertSame([], $song->getProperties());
+        self::assertSame('', $song->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_duration(): void
+    public function it_renders_duration(): void
     {
         $song = new Song(duration: 240);
 
-        self::assertSame(['music:duration' => 240], $song->getProperties());
+        self::assertSame('<meta property="music:duration" content="240">', $song->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_albums(): void
+    public function it_renders_albums(): void
     {
         $song = new Song(albums: ['https://example.com/album/1']);
 
-        self::assertSame(['music:album' => ['https://example.com/album/1']], $song->getProperties());
+        self::assertSame('<meta property="music:album" content="https://example.com/album/1">', $song->toHtml());
     }
 
     /**
      * @test
      */
-    public function it_returns_properties_with_musicians(): void
+    public function it_renders_musicians(): void
     {
         $song = new Song(musicians: [
             'https://example.com/artist/1',
             'https://example.com/artist/2',
         ]);
 
-        self::assertSame([
-            'music:musician' => [
-                'https://example.com/artist/1',
-                'https://example.com/artist/2',
-            ],
-        ], $song->getProperties());
+        $expected = '<meta property="music:musician" content="https://example.com/artist/1">' . "\n" .
+            '<meta property="music:musician" content="https://example.com/artist/2">';
+
+        self::assertSame($expected, $song->toHtml());
     }
 
     /**
@@ -77,11 +75,11 @@ final class SongTest extends TestCase
             ->title('My Song')
             ->type(new Song(duration: 240, musicians: ['https://example.com/artist/1']));
 
-        $data = $og->toArray();
+        $html = $og->toHtml();
 
-        self::assertSame('My Song', $data['og:title']);
-        self::assertSame('music.song', $data['og:type']);
-        self::assertSame(240, $data['music:duration']);
-        self::assertSame(['https://example.com/artist/1'], $data['music:musician']);
+        self::assertStringContainsString('<meta property="og:title" content="My Song">', $html);
+        self::assertStringContainsString('<meta property="og:type" content="music.song">', $html);
+        self::assertStringContainsString('<meta property="music:duration" content="240">', $html);
+        self::assertStringContainsString('<meta property="music:musician" content="https://example.com/artist/1">', $html);
     }
 }

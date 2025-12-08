@@ -16,8 +16,8 @@ final class Website implements TypeInterface
         return 'website';
     }
 
-    public function getProperties(): array
+    public function toHtml(): string
     {
-        return [];
+        return '';
     }
 }
