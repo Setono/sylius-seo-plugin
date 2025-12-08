@@ -232,56 +232,20 @@ final class OpenGraph
      */
     public function toHtml(): string
     {
-        $html = [];
-
-        if (null !== $this->title) {
-            $html[] = self::renderMetaTag('og:title', $this->title);
-        }
-
-        $html[] = self::renderMetaTag('og:type', $this->type->getType());
-
-        if (null !== $this->url) {
-            $html[] = self::renderMetaTag('og:url', $this->url);
-        }
-
-        if (null !== $this->description) {
-            $html[] = self::renderMetaTag('og:description', $this->description);
-        }
-
-        if (null !== $this->determiner) {
-            $html[] = self::renderMetaTag('og:determiner', $this->determiner);
-        }
-
-        if (null !== $this->locale) {
-            $html[] = self::renderMetaTag('og:locale', $this->locale);
-        }
-
-        foreach ($this->localeAlternates as $localeAlternate) {
-            $html[] = self::renderMetaTag('og:locale:alternate', $localeAlternate);
-        }
-
-        if (null !== $this->siteName) {
-            $html[] = self::renderMetaTag('og:site_name', $this->siteName);
-        }
-
-        foreach ($this->images as $image) {
-            $html[] = $image->toHtml();
-        }
-
-        foreach ($this->videos as $video) {
-            $html[] = $video->toHtml();
-        }
-
-        foreach ($this->audios as $audio) {
-            $html[] = $audio->toHtml();
-        }
-
-        $typeHtml = $this->type->toHtml();
-        if ('' !== $typeHtml) {
-            $html[] = $typeHtml;
-        }
-
-        return implode("\n", $html);
+        return implode("\n", array_filter([
+            self::renderMetaTag('og:title', $this->title),
+            self::renderMetaTag('og:type', $this->type->getType()),
+            self::renderMetaTag('og:url', $this->url),
+            self::renderMetaTag('og:description', $this->description),
+            self::renderMetaTag('og:determiner', $this->determiner),
+            self::renderMetaTag('og:locale', $this->locale),
+            ...array_map(static fn (string $locale): ?string => self::renderMetaTag('og:locale:alternate', $locale), $this->localeAlternates),
+            self::renderMetaTag('og:site_name', $this->siteName),
+            ...array_map(static fn (Image $image): string => $image->toHtml(), $this->images),
+            ...array_map(static fn (Video $video): string => $video->toHtml(), $this->videos),
+            ...array_map(static fn (Audio $audio): string => $audio->toHtml(), $this->audios),
+            $this->type->toHtml(),
+        ], static fn (?string $value): bool => null !== $value && '' !== $value));
     }
 
     public static function renderMetaTag(string $property, bool|float|int|string|null $content): ?string
