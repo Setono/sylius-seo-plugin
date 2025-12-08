@@ -5,6 +5,7 @@
         <!-- Open graph -->
         <service id="Setono\SyliusSEOPlugin\EventSubscriber\OpenGraph\AddChannelInformationSubscriber">
             <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="sylius.context.locale"/>
             <argument type="service" id="Setono\SyliusSEOPlugin\OpenGraph\OpenGraph"/>
 
             <tag name="kernel.event_subscriber"/>
