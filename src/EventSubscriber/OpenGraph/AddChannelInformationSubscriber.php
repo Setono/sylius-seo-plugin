@@ -9,7 +9,7 @@ use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final class AddChannelSubscriber implements EventSubscriberInterface
+final class AddChannelInformationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ChannelContextInterface $channelContext,
