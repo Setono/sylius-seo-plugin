@@ -31,7 +31,12 @@ final class RobotsTxtExtension extends AbstractExtension
         $filename = $this->publicDirectory . '/robots.txt';
 
         if (file_exists($filename) && is_readable($filename)) {
-            return file_get_contents($filename);
+            $data = file_get_contents($filename);
+            if (false === $data) {
+                throw new \RuntimeException('Could not read existing robots.txt file');
+            }
+
+            return $data;
         }
 
         return null;
