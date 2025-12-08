@@ -46,7 +46,7 @@ final class OpenGraph
         $this->type = new Website();
     }
 
-    public function title(string $title): self
+    public function title(?string $title): self
     {
         $this->title = $title;
 
@@ -58,9 +58,11 @@ final class OpenGraph
         return $this->title;
     }
 
-    public function type(TypeInterface $type): self
+    public function type(?TypeInterface $type): self
     {
-        $this->type = $type;
+        if (null !== $type) {
+            $this->type = $type;
+        }
 
         return $this;
     }
@@ -70,7 +72,7 @@ final class OpenGraph
         return $this->type;
     }
 
-    public function url(string $url): self
+    public function url(?string $url): self
     {
         $this->url = $url;
 
@@ -82,7 +84,7 @@ final class OpenGraph
         return $this->url;
     }
 
-    public function description(string $description): self
+    public function description(?string $description): self
     {
         $this->description = $description;
 
@@ -98,7 +100,7 @@ final class OpenGraph
      * Set the word that appears before this object's title in a sentence.
      * Should be one of: "a", "an", "the", "", "auto".
      */
-    public function determiner(string $determiner): self
+    public function determiner(?string $determiner): self
     {
         $this->determiner = $determiner;
 
@@ -114,7 +116,7 @@ final class OpenGraph
      * Set the locale these tags are marked up in.
      * Format: language_TERRITORY (e.g., "en_US", "fr_FR").
      */
-    public function locale(string $locale): self
+    public function locale(?string $locale): self
     {
         $this->locale = $locale;
 
@@ -126,9 +128,11 @@ final class OpenGraph
         return $this->locale;
     }
 
-    public function localeAlternate(string $locale): self
+    public function localeAlternate(?string $locale): self
     {
-        $this->localeAlternates[] = $locale;
+        if (null !== $locale) {
+            $this->localeAlternates[] = $locale;
+        }
 
         return $this;
     }
@@ -141,7 +145,7 @@ final class OpenGraph
         return $this->localeAlternates;
     }
 
-    public function siteName(string $siteName): self
+    public function siteName(?string $siteName): self
     {
         $this->siteName = $siteName;
 
@@ -156,10 +160,14 @@ final class OpenGraph
     /**
      * Add an image to represent your object.
      *
-     * @param Image|string $image Image object or URL
+     * @param Image|string|null $image Image object or URL
      */
-    public function image(Image|string $image): self
+    public function image(Image|string|null $image): self
     {
+        if (null === $image) {
+            return $this;
+        }
+
         if (is_string($image)) {
             $image = new Image($image);
         }
@@ -180,10 +188,14 @@ final class OpenGraph
     /**
      * Add a video to complement your object.
      *
-     * @param Video|string $video Video object or URL
+     * @param Video|string|null $video Video object or URL
      */
-    public function video(Video|string $video): self
+    public function video(Video|string|null $video): self
     {
+        if (null === $video) {
+            return $this;
+        }
+
         if (is_string($video)) {
             $video = new Video($video);
         }
@@ -204,10 +216,14 @@ final class OpenGraph
     /**
      * Add an audio file to complement your object.
      *
-     * @param Audio|string $audio Audio object or URL
+     * @param Audio|string|null $audio Audio object or URL
      */
-    public function audio(Audio|string $audio): self
+    public function audio(Audio|string|null $audio): self
     {
+        if (null === $audio) {
+            return $this;
+        }
+
         if (is_string($audio)) {
             $audio = new Audio($audio);
         }

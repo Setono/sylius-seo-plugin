@@ -11,31 +11,48 @@ namespace Setono\SyliusSEOPlugin\OpenGraph\Property;
  */
 final class Audio
 {
-    /**
-     * @param string $url The URL of the audio file
-     * @param string|null $secureUrl An HTTPS URL for the audio file
-     * @param string|null $type The MIME type of the audio file (e.g., "audio/mpeg")
-     */
-    public function __construct(
-        public readonly string $url,
-        public readonly ?string $secureUrl = null,
-        public readonly ?string $type = null,
-    ) {
+    private ?string $secureUrl = null;
+
+    private ?string $type = null;
+
+    public function __construct(private string $url)
+    {
     }
 
-    public static function create(string $url): self
+    public function url(string $url): self
     {
-        return new self($url);
+        $this->url = $url;
+
+        return $this;
     }
 
-    public function withSecureUrl(string $secureUrl): self
+    public function getUrl(): string
     {
-        return new self($this->url, $secureUrl, $this->type);
+        return $this->url;
     }
 
-    public function withType(string $type): self
+    public function secureUrl(?string $secureUrl): self
     {
-        return new self($this->url, $this->secureUrl, $type);
+        $this->secureUrl = $secureUrl;
+
+        return $this;
+    }
+
+    public function getSecureUrl(): ?string
+    {
+        return $this->secureUrl;
+    }
+
+    public function type(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 
     /**

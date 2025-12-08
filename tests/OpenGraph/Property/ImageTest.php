@@ -16,102 +16,90 @@ final class ImageTest extends TestCase
     {
         $image = new Image('https://example.com/image.jpg');
 
-        self::assertSame('https://example.com/image.jpg', $image->url);
-        self::assertNull($image->secureUrl);
-        self::assertNull($image->type);
-        self::assertNull($image->width);
-        self::assertNull($image->height);
-        self::assertNull($image->alt);
+        self::assertSame('https://example.com/image.jpg', $image->getUrl());
+        self::assertNull($image->getSecureUrl());
+        self::assertNull($image->getType());
+        self::assertNull($image->getWidth());
+        self::assertNull($image->getHeight());
+        self::assertNull($image->getAlt());
     }
 
     /**
      * @test
      */
-    public function it_creates_image_using_static_factory(): void
+    public function it_sets_url(): void
     {
-        $image = Image::create('https://example.com/image.jpg');
+        $image = new Image('https://example.com/image.jpg');
+        $image->url('https://example.com/other.jpg');
 
-        self::assertSame('https://example.com/image.jpg', $image->url);
+        self::assertSame('https://example.com/other.jpg', $image->getUrl());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_secure_url(): void
+    public function it_sets_secure_url(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withSecureUrl('https://secure.example.com/image.jpg');
+        $image = new Image('https://example.com/image.jpg');
+        $image->secureUrl('https://secure.example.com/image.jpg');
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->secureUrl);
-        self::assertSame('https://secure.example.com/image.jpg', $modified->secureUrl);
+        self::assertSame('https://secure.example.com/image.jpg', $image->getSecureUrl());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_type(): void
+    public function it_sets_type(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withType('image/jpeg');
+        $image = new Image('https://example.com/image.jpg');
+        $image->type('image/jpeg');
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->type);
-        self::assertSame('image/jpeg', $modified->type);
+        self::assertSame('image/jpeg', $image->getType());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_width(): void
+    public function it_sets_width(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withWidth(1200);
+        $image = new Image('https://example.com/image.jpg');
+        $image->width(1200);
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->width);
-        self::assertSame(1200, $modified->width);
+        self::assertSame(1200, $image->getWidth());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_height(): void
+    public function it_sets_height(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withHeight(630);
+        $image = new Image('https://example.com/image.jpg');
+        $image->height(630);
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->height);
-        self::assertSame(630, $modified->height);
+        self::assertSame(630, $image->getHeight());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_dimensions(): void
+    public function it_sets_dimensions(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withDimensions(1200, 630);
+        $image = new Image('https://example.com/image.jpg');
+        $image->dimensions(1200, 630);
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->width);
-        self::assertNull($original->height);
-        self::assertSame(1200, $modified->width);
-        self::assertSame(630, $modified->height);
+        self::assertSame(1200, $image->getWidth());
+        self::assertSame(630, $image->getHeight());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_alt(): void
+    public function it_sets_alt(): void
     {
-        $original = new Image('https://example.com/image.jpg');
-        $modified = $original->withAlt('A beautiful sunset');
+        $image = new Image('https://example.com/image.jpg');
+        $image->alt('A beautiful sunset');
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->alt);
-        self::assertSame('A beautiful sunset', $modified->alt);
+        self::assertSame('A beautiful sunset', $image->getAlt());
     }
 
     /**
@@ -119,18 +107,18 @@ final class ImageTest extends TestCase
      */
     public function it_supports_fluent_chaining(): void
     {
-        $image = Image::create('https://example.com/image.jpg')
-            ->withSecureUrl('https://secure.example.com/image.jpg')
-            ->withType('image/jpeg')
-            ->withDimensions(1200, 630)
-            ->withAlt('Product image');
+        $image = (new Image('https://example.com/image.jpg'))
+            ->secureUrl('https://secure.example.com/image.jpg')
+            ->type('image/jpeg')
+            ->dimensions(1200, 630)
+            ->alt('Product image');
 
-        self::assertSame('https://example.com/image.jpg', $image->url);
-        self::assertSame('https://secure.example.com/image.jpg', $image->secureUrl);
-        self::assertSame('image/jpeg', $image->type);
-        self::assertSame(1200, $image->width);
-        self::assertSame(630, $image->height);
-        self::assertSame('Product image', $image->alt);
+        self::assertSame('https://example.com/image.jpg', $image->getUrl());
+        self::assertSame('https://secure.example.com/image.jpg', $image->getSecureUrl());
+        self::assertSame('image/jpeg', $image->getType());
+        self::assertSame(1200, $image->getWidth());
+        self::assertSame(630, $image->getHeight());
+        self::assertSame('Product image', $image->getAlt());
     }
 
     /**
@@ -148,14 +136,11 @@ final class ImageTest extends TestCase
      */
     public function it_converts_to_array_with_all_properties(): void
     {
-        $image = new Image(
-            'https://example.com/image.jpg',
-            'https://secure.example.com/image.jpg',
-            'image/jpeg',
-            1200,
-            630,
-            'Product image',
-        );
+        $image = (new Image('https://example.com/image.jpg'))
+            ->secureUrl('https://secure.example.com/image.jpg')
+            ->type('image/jpeg')
+            ->dimensions(1200, 630)
+            ->alt('Product image');
 
         $expected = [
             'og:image' => 'https://example.com/image.jpg',

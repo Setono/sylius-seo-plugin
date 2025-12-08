@@ -125,7 +125,7 @@ final class OpenGraphTest extends TestCase
 
         $images = $og->getImages();
         self::assertCount(1, $images);
-        self::assertSame('https://example.com/image.jpg', $images[0]->url);
+        self::assertSame('https://example.com/image.jpg', $images[0]->getUrl());
     }
 
     /**
@@ -133,8 +133,8 @@ final class OpenGraphTest extends TestCase
      */
     public function it_adds_image_from_object(): void
     {
-        $image = Image::create('https://example.com/image.jpg')
-            ->withDimensions(1200, 630);
+        $image = (new Image('https://example.com/image.jpg'))
+            ->dimensions(1200, 630);
 
         $og = (new OpenGraph())->image($image);
 
@@ -164,7 +164,7 @@ final class OpenGraphTest extends TestCase
 
         $videos = $og->getVideos();
         self::assertCount(1, $videos);
-        self::assertSame('https://example.com/video.mp4', $videos[0]->url);
+        self::assertSame('https://example.com/video.mp4', $videos[0]->getUrl());
     }
 
     /**
@@ -172,8 +172,8 @@ final class OpenGraphTest extends TestCase
      */
     public function it_adds_video_from_object(): void
     {
-        $video = Video::create('https://example.com/video.mp4')
-            ->withDimensions(1920, 1080);
+        $video = (new Video('https://example.com/video.mp4'))
+            ->dimensions(1920, 1080);
 
         $og = (new OpenGraph())->video($video);
 
@@ -191,7 +191,7 @@ final class OpenGraphTest extends TestCase
 
         $audios = $og->getAudios();
         self::assertCount(1, $audios);
-        self::assertSame('https://example.com/audio.mp3', $audios[0]->url);
+        self::assertSame('https://example.com/audio.mp3', $audios[0]->getUrl());
     }
 
     /**
@@ -199,8 +199,8 @@ final class OpenGraphTest extends TestCase
      */
     public function it_adds_audio_from_object(): void
     {
-        $audio = Audio::create('https://example.com/audio.mp3')
-            ->withType('audio/mpeg');
+        $audio = (new Audio('https://example.com/audio.mp3'))
+            ->type('audio/mpeg');
 
         $og = (new OpenGraph())->audio($audio);
 
@@ -305,8 +305,8 @@ final class OpenGraphTest extends TestCase
     public function it_handles_multiple_images_in_array(): void
     {
         $og = (new OpenGraph())
-            ->image(Image::create('https://example.com/image1.jpg')->withWidth(100))
-            ->image(Image::create('https://example.com/image2.jpg')->withWidth(200));
+            ->image((new Image('https://example.com/image1.jpg'))->width(100))
+            ->image((new Image('https://example.com/image2.jpg'))->width(200));
 
         $data = $og->toArray();
 
@@ -374,9 +374,9 @@ final class OpenGraphTest extends TestCase
     {
         $og = (new OpenGraph())
             ->image(
-                Image::create('https://example.com/image.jpg')
-                    ->withDimensions(1200, 630)
-                    ->withAlt('Image description'),
+                (new Image('https://example.com/image.jpg'))
+                    ->dimensions(1200, 630)
+                    ->alt('Image description'),
             );
 
         $html = $og->toHtml();

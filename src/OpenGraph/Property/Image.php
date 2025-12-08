@@ -11,57 +11,98 @@ namespace Setono\SyliusSEOPlugin\OpenGraph\Property;
  */
 final class Image
 {
-    /**
-     * @param string $url The URL of the image
-     * @param string|null $secureUrl An HTTPS URL for the image
-     * @param string|null $type The MIME type of the image (e.g., "image/jpeg")
-     * @param int|null $width The width of the image in pixels
-     * @param int|null $height The height of the image in pixels
-     * @param string|null $alt A description of what is in the image (for accessibility)
-     */
-    public function __construct(
-        public readonly string $url,
-        public readonly ?string $secureUrl = null,
-        public readonly ?string $type = null,
-        public readonly ?int $width = null,
-        public readonly ?int $height = null,
-        public readonly ?string $alt = null,
-    ) {
+    private ?string $secureUrl = null;
+
+    private ?string $type = null;
+
+    private ?int $width = null;
+
+    private ?int $height = null;
+
+    private ?string $alt = null;
+
+    public function __construct(private string $url)
+    {
     }
 
-    public static function create(string $url): self
+    public function url(string $url): self
     {
-        return new self($url);
+        $this->url = $url;
+
+        return $this;
     }
 
-    public function withSecureUrl(string $secureUrl): self
+    public function getUrl(): string
     {
-        return new self($this->url, $secureUrl, $this->type, $this->width, $this->height, $this->alt);
+        return $this->url;
     }
 
-    public function withType(string $type): self
+    public function secureUrl(?string $secureUrl): self
     {
-        return new self($this->url, $this->secureUrl, $type, $this->width, $this->height, $this->alt);
+        $this->secureUrl = $secureUrl;
+
+        return $this;
     }
 
-    public function withWidth(int $width): self
+    public function getSecureUrl(): ?string
     {
-        return new self($this->url, $this->secureUrl, $this->type, $width, $this->height, $this->alt);
+        return $this->secureUrl;
     }
 
-    public function withHeight(int $height): self
+    public function type(?string $type): self
     {
-        return new self($this->url, $this->secureUrl, $this->type, $this->width, $height, $this->alt);
+        $this->type = $type;
+
+        return $this;
     }
 
-    public function withDimensions(int $width, int $height): self
+    public function getType(): ?string
     {
-        return new self($this->url, $this->secureUrl, $this->type, $width, $height, $this->alt);
+        return $this->type;
     }
 
-    public function withAlt(string $alt): self
+    public function width(?int $width): self
     {
-        return new self($this->url, $this->secureUrl, $this->type, $this->width, $this->height, $alt);
+        $this->width = $width;
+
+        return $this;
+    }
+
+    public function getWidth(): ?int
+    {
+        return $this->width;
+    }
+
+    public function height(?int $height): self
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function dimensions(?int $width, ?int $height): self
+    {
+        $this->width = $width;
+        $this->height = $height;
+
+        return $this;
+    }
+
+    public function alt(?string $alt): self
+    {
+        $this->alt = $alt;
+
+        return $this;
+    }
+
+    public function getAlt(): ?string
+    {
+        return $this->alt;
     }
 
     /**

@@ -16,45 +16,42 @@ final class AudioTest extends TestCase
     {
         $audio = new Audio('https://example.com/audio.mp3');
 
-        self::assertSame('https://example.com/audio.mp3', $audio->url);
-        self::assertNull($audio->secureUrl);
-        self::assertNull($audio->type);
+        self::assertSame('https://example.com/audio.mp3', $audio->getUrl());
+        self::assertNull($audio->getSecureUrl());
+        self::assertNull($audio->getType());
     }
 
     /**
      * @test
      */
-    public function it_creates_audio_using_static_factory(): void
+    public function it_sets_url(): void
     {
-        $audio = Audio::create('https://example.com/audio.mp3');
+        $audio = new Audio('https://example.com/audio.mp3');
+        $audio->url('https://example.com/other.mp3');
 
-        self::assertSame('https://example.com/audio.mp3', $audio->url);
+        self::assertSame('https://example.com/other.mp3', $audio->getUrl());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_secure_url(): void
+    public function it_sets_secure_url(): void
     {
-        $original = new Audio('https://example.com/audio.mp3');
-        $modified = $original->withSecureUrl('https://secure.example.com/audio.mp3');
+        $audio = new Audio('https://example.com/audio.mp3');
+        $audio->secureUrl('https://secure.example.com/audio.mp3');
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->secureUrl);
-        self::assertSame('https://secure.example.com/audio.mp3', $modified->secureUrl);
+        self::assertSame('https://secure.example.com/audio.mp3', $audio->getSecureUrl());
     }
 
     /**
      * @test
      */
-    public function it_returns_immutable_copy_with_type(): void
+    public function it_sets_type(): void
     {
-        $original = new Audio('https://example.com/audio.mp3');
-        $modified = $original->withType('audio/mpeg');
+        $audio = new Audio('https://example.com/audio.mp3');
+        $audio->type('audio/mpeg');
 
-        self::assertNotSame($original, $modified);
-        self::assertNull($original->type);
-        self::assertSame('audio/mpeg', $modified->type);
+        self::assertSame('audio/mpeg', $audio->getType());
     }
 
     /**
@@ -62,13 +59,13 @@ final class AudioTest extends TestCase
      */
     public function it_supports_fluent_chaining(): void
     {
-        $audio = Audio::create('https://example.com/audio.mp3')
-            ->withSecureUrl('https://secure.example.com/audio.mp3')
-            ->withType('audio/mpeg');
+        $audio = (new Audio('https://example.com/audio.mp3'))
+            ->secureUrl('https://secure.example.com/audio.mp3')
+            ->type('audio/mpeg');
 
-        self::assertSame('https://example.com/audio.mp3', $audio->url);
-        self::assertSame('https://secure.example.com/audio.mp3', $audio->secureUrl);
-        self::assertSame('audio/mpeg', $audio->type);
+        self::assertSame('https://example.com/audio.mp3', $audio->getUrl());
+        self::assertSame('https://secure.example.com/audio.mp3', $audio->getSecureUrl());
+        self::assertSame('audio/mpeg', $audio->getType());
     }
 
     /**
@@ -86,11 +83,9 @@ final class AudioTest extends TestCase
      */
     public function it_converts_to_array_with_all_properties(): void
     {
-        $audio = new Audio(
-            'https://example.com/audio.mp3',
-            'https://secure.example.com/audio.mp3',
-            'audio/mpeg',
-        );
+        $audio = (new Audio('https://example.com/audio.mp3'))
+            ->secureUrl('https://secure.example.com/audio.mp3')
+            ->type('audio/mpeg');
 
         $expected = [
             'og:audio' => 'https://example.com/audio.mp3',
