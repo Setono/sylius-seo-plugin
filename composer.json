@@ -22,14 +22,14 @@
         "sylius/inventory": "^1.0",
         "sylius/product": "^1.0",
         "sylius/resource-bundle": "^1.6",
-        "symfony/config": "^6.4 || ^7.0",
-        "symfony/dependency-injection": "^6.4 || ^7.0",
-        "symfony/event-dispatcher": "^6.4 || ^7.0",
-        "symfony/form": "^6.4 || ^7.0",
-        "symfony/http-foundation": "^6.4 || ^7.0",
-        "symfony/http-kernel": "^6.4 || ^7.0",
-        "symfony/routing": "^6.4 || ^7.0",
-        "symfony/string": "^6.4 || ^7.0",
+        "symfony/config": "^6.4",
+        "symfony/dependency-injection": "^6.4",
+        "symfony/event-dispatcher": "^6.4",
+        "symfony/form": "^6.4",
+        "symfony/http-foundation": "^6.4",
+        "symfony/http-kernel": "^6.4",
+        "symfony/routing": "^6.4",
+        "symfony/string": "^6.4",
         "twig/twig": "^2.15 || ^3.0",
         "webmozart/assert": "^1.11"
     },
@@ -41,18 +41,12 @@
         "infection/infection": "^0.27.10",
         "jms/serializer-bundle": "^4.2",
         "lexik/jwt-authentication-bundle": "^2.17",
-        "matthiasnoback/symfony-dependency-injection-test": "^4.3 || ^5.1",
-        "phpspec/prophecy-phpunit": "^2.4",
-        "phpunit/phpunit": "^9.6.17",
-        "psalm/plugin-phpunit": "^0.18.4",
-        "setono/code-quality-pack": "^2.8.2",
-        "shipmonk/composer-dependency-analyser": "^1.8",
-        "sylius/sylius": "~1.12.13",
-        "symfony/debug-bundle": "^6.4 || ^7.0",
-        "symfony/dotenv": "^6.4 || ^7.0",
-        "symfony/intl": "^6.4 || ^7.0",
-        "symfony/property-info": "^6.4 || ^7.0",
-        "symfony/web-profiler-bundle": "^6.4 || ^7.0",
+        "setono/sylius-plugin-pack": "~1.14.2",
+        "symfony/debug-bundle": "^6.4",
+        "symfony/dotenv": "^6.4",
+        "symfony/intl": "^6.4",
+        "symfony/property-info": "^6.4",
+        "symfony/web-profiler-bundle": "^6.4",
         "symfony/webpack-encore-bundle": "^1.17.2",
         "willdurand/negotiation": "^3.1"
     },
@@ -78,17 +72,13 @@
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "ergebnis/composer-normalize": true,
             "infection/extension-installer": true,
+            "phpstan/extension-installer": true,
             "symfony/thanks": false
         },
         "sort-packages": true
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    },
     "scripts": {
-        "analyse": "psalm",
+        "analyse": "phpstan analyse",
         "check-style": "ecs check",
         "fix-style": "ecs check --fix",
         "phpunit": "phpunit"
