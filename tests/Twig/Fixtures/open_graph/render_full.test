@@ -1,0 +1,13 @@
+--TEST--
+Render OpenGraph with multiple properties
+--TEMPLATE--
+{% do openGraph.title('My Page').description('Page description').url('https://example.com').siteName('Example Site') %}
+{{ setono_sylius_seo_render_open_graph() }}
+--DATA--
+return [];
+--EXPECT--
+<meta property="og:title" content="My Page">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.com">
+<meta property="og:description" content="Page description">
+<meta property="og:site_name" content="Example Site">

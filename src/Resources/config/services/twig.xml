@@ -3,13 +3,9 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="Setono\SyliusSEOPlugin\Twig\JsonLdExtension">
-            <tag name="twig.extension"/>
-        </service>
-
-        <service id="Setono\SyliusSEOPlugin\Twig\JsonLdRuntime">
             <argument type="service" id="Spatie\SchemaOrg\Graph"/>
 
-            <tag name="twig.runtime"/>
+            <tag name="twig.extension"/>
         </service>
 
         <service id="Setono\SyliusSEOPlugin\Twig\RobotsTxtExtension">
