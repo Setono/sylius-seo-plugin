@@ -14,7 +14,7 @@ final class ImageProductDataMapper implements ProductDataMapperInterface
 {
     public function __construct(
         private readonly CacheManager $cacheManager,
-        private readonly string $filter = 'sylius_shop_product_large_thumbnail',
+        private readonly string $filter = 'sylius_original',
     ) {
     }
 
