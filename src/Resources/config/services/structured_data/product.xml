@@ -25,7 +25,7 @@
         </service>
 
         <service id="Setono\SyliusSEOPlugin\DataMapper\Product\ImageProductDataMapper">
-            <argument type="service" id="liip_imagine.cache.manager"/>
+            <argument type="service" id="Setono\SyliusSEOPlugin\Resolver\ProductImagesResolverInterface"/>
 
             <tag name="setono_sylius_seo.product_data_mapper" priority="-120"/>
         </service>

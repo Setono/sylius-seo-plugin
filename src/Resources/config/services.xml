@@ -6,6 +6,7 @@
         <import resource="services/form.xml"/>
         <import resource="services/graph.xml"/>
         <import resource="services/renderer.xml"/>
+        <import resource="services/resolver.xml"/>
         <import resource="services/twig.xml"/>
         <import resource="services/url_generator.xml"/>
     </imports>
