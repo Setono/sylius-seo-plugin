@@ -22,7 +22,6 @@ final class RenderRobotsTxtAction
 
     public function __invoke(): Response
     {
-        /** @var ChannelInterface $channel */
         $channel = $this->channelContext->getChannel();
         Assert::isInstanceOf($channel, ChannelInterface::class);
 

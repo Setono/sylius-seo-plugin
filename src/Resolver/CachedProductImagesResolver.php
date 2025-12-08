@@ -8,6 +8,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class CachedProductImagesResolver implements ProductImagesResolverInterface
 {
+    /** @var list<string>|null */
     private ?array $images = null;
 
     public function __construct(private readonly ProductImagesResolverInterface $decorated)

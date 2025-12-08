@@ -22,8 +22,8 @@ final class ChannelTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    public static function getExtendedTypes(): \Generator
+    public static function getExtendedTypes(): iterable
     {
-        yield ChannelType::class;
+        return [ChannelType::class];
     }
 }

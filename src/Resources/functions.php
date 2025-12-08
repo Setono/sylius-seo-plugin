@@ -6,8 +6,7 @@ namespace Setono\SyliusSEOPlugin;
 
 use function Symfony\Component\String\u;
 
-/** @psalm-suppress UndefinedClass,MixedArgument */
-if (!\function_exists(formatAmount::class)) {
+if (!\function_exists('Setono\SyliusSEOPlugin\formatAmount')) {
     function formatAmount(?int $amount): float
     {
         if (null === $amount) {
@@ -18,8 +17,7 @@ if (!\function_exists(formatAmount::class)) {
     }
 }
 
-/** @psalm-suppress UndefinedClass,MixedArgument */
-if (!\function_exists(sanitizeString::class)) {
+if (!\function_exists('Setono\SyliusSEOPlugin\sanitizeString')) {
     function sanitizeString(?string $string, bool $stripTags = true, int $maxLength = null): ?string
     {
         if (null === $string) {

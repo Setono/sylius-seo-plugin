@@ -40,8 +40,13 @@ final class AddItemListSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $data = $grid->getData();
+        if (!is_iterable($data)) {
+            return;
+        }
+
         $products = [];
-        foreach ($grid->getData() as $productEntity) {
+        foreach ($data as $productEntity) {
             if (!$productEntity instanceof ProductInterface) {
                 continue;
             }
