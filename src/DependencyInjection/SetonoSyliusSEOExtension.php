@@ -80,6 +80,9 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
                         'setono_sylius_seo_json_ld' => [
                             'template' => '@SetonoSyliusSEOPlugin/json_ld.html.twig',
                         ],
+                        'setono_sylius_seo_open_graph' => [
+                            'template' => '@SetonoSyliusSEOPlugin/open_graph.html.twig',
+                        ],
                     ],
                 ],
             ],

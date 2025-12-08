@@ -7,7 +7,7 @@ namespace Setono\SyliusSEOPlugin\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-final class JsonLdExtension extends AbstractExtension
+final class OpenGraphExtension extends AbstractExtension
 {
     /**
      * @return list<TwigFunction>
@@ -16,7 +16,7 @@ final class JsonLdExtension extends AbstractExtension
     {
         return [
             /** @phpstan-ignore argument.type */
-            new TwigFunction('setono_sylius_seo_render_json_ld', [JsonLdRuntime::class, 'renderJsonLd'], ['is_safe' => ['html']]),
+            new TwigFunction('setono_sylius_seo_render_open_graph', [OpenGraphRuntime::class, 'renderOpenGraph'], ['is_safe' => ['html']]),
         ];
     }
 }
