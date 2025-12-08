@@ -33,12 +33,10 @@ final class AddProductInformationSubscriber implements EventSubscriberInterface
         Assert::isInstanceOf($product, ProductInterface::class);
 
         $images = $this->productImagesResolver->resolve($product);
-        if ([] === $images) {
-            return;
+        if ([] !== $images) {
+            $this->openGraph->image((new Image($images[0]))->alt($product->getName()));
         }
 
-        foreach ($images as $image) {
-            $this->openGraph->image(Image::create($image));
-        }
+        $this->openGraph->description($product->getDescription());
     }
 }

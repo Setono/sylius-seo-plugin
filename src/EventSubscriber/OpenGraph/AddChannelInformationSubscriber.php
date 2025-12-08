@@ -6,6 +6,7 @@ namespace Setono\SyliusSEOPlugin\EventSubscriber\OpenGraph;
 
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -13,6 +14,7 @@ final class AddChannelInformationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly ChannelContextInterface $channelContext,
+        private readonly LocaleContextInterface $localeContext,
         private readonly OpenGraph $openGraph,
     ) {
     }
@@ -29,5 +31,6 @@ final class AddChannelInformationSubscriber implements EventSubscriberInterface
         $channel = $this->channelContext->getChannel();
 
         $this->openGraph->siteName((string) $channel->getName());
+        $this->openGraph->locale($this->localeContext->getLocaleCode());
     }
 }
