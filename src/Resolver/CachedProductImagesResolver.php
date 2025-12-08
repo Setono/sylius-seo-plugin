@@ -9,8 +9,8 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class CachedProductImagesResolver implements ProductImagesResolverInterface
 {
-    /** @var list<string>|null */
-    private ?array $images = null;
+    /** @var array<string, list<string>> */
+    private array $images = [];
 
     public function __construct(private readonly ProductImagesResolverInterface $decorated)
     {
@@ -18,10 +18,12 @@ final class CachedProductImagesResolver implements ProductImagesResolverInterfac
 
     public function resolve(ProductInterface|ProductVariantInterface $product): array
     {
-        if (null === $this->images) {
-            $this->images = $this->decorated->resolve($product);
+        $hash = spl_object_hash($product);
+
+        if (!array_key_exists($hash, $this->images)) {
+            $this->images[$hash] = $this->decorated->resolve($product);
         }
 
-        return $this->images;
+        return $this->images[$hash];
     }
 }
