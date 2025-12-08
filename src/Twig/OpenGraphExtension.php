@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Twig;
 
+use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFunction;
 
-final class OpenGraphExtension extends AbstractExtension
+final class OpenGraphExtension extends AbstractExtension implements GlobalsInterface
 {
+    public function __construct(private readonly OpenGraph $openGraph)
+    {
+    }
+
+    public function getGlobals(): array
+    {
+        return ['openGraph' => $this->openGraph];
+    }
+
     /**
      * @return list<TwigFunction>
      */
@@ -16,7 +27,12 @@ final class OpenGraphExtension extends AbstractExtension
     {
         return [
             /** @phpstan-ignore argument.type */
-            new TwigFunction('setono_sylius_seo_render_open_graph', [OpenGraphRuntime::class, 'renderOpenGraph'], ['is_safe' => ['html']]),
+            new TwigFunction('setono_sylius_seo_render_open_graph', $this->renderOpenGraph(...), ['is_safe' => ['html']]),
         ];
+    }
+
+    public function renderOpenGraph(): string
+    {
+        return $this->openGraph->toHtml();
     }
 }

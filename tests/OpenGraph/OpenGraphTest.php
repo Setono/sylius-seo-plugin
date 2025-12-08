@@ -317,11 +317,11 @@ final class OpenGraphTest extends TestCase
     /**
      * @test
      */
-    public function it_renders_empty_html_when_no_data(): void
+    public function it_renders_default_type_when_no_other_data(): void
     {
         $og = new OpenGraph();
 
-        self::assertSame('', $og->toHtml());
+        self::assertSame('<meta property="og:type" content="website">', $og->toHtml());
     }
 
     /**

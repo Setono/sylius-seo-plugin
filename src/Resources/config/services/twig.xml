@@ -19,13 +19,9 @@
         </service>
 
         <service id="Setono\SyliusSEOPlugin\Twig\OpenGraphExtension">
-            <tag name="twig.extension"/>
-        </service>
-
-        <service id="Setono\SyliusSEOPlugin\Twig\OpenGraphRuntime">
             <argument type="service" id="Setono\SyliusSEOPlugin\OpenGraph\OpenGraph"/>
 
-            <tag name="twig.runtime"/>
+            <tag name="twig.extension"/>
         </service>
     </services>
 </container>
