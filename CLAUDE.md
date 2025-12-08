@@ -10,6 +10,27 @@ This is a Sylius plugin that adds SEO features to Sylius e-commerce stores, incl
 
 The plugin is built as a Symfony bundle and follows Sylius plugin conventions.
 
+## Code Standards
+
+Follow clean code principles and SOLID design patterns when working with this codebase:
+- Write clean, readable, and maintainable code
+- Apply SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion)
+- Use meaningful variable and method names
+- Keep methods and classes focused on a single responsibility
+- Favor composition over inheritance
+- Write code that is easy to test and extend
+
+### Testing Requirements
+- Write unit tests for all new functionality (if it makes sense)
+- Follow the BDD-style naming convention for test methods (e.g., `it_should_do_something_when_condition_is_met`)
+- **MUST use Prophecy for mocking** - Use the `ProphecyTrait` and `$this->prophesize()` for all mocks, NOT PHPUnit's `$this->createMock()`
+- **Form testing** - Use Symfony's best practices for form testing as documented at https://symfony.com/doc/current/form/unit_testing.html
+  - Extend `Symfony\Component\Form\Test\TypeTestCase` for form type tests
+  - Use `$this->factory->create()` to create form instances
+  - Test form submission, validation, and data transformation
+- Ensure tests are isolated and don't depend on external state
+- Test both happy path and edge cases
+
 ## Development Commands
 
 ### Testing
@@ -35,11 +56,23 @@ composer fix-style
 # Run static analysis
 composer analyse
 # or
-vendor/bin/psalm
+vendor/bin/phpstan
 
 # Run Rector (automated refactoring)
 vendor/bin/rector process --dry-run
 ```
+
+### Static Analysis
+
+#### PHPStan Configuration
+PHPStan is configured in `phpstan.neon` with:
+- **Analysis Level**: max (strictest)
+- **Extensions**: Auto-loaded via `phpstan/extension-installer`
+  - `phpstan/phpstan-symfony` - Symfony framework integration
+  - `phpstan/phpstan-doctrine` - Doctrine ORM integration
+  - `phpstan/phpstan-phpunit` - PHPUnit test integration
+  - `jangregor/phpstan-prophecy` - Prophecy mocking integration
+- **Baseline**: Generate with `composer analyse -- --generate-baseline` to track improvements
 
 ### Linting
 ```bash
@@ -82,6 +115,29 @@ composer validate --strict
 composer normalize --dry-run
 ```
 
+### Test Application
+The plugin includes a test Symfony application in `tests/Application/` for development and testing:
+- Navigate to `tests/Application/` directory
+- Run `yarn install && yarn build` to build assets
+- Use standard Symfony commands for the test app
+- **Sylius Backend Credentials**: Username: `sylius`, Password: `sylius`
+
+## Bash Tools Recommendations
+
+Use the right tool for the right job when executing bash commands:
+
+- **Finding FILES?** → Use `fd` (fast file finder)
+- **Finding TEXT/strings?** → Use `rg` (ripgrep for text search)
+- **Finding CODE STRUCTURE?** → Use `ast-grep` (syntax-aware code search)
+- **SELECTING from multiple results?** → Pipe to `fzf` (interactive fuzzy finder)
+- **Interacting with JSON?** → Use `jq` (JSON processor)
+- **Interacting with YAML or XML?** → Use `yq` (YAML/XML processor)
+
+Examples:
+- `fd "*.php" | fzf` - Find PHP files and interactively select one
+- `rg "function.*validate" | fzf` - Search for validation functions and select
+- `ast-grep --lang php -p 'class $name extends $parent'` - Find class inheritance patterns
+
 ## Architecture
 
 ### Core Components
@@ -120,16 +176,6 @@ These events allow extending the Schema.org data via event subscribers.
 #### Rendering
 `RobotsTxtRendererInterface` - renders robots.txt content
 
-### Test Application
-
-The `tests/Application` directory contains a full Sylius application used for integration testing. It has its own:
-- Kernel (`tests/Application/Kernel.php`)
-- Configuration (`tests/Application/config/`)
-- Console (`tests/Application/bin/console`)
-- Entity extensions (`tests/Application/Entity/`)
-
-This is where you run Symfony console commands for testing.
-
 ### Service Configuration
 
 Services are defined in `src/Resources/config/services.xml` with additional configurations in the `services/` subdirectory.
@@ -145,16 +191,6 @@ The plugin provides global helper functions in `src/Resources/functions.php`:
 ## Channel Interface Implementation
 
 Users must implement `Setono\SyliusSEOPlugin\Model\ChannelInterface` in their Channel entity and use the `ChannelTrait` to add SEO-related properties. This is documented in the README.md.
-
-## Code Style
-
-The project uses:
-- Sylius Labs coding standard (via ECS)
-- Psalm for static analysis (PHP 8.1+)
-- Rector for automated refactoring (target: PHP 8.1)
-- Infection for mutation testing
-
-Paths to analyze: `src/` and `tests/` (excluding `tests/Application/node_modules/**` and `tests/Application/var/**`)
 
 ## PHP Version
 
