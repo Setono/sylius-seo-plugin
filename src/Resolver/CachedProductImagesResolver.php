@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Resolver;
 
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 final class CachedProductImagesResolver implements ProductImagesResolverInterface
@@ -15,10 +16,10 @@ final class CachedProductImagesResolver implements ProductImagesResolverInterfac
     {
     }
 
-    public function resolve(ProductVariantInterface $productVariant): array
+    public function resolve(ProductInterface|ProductVariantInterface $product): array
     {
         if (null === $this->images) {
-            $this->images = $this->decorated->resolve($productVariant);
+            $this->images = $this->decorated->resolve($product);
         }
 
         return $this->images;

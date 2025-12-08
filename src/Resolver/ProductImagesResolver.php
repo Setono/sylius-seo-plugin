@@ -8,20 +8,29 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Sylius\Component\Core\Model\ImageInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 
 final class ProductImagesResolver implements ProductImagesResolverInterface
 {
     public function __construct(
+        private readonly ProductVariantResolverInterface $productVariantResolver,
         private readonly CacheManager $cacheManager,
         private readonly string $filter = 'sylius_original',
     ) {
     }
 
-    public function resolve(ProductVariantInterface $productVariant): array
+    public function resolve(ProductInterface|ProductVariantInterface $product): array
     {
+        if ($product instanceof ProductInterface) {
+            $product = $this->productVariantResolver->getVariant($product);
+            if (!$product instanceof ProductVariantInterface) {
+                return [];
+            }
+        }
+
         $images = [];
 
-        foreach (self::getImages($productVariant) as $image) {
+        foreach (self::getImages($product) as $image) {
             $path = $image->getPath();
             if (null === $path) {
                 continue;

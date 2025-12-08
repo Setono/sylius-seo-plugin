@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Resolver;
 
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 interface ProductImagesResolverInterface
@@ -13,5 +14,5 @@ interface ProductImagesResolverInterface
      *
      * @return list<string>
      */
-    public function resolve(ProductVariantInterface $productVariant): array;
+    public function resolve(ProductInterface|ProductVariantInterface $product): array;
 }

@@ -6,6 +6,7 @@
                  alias="Setono\SyliusSEOPlugin\Resolver\ProductImagesResolver"/>
 
         <service id="Setono\SyliusSEOPlugin\Resolver\ProductImagesResolver">
+            <argument type="service" id="sylius.product_variant_resolver.default"/>
             <argument type="service" id="liip_imagine.cache.manager"/>
         </service>
 
