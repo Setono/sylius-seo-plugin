@@ -128,11 +128,9 @@ final class OpenGraph
         return $this->locale;
     }
 
-    public function localeAlternate(?string $locale): self
+    public function localeAlternate(string $locale): self
     {
-        if (null !== $locale) {
-            $this->localeAlternates[] = $locale;
-        }
+        $this->localeAlternates[] = $locale;
 
         return $this;
     }
@@ -160,14 +158,10 @@ final class OpenGraph
     /**
      * Add an image to represent your object.
      *
-     * @param Image|string|null $image Image object or URL
+     * @param Image|string $image Image object or URL
      */
-    public function image(Image|string|null $image): self
+    public function image(Image|string $image): self
     {
-        if (null === $image) {
-            return $this;
-        }
-
         if (is_string($image)) {
             $image = new Image($image);
         }
@@ -188,14 +182,10 @@ final class OpenGraph
     /**
      * Add a video to complement your object.
      *
-     * @param Video|string|null $video Video object or URL
+     * @param Video|string $video Video object or URL
      */
-    public function video(Video|string|null $video): self
+    public function video(Video|string $video): self
     {
-        if (null === $video) {
-            return $this;
-        }
-
         if (is_string($video)) {
             $video = new Video($video);
         }
@@ -216,14 +206,10 @@ final class OpenGraph
     /**
      * Add an audio file to complement your object.
      *
-     * @param Audio|string|null $audio Audio object or URL
+     * @param Audio|string $audio Audio object or URL
      */
-    public function audio(Audio|string|null $audio): self
+    public function audio(Audio|string $audio): self
     {
-        if (null === $audio) {
-            return $this;
-        }
-
         if (is_string($audio)) {
             $audio = new Audio($audio);
         }
@@ -248,37 +234,16 @@ final class OpenGraph
      */
     public function toArray(): array
     {
-        $data = [];
-
-        if (null !== $this->title) {
-            $data['og:title'] = $this->title;
-        }
-
-        $data['og:type'] = $this->type->getType();
-
-        if (null !== $this->url) {
-            $data['og:url'] = $this->url;
-        }
-
-        if (null !== $this->description) {
-            $data['og:description'] = $this->description;
-        }
-
-        if (null !== $this->determiner) {
-            $data['og:determiner'] = $this->determiner;
-        }
-
-        if (null !== $this->locale) {
-            $data['og:locale'] = $this->locale;
-        }
-
-        if ([] !== $this->localeAlternates) {
-            $data['og:locale:alternate'] = $this->localeAlternates;
-        }
-
-        if (null !== $this->siteName) {
-            $data['og:site_name'] = $this->siteName;
-        }
+        $data = array_filter([
+            'og:title' => $this->title,
+            'og:type' => $this->type->getType(),
+            'og:url' => $this->url,
+            'og:description' => $this->description,
+            'og:determiner' => $this->determiner,
+            'og:locale' => $this->locale,
+            'og:locale:alternate' => [] !== $this->localeAlternates ? $this->localeAlternates : null,
+            'og:site_name' => $this->siteName,
+        ], static fn ($value) => null !== $value);
 
         foreach ($this->images as $image) {
             foreach ($image->toArray() as $property => $value) {
