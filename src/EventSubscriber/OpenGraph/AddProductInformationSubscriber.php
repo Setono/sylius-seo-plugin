@@ -54,6 +54,7 @@ final class AddProductInformationSubscriber implements EventSubscriberInterface
         }
 
         return u(preg_replace(['/\s+/', '/ +/'], ' ', strip_tags($description)))
+            ->trim()
             ->truncate(300, '...', false)
             ->toString()
         ;
