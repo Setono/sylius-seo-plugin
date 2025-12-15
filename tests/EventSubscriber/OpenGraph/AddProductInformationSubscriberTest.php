@@ -82,4 +82,186 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertSame('A product without images', $openGraph->getDescription());
         self::assertCount(0, $openGraph->getImages());
     }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_description_when_null(): void
+    {
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn(null);
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        self::assertNull($openGraph->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_strips_html_tags_from_description(): void
+    {
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn('<p>This is a <strong>bold</strong> description with <a href="#">links</a>.</p>');
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        self::assertSame('This is a bold description with links.', $openGraph->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_normalizes_whitespace_in_description(): void
+    {
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn("This   has   multiple   spaces\n\nand\nnewlines\t\ttabs");
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        self::assertSame('This has multiple spaces and newlines tabs', $openGraph->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_truncates_long_description_to_around_300_characters(): void
+    {
+        // Create a long description with words so truncation can occur at word boundaries
+        $longDescription = str_repeat('word ', 100); // 500 characters
+
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn($longDescription);
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        $description = $openGraph->getDescription();
+        self::assertNotNull($description);
+        // truncate(300, '...', false) cuts at word boundary near 300 chars then adds "..."
+        self::assertStringEndsWith('...', $description);
+        self::assertLessThanOrEqual(303, strlen($description)); // max 300 + "..."
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_truncate_description_at_300_characters(): void
+    {
+        $exactDescription = str_repeat('B', 300);
+
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn($exactDescription);
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        self::assertSame($exactDescription, $openGraph->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sanitizes_complex_html_description(): void
+    {
+        $htmlDescription = '<div class="product-description">
+            <h2>Product Features</h2>
+            <ul>
+                <li>Feature 1</li>
+                <li>Feature 2</li>
+            </ul>
+            <p>Buy now!</p>
+        </div>';
+
+        $product = $this->prophesize(ProductInterface::class);
+        $product->getDescription()->willReturn($htmlDescription);
+
+        $productImagesResolver = $this->prophesize(ProductImagesResolverInterface::class);
+        $productImagesResolver->resolve($product->reveal())->willReturn([]);
+
+        $openGraph = new OpenGraph();
+
+        $event = $this->prophesize(ResourceControllerEvent::class);
+        $event->getSubject()->willReturn($product->reveal());
+
+        $subscriber = new AddProductInformationSubscriber(
+            $productImagesResolver->reveal(),
+            $openGraph,
+        );
+
+        $subscriber->add($event->reveal());
+
+        $description = $openGraph->getDescription();
+        self::assertNotNull($description);
+        // Check that HTML is stripped and whitespace is normalized
+        self::assertStringContainsString('Product Features', $description);
+        self::assertStringContainsString('Feature 1', $description);
+        self::assertStringContainsString('Feature 2', $description);
+        self::assertStringContainsString('Buy now!', $description);
+        self::assertStringNotContainsString('<', $description);
+        self::assertStringNotContainsString('>', $description);
+    }
 }
