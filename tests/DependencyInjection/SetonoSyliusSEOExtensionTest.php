@@ -6,6 +6,7 @@ namespace Setono\SyliusSEOPlugin\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use PHPUnit\Framework\Attributes\Test;
+use Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapper;
 use Setono\SyliusSEOPlugin\DependencyInjection\SetonoSyliusSEOExtension;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGenerator;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
@@ -48,5 +49,24 @@ final class SetonoSyliusSEOExtensionTest extends AbstractExtensionTestCase
         self::assertArrayHasKey('sylius_shop.base#metatags', $hooksConfig['hooks']);
         self::assertArrayHasKey('sylius_admin.channel.create.content.form.sections', $hooksConfig['hooks']);
         self::assertArrayHasKey('sylius_admin.channel.update.content.form.sections', $hooksConfig['hooks']);
+    }
+
+    #[Test]
+    public function it_registers_the_website_structured_data_when_enabled(): void
+    {
+        $this->load([
+            'structured_data' => [
+                'website' => [
+                    'enabled' => true,
+                    'search_url_template' => [
+                        'route' => 'sylius_shop_homepage',
+                        'query_parameter' => 'q',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasService(WebsiteDataMapper::class);
+        $this->assertContainerBuilderHasParameter('setono_sylius_seo.structured_data.website.search_url_template');
     }
 }
