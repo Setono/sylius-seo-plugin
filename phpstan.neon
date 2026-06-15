@@ -26,3 +26,7 @@ parameters:
         -
             identifier: trait.unused
             path: src/Model
+        # TreeBuilder/ArrayNodeDefinition are generic in Symfony >=7.1 but not in 6.4
+        -
+            identifier: missingType.generics
+            path: src/DependencyInjection/Configuration.php
