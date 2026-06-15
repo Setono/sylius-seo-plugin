@@ -12,7 +12,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
  *
  * @see https://ogp.me/#type_music.song
  */
-final class Song implements TypeInterface
+final readonly class Song implements TypeInterface
 {
     /**
      * @param list<string> $albums The albums this song is from (album URLs)
@@ -21,11 +21,11 @@ final class Song implements TypeInterface
      * @param list<string> $musicians The musicians that made this song (profile URLs)
      */
     public function __construct(
-        public readonly ?int $duration = null,
-        public readonly array $albums = [],
-        public readonly array $albumDiscs = [],
-        public readonly array $albumTracks = [],
-        public readonly array $musicians = [],
+        public ?int $duration = null,
+        public array $albums = [],
+        public array $albumDiscs = [],
+        public array $albumTracks = [],
+        public array $musicians = [],
     ) {
     }
 

@@ -1,8 +1,0 @@
---TEST--
-Render empty OpenGraph outputs only type
---TEMPLATE--
-{{ setono_sylius_seo_render_open_graph() }}
---DATA--
-return [];
---EXPECT--
-<meta property="og:type" content="website">

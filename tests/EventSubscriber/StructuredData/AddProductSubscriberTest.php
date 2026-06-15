@@ -25,9 +25,7 @@ final class AddProductSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_subscribes_to_product_show(): void
     {
         $events = AddProductSubscriber::getSubscribedEvents();
@@ -36,9 +34,7 @@ final class AddProductSubscriberTest extends TestCase
         self::assertSame('populate', $events['sylius.product.show']);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_simple_product(): void
     {
         $variant = $this->prophesize(ProductVariantInterface::class);
@@ -71,9 +67,7 @@ final class AddProductSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_configurable_product(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -103,9 +97,7 @@ final class AddProductSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_does_not_map_simple_product_without_enabled_variant(): void
     {
         $product = $this->prophesize(ProductInterface::class);

@@ -15,9 +15,7 @@ final class ProductAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_only(): void
     {
         $product = new Product();
@@ -29,9 +27,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertNull($event->storeProductVariant);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_with_store_product(): void
     {
         $product = new Product();
@@ -44,9 +40,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertNull($event->storeProductVariant);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_with_store_product_variant(): void
     {
         $product = new Product();
@@ -60,9 +54,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertSame($storeProductVariant->reveal(), $event->storeProductVariant);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_with_only_variant(): void
     {
         $product = new Product();

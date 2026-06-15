@@ -7,11 +7,11 @@ namespace Setono\SyliusSEOPlugin\Event;
 use Spatie\SchemaOrg\OnlineStore;
 use Sylius\Component\Core\Model\ChannelInterface;
 
-final class OnlineStoreAddedToGraph
+final readonly class OnlineStoreAddedToGraph
 {
     public function __construct(
-        public readonly OnlineStore $onlineStore,
-        public readonly ChannelInterface $channel,
+        public OnlineStore $onlineStore,
+        public ChannelInterface $channel,
     ) {
     }
 }

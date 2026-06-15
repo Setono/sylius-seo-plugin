@@ -14,9 +14,7 @@ final class OnlineStoreAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_online_store_and_channel(): void
     {
         $onlineStore = new OnlineStore();

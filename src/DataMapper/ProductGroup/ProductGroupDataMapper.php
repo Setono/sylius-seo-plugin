@@ -9,9 +9,9 @@ use Spatie\SchemaOrg\ProductGroup;
 use Sylius\Component\Core\Model\ProductInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class ProductGroupDataMapper implements ProductGroupDataMapperInterface
+final readonly class ProductGroupDataMapper implements ProductGroupDataMapperInterface
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 

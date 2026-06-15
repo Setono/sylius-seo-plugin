@@ -9,12 +9,12 @@ use Spatie\SchemaOrg\WebSite;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class WebsiteDataMapper implements WebsiteDataMapperInterface
+final readonly class WebsiteDataMapper implements WebsiteDataMapperInterface
 {
     public function __construct(
-        private readonly UrlGeneratorInterface $urlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
         /** @var array{ route: string, query_parameter: string } $searchUrlTemplate */
-        private readonly array $searchUrlTemplate,
+        private array $searchUrlTemplate,
     ) {
     }
 

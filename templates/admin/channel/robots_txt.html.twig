@@ -1,0 +1,18 @@
+<div class="g-col-12 card mb-3">
+    <div class="card-header">
+        <div class="card-title">{{ 'setono_sylius_seo.ui.robots_txt'|trans }}</div>
+    </div>
+
+    <div class="card-body">
+        {% set existing = setono_sylius_seo_existing_robots_txt() %}
+        {% if existing %}
+            <div class="alert alert-danger" role="alert">
+                <h4 class="alert-heading">{{ 'setono_sylius_seo.ui.robots_txt_exists'|trans }}</h4>
+                <p>{{ 'setono_sylius_seo.ui.robots_txt_exists_body'|trans }}</p>
+                <pre class="mb-0">{{ existing }}</pre>
+            </div>
+        {% endif %}
+
+        {{ form_row(hookable_metadata.context.form.robotsTxt) }}
+    </div>
+</div>

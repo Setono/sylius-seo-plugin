@@ -6,9 +6,9 @@ namespace Setono\SyliusSEOPlugin\Renderer;
 
 use Twig\Environment;
 
-final class RobotsTxtRenderer implements RobotsTxtRendererInterface
+final readonly class RobotsTxtRenderer implements RobotsTxtRendererInterface
 {
-    public function __construct(private readonly Environment $twig)
+    public function __construct(private Environment $twig)
     {
     }
 

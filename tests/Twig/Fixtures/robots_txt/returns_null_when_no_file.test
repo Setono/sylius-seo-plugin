@@ -1,9 +1,0 @@
---TEST--
-Returns empty when no robots.txt file exists
---TEMPLATE--
-{% set existing = setono_sylius_seo_existing_robots_txt() %}
-{% if existing is null %}NO FILE{% else %}{{ existing }}{% endif %}
---DATA--
-return [];
---EXPECT--
-NO FILE

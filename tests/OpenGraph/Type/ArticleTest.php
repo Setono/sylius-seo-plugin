@@ -10,9 +10,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\Article;
 
 final class ArticleTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_correct_type(): void
     {
         $article = new Article();
@@ -20,9 +18,7 @@ final class ArticleTest extends TestCase
         self::assertSame('article', $article->getType());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_empty_html_by_default(): void
     {
         $article = new Article();
@@ -30,9 +26,7 @@ final class ArticleTest extends TestCase
         self::assertSame('', $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_published_time(): void
     {
         $date = new \DateTimeImmutable('2024-01-15T10:30:00+00:00');
@@ -41,9 +35,7 @@ final class ArticleTest extends TestCase
         self::assertSame('<meta property="article:published_time" content="2024-01-15T10:30:00+00:00">', $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_modified_time(): void
     {
         $date = new \DateTimeImmutable('2024-01-16T14:00:00+00:00');
@@ -52,9 +44,7 @@ final class ArticleTest extends TestCase
         self::assertSame('<meta property="article:modified_time" content="2024-01-16T14:00:00+00:00">', $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_expiration_time(): void
     {
         $date = new \DateTimeImmutable('2024-12-31T23:59:59+00:00');
@@ -63,9 +53,7 @@ final class ArticleTest extends TestCase
         self::assertSame('<meta property="article:expiration_time" content="2024-12-31T23:59:59+00:00">', $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_authors(): void
     {
         $article = new Article(authors: [
@@ -79,9 +67,7 @@ final class ArticleTest extends TestCase
         self::assertSame($expected, $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_section(): void
     {
         $article = new Article(section: 'Technology');
@@ -89,9 +75,7 @@ final class ArticleTest extends TestCase
         self::assertSame('<meta property="article:section" content="Technology">', $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_tags(): void
     {
         $article = new Article(tags: ['php', 'symfony', 'open-graph']);
@@ -103,9 +87,7 @@ final class ArticleTest extends TestCase
         self::assertSame($expected, $article->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_all_properties(): void
     {
         $publishedTime = new \DateTimeImmutable('2024-01-15T10:30:00+00:00');
@@ -128,9 +110,7 @@ final class ArticleTest extends TestCase
         self::assertStringContainsString('<meta property="article:tag" content="php">', $html);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

@@ -12,7 +12,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
  *
  * @see https://ogp.me/#type_video.tv_show
  */
-final class TVShow implements TypeInterface
+final readonly class TVShow implements TypeInterface
 {
     /**
      * @param list<string> $actors Actors in the show (profile URLs)
@@ -22,13 +22,13 @@ final class TVShow implements TypeInterface
      * @param list<string> $tags Tag words associated with this show
      */
     public function __construct(
-        public readonly array $actors = [],
-        public readonly array $actorRoles = [],
-        public readonly array $directors = [],
-        public readonly array $writers = [],
-        public readonly ?int $duration = null,
-        public readonly ?\DateTimeInterface $releaseDate = null,
-        public readonly array $tags = [],
+        public array $actors = [],
+        public array $actorRoles = [],
+        public array $directors = [],
+        public array $writers = [],
+        public ?int $duration = null,
+        public ?\DateTimeInterface $releaseDate = null,
+        public array $tags = [],
     ) {
     }
 

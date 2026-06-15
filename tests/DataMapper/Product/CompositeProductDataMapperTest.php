@@ -17,9 +17,7 @@ final class CompositeProductDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_calls_all_registered_mappers(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -38,9 +36,7 @@ final class CompositeProductDataMapperTest extends TestCase
         $compositeMapper->map($productVariant->reveal(), $product);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_logs_error_when_mapper_throws_exception(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -63,9 +59,7 @@ final class CompositeProductDataMapperTest extends TestCase
         $compositeMapper->map($productVariant->reveal(), $product);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_works_with_no_mappers(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);

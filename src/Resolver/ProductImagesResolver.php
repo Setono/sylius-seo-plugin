@@ -10,12 +10,12 @@ use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 
-final class ProductImagesResolver implements ProductImagesResolverInterface
+final readonly class ProductImagesResolver implements ProductImagesResolverInterface
 {
     public function __construct(
-        private readonly ProductVariantResolverInterface $productVariantResolver,
-        private readonly CacheManager $cacheManager,
-        private readonly string $filter = 'sylius_original',
+        private ProductVariantResolverInterface $productVariantResolver,
+        private CacheManager $cacheManager,
+        private string $filter = 'sylius_original',
     ) {
     }
 

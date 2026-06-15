@@ -24,7 +24,7 @@ composer require setono/sylius-seo-plugin
 ```yaml
 # config/routes/setono_sylius_seo.yaml
 setono_sylius_seo:
-    resource: "@SetonoSyliusSEOPlugin/Resources/config/routes.yaml"
+    resource: "@SetonoSyliusSEOPlugin/config/routes.yaml"
 ```
 
 ### Implement `ChannelInterface`
@@ -40,10 +40,8 @@ use Setono\SyliusSEOPlugin\Model\ChannelInterface;
 use Setono\SyliusSEOPlugin\Model\ChannelTrait;
 use Sylius\Component\Core\Model\Channel as BaseChannel;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="sylius_channel")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_channel')]
 class Channel extends BaseChannel implements ChannelInterface
 {
     use ChannelTrait;
@@ -61,9 +59,9 @@ php bin/console doctrine:migrations:migrate -n
 [ico-license]: https://poser.pugx.org/setono/sylius-seo-plugin/license
 [ico-github-actions]: https://github.com/Setono/sylius-seo-plugin/workflows/build/badge.svg
 [ico-code-coverage]: https://codecov.io/gh/Setono/sylius-seo-plugin/graph/badge.svg
-[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2Fsylius-seo-plugin%2Fmaster
+[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2Fsylius-seo-plugin%2F2.x
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-seo-plugin
 [link-github-actions]: https://github.com/Setono/sylius-seo-plugin/actions
 [link-code-coverage]: https://codecov.io/gh/Setono/sylius-seo-plugin
-[link-infection]: https://dashboard.stryker-mutator.io/reports/github.com/Setono/sylius-seo-plugin/master
+[link-infection]: https://dashboard.stryker-mutator.io/reports/github.com/Setono/sylius-seo-plugin/2.x

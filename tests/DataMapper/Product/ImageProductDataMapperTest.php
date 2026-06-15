@@ -15,9 +15,7 @@ final class ImageProductDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_images_from_resolver(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -42,9 +40,7 @@ final class ImageProductDataMapperTest extends TestCase
         ], $product->getProperty('image'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_does_not_map_when_image_property_already_set(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -61,9 +57,7 @@ final class ImageProductDataMapperTest extends TestCase
         self::assertSame('https://example.com/existing-image.jpg', $product->getProperty('image'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_empty_array_when_no_images_available(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);

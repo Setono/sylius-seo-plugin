@@ -10,9 +10,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\Profile;
 
 final class ProfileTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_correct_type(): void
     {
         $profile = new Profile();
@@ -20,9 +18,7 @@ final class ProfileTest extends TestCase
         self::assertSame('profile', $profile->getType());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_empty_html_by_default(): void
     {
         $profile = new Profile();
@@ -30,9 +26,7 @@ final class ProfileTest extends TestCase
         self::assertSame('', $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_first_name(): void
     {
         $profile = new Profile(firstName: 'John');
@@ -40,9 +34,7 @@ final class ProfileTest extends TestCase
         self::assertSame('<meta property="profile:first_name" content="John">', $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_last_name(): void
     {
         $profile = new Profile(lastName: 'Doe');
@@ -50,9 +42,7 @@ final class ProfileTest extends TestCase
         self::assertSame('<meta property="profile:last_name" content="Doe">', $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_username(): void
     {
         $profile = new Profile(username: 'johndoe');
@@ -60,9 +50,7 @@ final class ProfileTest extends TestCase
         self::assertSame('<meta property="profile:username" content="johndoe">', $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_gender(): void
     {
         $profile = new Profile(gender: 'male');
@@ -70,9 +58,7 @@ final class ProfileTest extends TestCase
         self::assertSame('<meta property="profile:gender" content="male">', $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_all_properties(): void
     {
         $profile = new Profile(
@@ -90,9 +76,7 @@ final class ProfileTest extends TestCase
         self::assertSame($expected, $profile->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

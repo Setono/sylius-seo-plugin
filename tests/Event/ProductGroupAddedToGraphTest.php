@@ -14,9 +14,7 @@ final class ProductGroupAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_group_only(): void
     {
         $productGroup = new ProductGroup();
@@ -27,9 +25,7 @@ final class ProductGroupAddedToGraphTest extends TestCase
         self::assertNull($event->storeProduct);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_product_group_with_store_product(): void
     {
         $productGroup = new ProductGroup();

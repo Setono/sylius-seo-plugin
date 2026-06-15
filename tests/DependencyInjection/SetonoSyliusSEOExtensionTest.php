@@ -21,9 +21,7 @@ final class SetonoSyliusSEOExtensionTest extends AbstractExtensionTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function after_loading_the_correct_parameter_has_been_set(): void
     {
         $this->load();

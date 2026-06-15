@@ -10,12 +10,12 @@ use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final class AddChannelInformationSubscriber implements EventSubscriberInterface
+final readonly class AddChannelInformationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly ChannelContextInterface $channelContext,
-        private readonly LocaleContextInterface $localeContext,
-        private readonly OpenGraph $openGraph,
+        private ChannelContextInterface $channelContext,
+        private LocaleContextInterface $localeContext,
+        private OpenGraph $openGraph,
     ) {
     }
 

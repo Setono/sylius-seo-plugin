@@ -11,9 +11,7 @@ use Twig\Loader\ArrayLoader;
 
 final class RobotsTxtRendererTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_plain_robots_txt(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -30,9 +28,7 @@ TXT;
         self::assertSame($robotsTxt, $result);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_robots_txt_with_twig_expressions(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -59,9 +55,7 @@ TXT;
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_empty_string(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -72,9 +66,7 @@ TXT;
         self::assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_robots_txt_with_twig_conditionals(): void
     {
         $twig = new Environment(new ArrayLoader());

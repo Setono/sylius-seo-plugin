@@ -10,9 +10,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\Music\Song;
 
 final class SongTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_correct_type(): void
     {
         $song = new Song();
@@ -20,9 +18,7 @@ final class SongTest extends TestCase
         self::assertSame('music.song', $song->getType());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_empty_html_by_default(): void
     {
         $song = new Song();
@@ -30,9 +26,7 @@ final class SongTest extends TestCase
         self::assertSame('', $song->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_duration(): void
     {
         $song = new Song(duration: 240);
@@ -40,9 +34,7 @@ final class SongTest extends TestCase
         self::assertSame('<meta property="music:duration" content="240">', $song->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_albums(): void
     {
         $song = new Song(albums: ['https://example.com/album/1']);
@@ -50,9 +42,7 @@ final class SongTest extends TestCase
         self::assertSame('<meta property="music:album" content="https://example.com/album/1">', $song->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_renders_musicians(): void
     {
         $song = new Song(musicians: [
@@ -66,9 +56,7 @@ final class SongTest extends TestCase
         self::assertSame($expected, $song->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

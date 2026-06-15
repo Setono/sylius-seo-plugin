@@ -15,9 +15,7 @@ final class ProductDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_variant_data_to_product(): void
     {
         $syliusProduct = $this->prophesize(ProductInterface::class);
@@ -38,9 +36,7 @@ final class ProductDataMapperTest extends TestCase
         self::assertSame('VARIANT-001', $product->getProperty('sku'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_falls_back_to_product_name_when_variant_has_no_name(): void
     {
         $syliusProduct = $this->prophesize(ProductInterface::class);
@@ -60,9 +56,7 @@ final class ProductDataMapperTest extends TestCase
         self::assertSame('Product Name', $product->getProperty('name'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_null_product(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -80,9 +74,7 @@ final class ProductDataMapperTest extends TestCase
         self::assertSame('VARIANT-001', $product->getProperty('sku'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_truncates_name_to_70_characters(): void
     {
         $longName = str_repeat('A', 100);
@@ -105,9 +97,7 @@ final class ProductDataMapperTest extends TestCase
         self::assertLessThanOrEqual(70, strlen($name));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_truncates_description_to_5000_characters(): void
     {
         $longDescription = str_repeat('A', 6000);
@@ -130,9 +120,7 @@ final class ProductDataMapperTest extends TestCase
         self::assertLessThanOrEqual(5000, strlen($description));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_strips_html_tags_from_description(): void
     {
         $syliusProduct = $this->prophesize(ProductInterface::class);

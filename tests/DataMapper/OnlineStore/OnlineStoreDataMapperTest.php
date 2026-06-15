@@ -18,9 +18,7 @@ final class OnlineStoreDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_channel_data_to_online_store(): void
     {
         $shopBillingData = $this->prophesize(ShopBillingDataInterface::class);
@@ -61,9 +59,7 @@ final class OnlineStoreDataMapperTest extends TestCase
         self::assertSame('1000', $address->getProperty('postalCode'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_uses_url_generator_when_no_hostname(): void
     {
         $shopBillingData = $this->prophesize(ShopBillingDataInterface::class);
@@ -92,9 +88,7 @@ final class OnlineStoreDataMapperTest extends TestCase
         self::assertSame('https://localhost/shop', $onlineStore->getProperty('url'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_null_shop_billing_data(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

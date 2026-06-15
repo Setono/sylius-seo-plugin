@@ -18,13 +18,13 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Webmozart\Assert\Assert;
 
-final class AddProductSubscriber implements EventSubscriberInterface
+final readonly class AddProductSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Graph $graph,
-        private readonly ProductDataMapperInterface $productDataMapper,
-        private readonly ProductGroupDataMapperInterface $productGroupDataMapper,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private Graph $graph,
+        private ProductDataMapperInterface $productDataMapper,
+        private ProductGroupDataMapperInterface $productGroupDataMapper,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

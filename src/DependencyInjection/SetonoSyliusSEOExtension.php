@@ -14,7 +14,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 final class SetonoSyliusSEOExtension extends Extension implements PrependExtensionInterface
 {
@@ -33,7 +33,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
          * } $config
          */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__, 2) . '/config'));
 
         $container
             ->registerForAutoconfiguration(OnlineStoreDataMapperInterface::class)
@@ -57,7 +57,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
 
         $container->setAlias(ProductVariantUrlGeneratorInterface::class, $config['product_variant_url_generator']);
 
-        $loader->load('services.xml');
+        $loader->load('services.php');
 
         self::registerOnlineStoreConfig($config['structured_data']['online_store'], $container, $loader);
         self::registerProductConfig($config['structured_data']['product'], $container, $loader);
@@ -66,25 +66,25 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
 
     public function prepend(ContainerBuilder $container): void
     {
-        $container->prependExtensionConfig('sylius_ui', [
-            'events' => [
-                'sylius.admin.channel.form.first_column_content' => [
-                    'blocks' => [
-                        'setono_sylius_seo_robots_txt' => [
-                            'template' => '@SetonoSyliusSEOPlugin/admin/channel/_robots_txt.html.twig',
-                        ],
+        $robotsTxtSection = [
+            'setono_sylius_seo_robots_txt' => [
+                'template' => '@SetonoSyliusSEOPlugin/admin/channel/robots_txt.html.twig',
+                'priority' => -10,
+            ],
+        ];
+
+        $container->prependExtensionConfig('sylius_twig_hooks', [
+            'hooks' => [
+                'sylius_shop.base#metatags' => [
+                    'setono_sylius_seo_json_ld' => [
+                        'template' => '@SetonoSyliusSEOPlugin/json_ld.html.twig',
+                    ],
+                    'setono_sylius_seo_open_graph' => [
+                        'template' => '@SetonoSyliusSEOPlugin/open_graph.html.twig',
                     ],
                 ],
-                'sylius.shop.layout.head' => [
-                    'blocks' => [
-                        'setono_sylius_seo_json_ld' => [
-                            'template' => '@SetonoSyliusSEOPlugin/json_ld.html.twig',
-                        ],
-                        'setono_sylius_seo_open_graph' => [
-                            'template' => '@SetonoSyliusSEOPlugin/open_graph.html.twig',
-                        ],
-                    ],
-                ],
+                'sylius_admin.channel.create.content.form.sections' => $robotsTxtSection,
+                'sylius_admin.channel.update.content.form.sections' => $robotsTxtSection,
             ],
         ]);
     }
@@ -100,7 +100,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
             return;
         }
 
-        $loader->load('services/structured_data/online_store.xml');
+        $loader->load('services/structured_data/online_store.php');
     }
 
     /**
@@ -114,7 +114,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
             return;
         }
 
-        $loader->load('services/structured_data/product.xml');
+        $loader->load('services/structured_data/product.php');
     }
 
     /**
@@ -129,7 +129,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
         }
 
         // todo this will give an error if the search_url_template isn't set
-        $loader->load('services/structured_data/website.xml');
+        $loader->load('services/structured_data/website.php');
 
         if (isset($config['search_url_template'])) {
             $container->setParameter('setono_sylius_seo.structured_data.website.search_url_template', $config['search_url_template']);

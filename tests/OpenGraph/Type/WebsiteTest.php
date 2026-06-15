@@ -10,9 +10,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\Website;
 
 final class WebsiteTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_correct_type(): void
     {
         $website = new Website();
@@ -20,9 +18,7 @@ final class WebsiteTest extends TestCase
         self::assertSame('website', $website->getType());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_empty_html(): void
     {
         $website = new Website();
@@ -30,9 +26,7 @@ final class WebsiteTest extends TestCase
         self::assertSame('', $website->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

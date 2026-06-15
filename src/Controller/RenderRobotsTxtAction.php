@@ -12,11 +12,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webmozart\Assert\Assert;
 
 // todo add caching of the response and remember to invalidate the cache when the robots.txt changes
-final class RenderRobotsTxtAction
+final readonly class RenderRobotsTxtAction
 {
     public function __construct(
-        private readonly ChannelContextInterface $channelContext,
-        private readonly RobotsTxtRendererInterface $robotsTxtRenderer,
+        private ChannelContextInterface $channelContext,
+        private RobotsTxtRendererInterface $robotsTxtRenderer,
     ) {
     }
 

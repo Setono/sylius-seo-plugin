@@ -12,13 +12,13 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\TypeInterface;
  *
  * @see https://ogp.me/#type_music.radio_station
  */
-final class RadioStation implements TypeInterface
+final readonly class RadioStation implements TypeInterface
 {
     /**
      * @param list<string> $creators The creators of this station (profile URLs)
      */
     public function __construct(
-        public readonly array $creators = [],
+        public array $creators = [],
     ) {
     }
 

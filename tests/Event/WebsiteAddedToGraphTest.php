@@ -14,9 +14,7 @@ final class WebsiteAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_holds_website_and_channel(): void
     {
         $webSite = new WebSite();

@@ -8,17 +8,17 @@ use Spatie\SchemaOrg\Product;
 use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Product\Model\ProductVariantInterface;
 
-final class ProductAddedToGraph
+final readonly class ProductAddedToGraph
 {
     public function __construct(
         /** This is the product that was added to the graph */
-        public readonly Product $product,
+        public Product $product,
 
         /** If the 'schema product' above was added based on a product, this is the product */
-        public readonly ?ProductInterface $storeProduct = null,
+        public ?ProductInterface $storeProduct = null,
 
         /** If the 'schema product' above was added based on a variant, this is the variant */
-        public readonly ?ProductVariantInterface $storeProductVariant = null,
+        public ?ProductVariantInterface $storeProductVariant = null,
     ) {
     }
 }

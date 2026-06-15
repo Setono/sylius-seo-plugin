@@ -4,28 +4,30 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
+use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Twig\JsonLdExtension;
 use Spatie\SchemaOrg\Graph;
-use Twig\Test\IntegrationTestCase;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
-final class JsonLdIntegrationTest extends IntegrationTestCase
+final class JsonLdIntegrationTest extends TestCase
 {
-    private Graph $graph;
-
-    protected function setUp(): void
+    #[\PHPUnit\Framework\Attributes\Test]
+    public function it_renders_empty_json_ld_graph(): void
     {
-        parent::setUp();
+        $output = $this->render(new Graph(), '{{ setono_sylius_seo_render_json_ld() }}');
 
-        $this->graph = new Graph();
+        self::assertSame(
+            '<script type="application/ld+json">{"@context":"https://schema.org","@graph":[]}</script>',
+            $output,
+        );
     }
 
-    public function getExtensions(): array
+    private function render(Graph $graph, string $template): string
     {
-        return [new JsonLdExtension($this->graph)];
-    }
+        $twig = new Environment(new ArrayLoader(['template' => $template]), ['strict_variables' => true]);
+        $twig->addExtension(new JsonLdExtension($graph));
 
-    protected function getFixturesDir(): string
-    {
-        return __DIR__ . '/Fixtures/json_ld';
+        return trim($twig->render('template'));
     }
 }

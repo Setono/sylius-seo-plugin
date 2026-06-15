@@ -15,9 +15,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_generates_absolute_url_for_product_variant(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -40,9 +38,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
         self::assertSame('https://example.com/products/cool-product', $result);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_variant_without_product(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -62,9 +58,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
         self::assertSame('https://example.com/products/', $result);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_product_without_slug(): void
     {
         $product = $this->prophesize(ProductInterface::class);

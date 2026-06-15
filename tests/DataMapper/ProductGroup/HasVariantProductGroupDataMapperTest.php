@@ -19,9 +19,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_all_enabled_variants_to_product_group(): void
     {
         $variant1 = $this->prophesize(ProductVariantInterface::class);
@@ -47,9 +45,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
         self::assertCount(2, $hasVariant);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_handles_product_with_no_variants(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -68,9 +64,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
         self::assertEmpty($hasVariant);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_maps_single_variant(): void
     {
         $variant = $this->prophesize(ProductVariantInterface::class);

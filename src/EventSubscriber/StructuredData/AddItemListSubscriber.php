@@ -16,12 +16,12 @@ use Sylius\Component\Product\Resolver\ProductVariantResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Webmozart\Assert\Assert;
 
-final class AddItemListSubscriber implements EventSubscriberInterface
+final readonly class AddItemListSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Graph $graph,
-        private readonly ProductDataMapperInterface $productDataMapper,
-        private readonly ProductVariantResolverInterface $productVariantResolver,
+        private Graph $graph,
+        private ProductDataMapperInterface $productDataMapper,
+        private ProductVariantResolverInterface $productVariantResolver,
     ) {
     }
 

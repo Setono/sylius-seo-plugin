@@ -13,9 +13,7 @@ use Symfony\Component\Form\FormFactoryBuilder;
 
 final class ChannelTypeExtensionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_extends_channel_type(): void
     {
         $extendedTypes = ChannelTypeExtension::getExtendedTypes();
@@ -23,9 +21,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertContains(ChannelType::class, $extendedTypes);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_adds_robots_txt_field(): void
     {
         $extension = new ChannelTypeExtension();
@@ -40,9 +36,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertTrue($form->has('robotsTxt'));
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_configures_robots_txt_field_correctly(): void
     {
         $extension = new ChannelTypeExtension();
@@ -59,9 +53,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertSame(TextareaType::class, $robotsTxtConfig->getType()->getInnerType()::class);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_submits_robots_txt_data(): void
     {
         $extension = new ChannelTypeExtension();

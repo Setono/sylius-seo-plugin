@@ -17,9 +17,7 @@ final class AddChannelInformationSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_subscribes_to_kernel_request(): void
     {
         $events = AddChannelInformationSubscriber::getSubscribedEvents();
@@ -28,9 +26,7 @@ final class AddChannelInformationSubscriberTest extends TestCase
         self::assertSame('add', $events[KernelEvents::REQUEST]);
     }
 
-    /**
-     * @test
-     */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_adds_channel_information_to_open_graph(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
