@@ -1,3 +1,12 @@
-sylius_api:
-    resource: "@SyliusApiBundle/Resources/config/routing.yml"
-    prefix: "%sylius.security.api_route%"
+# The Sylius API routes are intentionally NOT imported in this test application.
+#
+# api-platform 4.x + symfony/type-info 7.4 currently throws
+# "Cannot create union with both object and class type" while building the Sylius
+# API resource metadata, which breaks route loading for the entire application.
+# This plugin has no API surface, so the API is left out of the test application
+# to allow functional tests and local verification to run. Re-add the import below
+# once the upstream incompatibility is resolved:
+#
+# sylius_api:
+#     resource: "@SyliusApiBundle/Resources/config/routing.yml"
+#     prefix: "%sylius.security.api_route%"

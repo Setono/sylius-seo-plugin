@@ -63,6 +63,22 @@ jobs:
                     symfony: "${{ matrix.symfony }}"
                     testsuite: "unit"
 
+    functional-tests:
+        runs-on: "ubuntu-latest"
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version: ["8.2", "8.3", "8.4"]
+                dependencies: ["highest"]
+                symfony: ["~6.4.0", "~7.4.0"]
+        steps:
+            -   uses: "setono/sylius-plugin/functional-tests@v2"
+                with:
+                    php-version: "${{ matrix.php-version }}"
+                    dependencies: "${{ matrix.dependencies }}"
+                    symfony: "${{ matrix.symfony }}"
+                    testsuite: "functional"
+
     mutation-tests:
         runs-on: "ubuntu-latest"
         steps:
