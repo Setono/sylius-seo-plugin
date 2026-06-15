@@ -5,6 +5,7 @@
 /CHANGELOG.md                       export-ignore
 /CLAUDE.md                          export-ignore
 /README.md                          export-ignore
+/codecov.yml                        export-ignore
 /UPGRADE.md                         export-ignore
 /composer-dependency-analyser.php   export-ignore
 /ecs.php                            export-ignore
