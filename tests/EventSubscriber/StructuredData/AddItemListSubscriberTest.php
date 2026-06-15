@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\EventSubscriber\StructuredData;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,7 +22,7 @@ final class AddItemListSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_subscribes_to_product_index(): void
     {
         $events = AddItemListSubscriber::getSubscribedEvents();
@@ -30,7 +31,7 @@ final class AddItemListSubscriberTest extends TestCase
         self::assertSame('populate', $events['sylius.product.index']);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_nothing_when_subject_is_not_resource_grid_view(): void
     {
         $graph = new Graph();
@@ -52,7 +53,7 @@ final class AddItemListSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_nothing_when_data_is_not_iterable(): void
     {
         $graph = new Graph();
@@ -77,7 +78,7 @@ final class AddItemListSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_populates_item_list_with_products(): void
     {
         $variant1 = $this->prophesize(ProductVariantInterface::class);
@@ -111,7 +112,7 @@ final class AddItemListSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_skips_products_without_variant(): void
     {
         $variant = $this->prophesize(ProductVariantInterface::class);
@@ -143,7 +144,7 @@ final class AddItemListSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_skips_non_product_items(): void
     {
         $graph = new Graph();

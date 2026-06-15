@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type\Music;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Music\Playlist;
 
 final class PlaylistTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $playlist = new Playlist();
@@ -18,7 +19,7 @@ final class PlaylistTest extends TestCase
         self::assertSame('music.playlist', $playlist->getType());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_empty_html_by_default(): void
     {
         $playlist = new Playlist();
@@ -26,7 +27,7 @@ final class PlaylistTest extends TestCase
         self::assertSame('', $playlist->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_songs(): void
     {
         $playlist = new Playlist(songs: [
@@ -40,7 +41,7 @@ final class PlaylistTest extends TestCase
         self::assertSame($expected, $playlist->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_song_discs(): void
     {
         $playlist = new Playlist(songDiscs: [1, 2]);
@@ -51,7 +52,7 @@ final class PlaylistTest extends TestCase
         self::assertSame($expected, $playlist->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_song_tracks(): void
     {
         $playlist = new Playlist(songTracks: [1, 5]);
@@ -62,7 +63,7 @@ final class PlaylistTest extends TestCase
         self::assertSame($expected, $playlist->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_creators(): void
     {
         $playlist = new Playlist(creators: ['https://example.com/profile/1']);
@@ -70,7 +71,7 @@ final class PlaylistTest extends TestCase
         self::assertSame('<meta property="music:creator" content="https://example.com/profile/1">', $playlist->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Resolver;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\Resolver\CachedProductImagesResolver;
@@ -15,7 +16,7 @@ final class CachedProductImagesResolverTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_delegates_to_decorated_resolver(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -32,7 +33,7 @@ final class CachedProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/image1.jpg', 'https://example.com/image2.jpg'], $result);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_caches_results_for_same_object(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -54,7 +55,7 @@ final class CachedProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/image.jpg'], $result3);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_calls_decorated_resolver_for_different_objects(): void
     {
         $productVariant1 = $this->prophesize(ProductVariantInterface::class);
@@ -77,7 +78,7 @@ final class CachedProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/image2.jpg'], $result2);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_product_interface(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -97,7 +98,7 @@ final class CachedProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/product-image.jpg'], $result2);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_caches_empty_results(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);

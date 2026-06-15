@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Model;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Model\ChannelTrait;
 
 final class ChannelTraitTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_has_null_robots_txt_by_default(): void
     {
         $channel = new class() {
@@ -19,7 +20,7 @@ final class ChannelTraitTest extends TestCase
         self::assertNull($channel->getRobotsTxt());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_can_set_and_get_robots_txt(): void
     {
         $channel = new class() {
@@ -33,7 +34,7 @@ final class ChannelTraitTest extends TestCase
         self::assertSame($robotsTxt, $channel->getRobotsTxt());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_can_set_robots_txt_to_null(): void
     {
         $channel = new class() {
@@ -46,7 +47,7 @@ final class ChannelTraitTest extends TestCase
         self::assertNull($channel->getRobotsTxt());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_can_set_empty_robots_txt(): void
     {
         $channel = new class() {

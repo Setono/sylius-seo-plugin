@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\Event\ProductAddedToGraph;
@@ -15,7 +16,7 @@ final class ProductAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_holds_product_only(): void
     {
         $product = new Product();
@@ -27,7 +28,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertNull($event->storeProductVariant);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_holds_product_with_store_product(): void
     {
         $product = new Product();
@@ -40,7 +41,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertNull($event->storeProductVariant);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_holds_product_with_store_product_variant(): void
     {
         $product = new Product();
@@ -54,7 +55,7 @@ final class ProductAddedToGraphTest extends TestCase
         self::assertSame($storeProductVariant->reveal(), $event->storeProductVariant);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_holds_product_with_only_variant(): void
     {
         $product = new Product();

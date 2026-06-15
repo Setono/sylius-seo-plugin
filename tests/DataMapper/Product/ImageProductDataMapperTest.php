@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\Product;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\DataMapper\Product\ImageProductDataMapper;
@@ -15,7 +16,7 @@ final class ImageProductDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_maps_images_from_resolver(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -40,7 +41,7 @@ final class ImageProductDataMapperTest extends TestCase
         ], $product->getProperty('image'));
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_not_map_when_image_property_already_set(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -57,7 +58,7 @@ final class ImageProductDataMapperTest extends TestCase
         self::assertSame('https://example.com/existing-image.jpg', $product->getProperty('image'));
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_maps_empty_array_when_no_images_available(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\EventSubscriber\OpenGraph;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\EventSubscriber\OpenGraph\AddChannelInformationSubscriber;
@@ -17,7 +18,7 @@ final class AddChannelInformationSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_subscribes_to_kernel_request(): void
     {
         $events = AddChannelInformationSubscriber::getSubscribedEvents();
@@ -26,7 +27,7 @@ final class AddChannelInformationSubscriberTest extends TestCase
         self::assertSame('add', $events[KernelEvents::REQUEST]);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_adds_channel_information_to_open_graph(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

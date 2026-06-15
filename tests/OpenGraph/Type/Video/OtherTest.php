@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type\Video;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Video\Other;
 
 final class OtherTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $other = new Other();
@@ -18,7 +19,7 @@ final class OtherTest extends TestCase
         self::assertSame('video.other', $other->getType());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_empty_html_by_default(): void
     {
         $other = new Other();
@@ -26,7 +27,7 @@ final class OtherTest extends TestCase
         self::assertSame('', $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_actors(): void
     {
         $other = new Other(actors: [
@@ -40,7 +41,7 @@ final class OtherTest extends TestCase
         self::assertSame($expected, $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_actor_roles(): void
     {
         $other = new Other(actorRoles: ['Presenter', 'Guest']);
@@ -51,7 +52,7 @@ final class OtherTest extends TestCase
         self::assertSame($expected, $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_directors(): void
     {
         $other = new Other(directors: ['https://example.com/director/1']);
@@ -59,7 +60,7 @@ final class OtherTest extends TestCase
         self::assertSame('<meta property="video:director" content="https://example.com/director/1">', $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_writers(): void
     {
         $other = new Other(writers: ['https://example.com/writer/1']);
@@ -67,7 +68,7 @@ final class OtherTest extends TestCase
         self::assertSame('<meta property="video:writer" content="https://example.com/writer/1">', $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_duration(): void
     {
         $other = new Other(duration: 600);
@@ -75,7 +76,7 @@ final class OtherTest extends TestCase
         self::assertSame('<meta property="video:duration" content="600">', $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_release_date(): void
     {
         $date = new \DateTimeImmutable('2024-05-20T00:00:00+00:00');
@@ -84,7 +85,7 @@ final class OtherTest extends TestCase
         self::assertSame('<meta property="video:release_date" content="2024-05-20T00:00:00+00:00">', $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_tags(): void
     {
         $other = new Other(tags: ['tutorial', 'howto']);
@@ -95,7 +96,7 @@ final class OtherTest extends TestCase
         self::assertSame($expected, $other->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $releaseDate = new \DateTimeImmutable('2024-05-20T00:00:00+00:00');

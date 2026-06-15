@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Tests\EventSubscriber\StructuredData;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -25,7 +26,7 @@ final class AddProductSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_subscribes_to_product_show(): void
     {
         $events = AddProductSubscriber::getSubscribedEvents();
@@ -34,7 +35,7 @@ final class AddProductSubscriberTest extends TestCase
         self::assertSame('populate', $events['sylius.product.show']);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_handles_simple_product(): void
     {
         $variant = $this->prophesize(ProductVariantInterface::class);
@@ -67,7 +68,7 @@ final class AddProductSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_handles_configurable_product(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -97,7 +98,7 @@ final class AddProductSubscriberTest extends TestCase
         $subscriber->populate($event->reveal());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_not_map_simple_product_without_enabled_variant(): void
     {
         $product = $this->prophesize(ProductInterface::class);

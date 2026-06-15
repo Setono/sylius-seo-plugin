@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\Twig\OpenGraphExtension;
@@ -12,7 +13,7 @@ use Twig\Loader\ArrayLoader;
 
 final class OpenGraphExtensionTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_empty_open_graph_with_only_type(): void
     {
         $output = $this->render('{{ setono_sylius_seo_render_open_graph() }}');
@@ -20,7 +21,7 @@ final class OpenGraphExtensionTest extends TestCase
         self::assertSame('<meta property="og:type" content="website">', $output);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_open_graph_with_title_set_via_global(): void
     {
         $output = $this->render(
@@ -34,7 +35,7 @@ final class OpenGraphExtensionTest extends TestCase
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_uses_the_last_value_when_a_property_is_set_multiple_times(): void
     {
         $output = $this->render(
@@ -48,7 +49,7 @@ final class OpenGraphExtensionTest extends TestCase
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_escapes_html_entities_in_content(): void
     {
         $output = $this->render(
@@ -62,7 +63,7 @@ final class OpenGraphExtensionTest extends TestCase
         );
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_open_graph_with_multiple_properties(): void
     {
         $output = $this->render(

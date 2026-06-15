@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type\Music;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Music\Album;
 
 final class AlbumTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $album = new Album();
@@ -18,7 +19,7 @@ final class AlbumTest extends TestCase
         self::assertSame('music.album', $album->getType());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_empty_html_by_default(): void
     {
         $album = new Album();
@@ -26,7 +27,7 @@ final class AlbumTest extends TestCase
         self::assertSame('', $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_songs(): void
     {
         $album = new Album(songs: [
@@ -40,7 +41,7 @@ final class AlbumTest extends TestCase
         self::assertSame($expected, $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_song_discs(): void
     {
         $album = new Album(songDiscs: [1, 2]);
@@ -51,7 +52,7 @@ final class AlbumTest extends TestCase
         self::assertSame($expected, $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_song_tracks(): void
     {
         $album = new Album(songTracks: [1, 5, 10]);
@@ -63,7 +64,7 @@ final class AlbumTest extends TestCase
         self::assertSame($expected, $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_musicians(): void
     {
         $album = new Album(musicians: ['https://example.com/artist/1']);
@@ -71,7 +72,7 @@ final class AlbumTest extends TestCase
         self::assertSame('<meta property="music:musician" content="https://example.com/artist/1">', $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_release_date(): void
     {
         $date = new \DateTimeImmutable('2024-06-15T00:00:00+00:00');
@@ -80,7 +81,7 @@ final class AlbumTest extends TestCase
         self::assertSame('<meta property="music:release_date" content="2024-06-15T00:00:00+00:00">', $album->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $releaseDate = new \DateTimeImmutable('2024-06-15T00:00:00+00:00');

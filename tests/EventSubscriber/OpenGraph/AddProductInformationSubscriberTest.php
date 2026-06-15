@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\EventSubscriber\OpenGraph;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\EventSubscriber\OpenGraph\AddProductInformationSubscriber;
@@ -16,7 +17,7 @@ final class AddProductInformationSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_subscribes_to_product_show(): void
     {
         $events = AddProductInformationSubscriber::getSubscribedEvents();
@@ -25,7 +26,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertSame('add', $events['sylius.product.show']);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_adds_product_information_with_image(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -52,7 +53,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertCount(1, $openGraph->getImages());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_adds_product_information_without_image(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -77,7 +78,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertCount(0, $openGraph->getImages());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_not_set_description_when_null(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -101,7 +102,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertNull($openGraph->getDescription());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_strips_html_tags_from_description(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -125,7 +126,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertSame('This is a bold description with links.', $openGraph->getDescription());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_normalizes_whitespace_in_description(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -149,7 +150,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertSame('This has multiple spaces and newlines tabs', $openGraph->getDescription());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_truncates_long_description_to_around_300_characters(): void
     {
         // Create a long description with words so truncation can occur at word boundaries
@@ -180,7 +181,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertLessThanOrEqual(303, strlen($description)); // max 300 + "..."
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_does_not_truncate_description_at_300_characters(): void
     {
         $exactDescription = str_repeat('B', 300);
@@ -206,7 +207,7 @@ final class AddProductInformationSubscriberTest extends TestCase
         self::assertSame($exactDescription, $openGraph->getDescription());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sanitizes_complex_html_description(): void
     {
         $htmlDescription = '<div class="product-description">

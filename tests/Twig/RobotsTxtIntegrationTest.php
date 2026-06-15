@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Twig\RobotsTxtExtension;
 
@@ -32,7 +33,7 @@ final class RobotsTxtIntegrationTest extends TestCase
         parent::tearDown();
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_null_when_no_robots_txt_exists(): void
     {
         $extension = new RobotsTxtExtension($this->tempDir);
@@ -40,7 +41,7 @@ final class RobotsTxtIntegrationTest extends TestCase
         self::assertNull($extension->existingRobotsTxt());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_content_when_robots_txt_exists(): void
     {
         $content = "User-agent: *\nDisallow: /admin";

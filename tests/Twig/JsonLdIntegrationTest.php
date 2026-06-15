@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Twig\JsonLdExtension;
 use Spatie\SchemaOrg\Graph;
@@ -12,7 +13,7 @@ use Twig\Loader\ArrayLoader;
 
 final class JsonLdIntegrationTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_empty_json_ld_graph(): void
     {
         $output = $this->render(new Graph(), '{{ setono_sylius_seo_render_json_ld() }}');

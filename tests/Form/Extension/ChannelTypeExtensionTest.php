@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Form\Extension;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Form\Extension\ChannelTypeExtension;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
@@ -13,7 +14,7 @@ use Symfony\Component\Form\FormFactoryBuilder;
 
 final class ChannelTypeExtensionTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_extends_channel_type(): void
     {
         $extendedTypes = ChannelTypeExtension::getExtendedTypes();
@@ -21,7 +22,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertContains(ChannelType::class, $extendedTypes);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_adds_robots_txt_field(): void
     {
         $extension = new ChannelTypeExtension();
@@ -36,7 +37,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertTrue($form->has('robotsTxt'));
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_configures_robots_txt_field_correctly(): void
     {
         $extension = new ChannelTypeExtension();
@@ -53,7 +54,7 @@ final class ChannelTypeExtensionTest extends TestCase
         self::assertSame(TextareaType::class, $robotsTxtConfig->getType()->getInnerType()::class);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_submits_robots_txt_data(): void
     {
         $extension = new ChannelTypeExtension();

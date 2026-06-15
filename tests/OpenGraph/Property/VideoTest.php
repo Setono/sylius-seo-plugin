@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\Property\Video;
 
 final class VideoTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_creates_video_with_url(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -21,7 +22,7 @@ final class VideoTest extends TestCase
         self::assertNull($video->getHeight());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_url(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -30,7 +31,7 @@ final class VideoTest extends TestCase
         self::assertSame('https://example.com/other.mp4', $video->getUrl());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_secure_url(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -39,7 +40,7 @@ final class VideoTest extends TestCase
         self::assertSame('https://secure.example.com/video.mp4', $video->getSecureUrl());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_type(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -48,7 +49,7 @@ final class VideoTest extends TestCase
         self::assertSame('video/mp4', $video->getType());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_width(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -57,7 +58,7 @@ final class VideoTest extends TestCase
         self::assertSame(1920, $video->getWidth());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_height(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -66,7 +67,7 @@ final class VideoTest extends TestCase
         self::assertSame(1080, $video->getHeight());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_sets_dimensions(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -76,7 +77,7 @@ final class VideoTest extends TestCase
         self::assertSame(1080, $video->getHeight());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_supports_fluent_chaining(): void
     {
         $video = (new Video('https://example.com/video.mp4'))
@@ -91,7 +92,7 @@ final class VideoTest extends TestCase
         self::assertSame(1080, $video->getHeight());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_html_with_only_url(): void
     {
         $video = new Video('https://example.com/video.mp4');
@@ -99,7 +100,7 @@ final class VideoTest extends TestCase
         self::assertSame('<meta property="og:video" content="https://example.com/video.mp4">', $video->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_html_with_all_properties(): void
     {
         $video = (new Video('https://example.com/video.mp4'))

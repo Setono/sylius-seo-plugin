@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type\Video;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Video\Movie;
 
 final class MovieTest extends TestCase
 {
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $movie = new Movie();
@@ -18,7 +19,7 @@ final class MovieTest extends TestCase
         self::assertSame('video.movie', $movie->getType());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_returns_empty_html_by_default(): void
     {
         $movie = new Movie();
@@ -26,7 +27,7 @@ final class MovieTest extends TestCase
         self::assertSame('', $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_actors(): void
     {
         $movie = new Movie(actors: [
@@ -40,7 +41,7 @@ final class MovieTest extends TestCase
         self::assertSame($expected, $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_directors(): void
     {
         $movie = new Movie(directors: ['https://example.com/director/1']);
@@ -48,7 +49,7 @@ final class MovieTest extends TestCase
         self::assertSame('<meta property="video:director" content="https://example.com/director/1">', $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_writers(): void
     {
         $movie = new Movie(writers: ['https://example.com/writer/1']);
@@ -56,7 +57,7 @@ final class MovieTest extends TestCase
         self::assertSame('<meta property="video:writer" content="https://example.com/writer/1">', $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_duration(): void
     {
         $movie = new Movie(duration: 7200);
@@ -64,7 +65,7 @@ final class MovieTest extends TestCase
         self::assertSame('<meta property="video:duration" content="7200">', $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_release_date(): void
     {
         $date = new \DateTimeImmutable('2024-03-15T00:00:00+00:00');
@@ -73,7 +74,7 @@ final class MovieTest extends TestCase
         self::assertSame('<meta property="video:release_date" content="2024-03-15T00:00:00+00:00">', $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_renders_tags(): void
     {
         $movie = new Movie(tags: ['action', 'thriller']);
@@ -84,7 +85,7 @@ final class MovieTest extends TestCase
         self::assertSame($expected, $movie->toHtml());
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $releaseDate = new \DateTimeImmutable('2024-03-15T00:00:00+00:00');

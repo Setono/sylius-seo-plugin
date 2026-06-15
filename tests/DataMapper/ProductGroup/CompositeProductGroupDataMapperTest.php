@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\ProductGroup;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -17,7 +18,7 @@ final class CompositeProductGroupDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_calls_all_registered_mappers(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -36,7 +37,7 @@ final class CompositeProductGroupDataMapperTest extends TestCase
         $compositeMapper->map($product->reveal(), $productGroup);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_logs_error_when_mapper_throws_exception(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -59,7 +60,7 @@ final class CompositeProductGroupDataMapperTest extends TestCase
         $compositeMapper->map($product->reveal(), $productGroup);
     }
 
-    #[\PHPUnit\Framework\Attributes\Test]
+    #[Test]
     public function it_works_with_no_mappers(): void
     {
         $product = $this->prophesize(ProductInterface::class);
