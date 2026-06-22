@@ -39,6 +39,13 @@ final class RobotsTxtIntegrationTest extends IntegrationTestCase
         return __DIR__ . '/Fixtures/robots_txt';
     }
 
+    // Twig < 3.13 (resolved when sylius/sylius is removed during static analysis) still has
+    // getFixturesDir() as an abstract method; implement it so the class stays concrete there.
+    protected function getFixturesDir(): string
+    {
+        return self::getFixturesDirectory();
+    }
+
     /**
      * @return list<ExtensionInterface>
      */
