@@ -13,11 +13,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use function Symfony\Component\String\u;
 use Webmozart\Assert\Assert;
 
-final class AddProductInformationSubscriber implements EventSubscriberInterface
+final readonly class AddProductInformationSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly ProductImagesResolverInterface $productImagesResolver,
-        private readonly OpenGraph $openGraph,
+        private ProductImagesResolverInterface $productImagesResolver,
+        private OpenGraph $openGraph,
     ) {
     }
 

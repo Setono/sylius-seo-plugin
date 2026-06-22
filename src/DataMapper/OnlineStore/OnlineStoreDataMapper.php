@@ -9,9 +9,9 @@ use Spatie\SchemaOrg\Schema;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class OnlineStoreDataMapper implements OnlineStoreDataMapperInterface
+final readonly class OnlineStoreDataMapper implements OnlineStoreDataMapperInterface
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 

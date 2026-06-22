@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Property;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\Property\Image;
 
 final class ImageTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_image_with_url(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -24,9 +23,7 @@ final class ImageTest extends TestCase
         self::assertNull($image->getAlt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_url(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -35,9 +32,7 @@ final class ImageTest extends TestCase
         self::assertSame('https://example.com/other.jpg', $image->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_secure_url(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -46,9 +41,7 @@ final class ImageTest extends TestCase
         self::assertSame('https://secure.example.com/image.jpg', $image->getSecureUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_type(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -57,9 +50,7 @@ final class ImageTest extends TestCase
         self::assertSame('image/jpeg', $image->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_width(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -68,9 +59,7 @@ final class ImageTest extends TestCase
         self::assertSame(1200, $image->getWidth());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_height(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -79,9 +68,7 @@ final class ImageTest extends TestCase
         self::assertSame(630, $image->getHeight());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_dimensions(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -91,9 +78,7 @@ final class ImageTest extends TestCase
         self::assertSame(630, $image->getHeight());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_alt(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -102,9 +87,7 @@ final class ImageTest extends TestCase
         self::assertSame('A beautiful sunset', $image->getAlt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_supports_fluent_chaining(): void
     {
         $image = (new Image('https://example.com/image.jpg'))
@@ -121,9 +104,7 @@ final class ImageTest extends TestCase
         self::assertSame('Product image', $image->getAlt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_html_with_only_url(): void
     {
         $image = new Image('https://example.com/image.jpg');
@@ -131,9 +112,7 @@ final class ImageTest extends TestCase
         self::assertSame('<meta property="og:image" content="https://example.com/image.jpg">', $image->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_html_with_all_properties(): void
     {
         $image = (new Image('https://example.com/image.jpg'))

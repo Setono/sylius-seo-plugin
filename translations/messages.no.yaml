@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (gjengis som en Twig-mal)
+        robots_txt_exists: Det finnes en fysisk robots.txt-fil
+        robots_txt_exists_body: Du må fjerne den for å bruke denne funksjonaliteten. Innholdet i filen vises nedenfor.

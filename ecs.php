@@ -9,6 +9,9 @@ return static function (ECSConfig $config): void {
     $config->paths([
         'src',
         'tests',
+        'composer-dependency-analyser.php',
+        'ecs.php',
+        'rector.php',
     ]);
     $config->skip([
         'tests/Application/node_modules/**',

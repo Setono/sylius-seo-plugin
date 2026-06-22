@@ -16,14 +16,14 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Webmozart\Assert\Assert;
 
-final class AddWebsiteSubscriber implements EventSubscriberInterface
+final readonly class AddWebsiteSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Graph $graph,
-        private readonly WebsiteDataMapperInterface $websiteDataMapper,
-        private readonly ChannelContextInterface $channelContext,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly string $route = 'sylius_shop_homepage',
+        private Graph $graph,
+        private WebsiteDataMapperInterface $websiteDataMapper,
+        private ChannelContextInterface $channelContext,
+        private EventDispatcherInterface $eventDispatcher,
+        private string $route = 'sylius_shop_homepage',
     ) {
     }
 

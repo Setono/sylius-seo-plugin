@@ -11,17 +11,17 @@ use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
  *
  * @see https://ogp.me/#type_book
  */
-final class Book implements TypeInterface
+final readonly class Book implements TypeInterface
 {
     /**
      * @param list<string> $authors Who wrote this book (profile URLs)
      * @param list<string> $tags Tag words associated with this book
      */
     public function __construct(
-        public readonly array $authors = [],
-        public readonly ?string $isbn = null,
-        public readonly ?\DateTimeInterface $releaseDate = null,
-        public readonly array $tags = [],
+        public array $authors = [],
+        public ?string $isbn = null,
+        public ?\DateTimeInterface $releaseDate = null,
+        public array $tags = [],
     ) {
     }
 

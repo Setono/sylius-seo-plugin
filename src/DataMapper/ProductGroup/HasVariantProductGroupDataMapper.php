@@ -10,9 +10,9 @@ use Spatie\SchemaOrg\Schema;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class HasVariantProductGroupDataMapper implements ProductGroupDataMapperInterface
+final readonly class HasVariantProductGroupDataMapper implements ProductGroupDataMapperInterface
 {
-    public function __construct(private readonly ProductDataMapperInterface $productDataMapper)
+    public function __construct(private ProductDataMapperInterface $productDataMapper)
     {
     }
 

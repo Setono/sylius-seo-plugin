@@ -11,19 +11,19 @@ use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
  *
  * @see https://ogp.me/#type_article
  */
-final class Article implements TypeInterface
+final readonly class Article implements TypeInterface
 {
     /**
      * @param list<string> $authors Writers of the article (profile URLs)
      * @param list<string> $tags Tag words associated with this article
      */
     public function __construct(
-        public readonly ?\DateTimeInterface $publishedTime = null,
-        public readonly ?\DateTimeInterface $modifiedTime = null,
-        public readonly ?\DateTimeInterface $expirationTime = null,
-        public readonly array $authors = [],
-        public readonly ?string $section = null,
-        public readonly array $tags = [],
+        public ?\DateTimeInterface $publishedTime = null,
+        public ?\DateTimeInterface $modifiedTime = null,
+        public ?\DateTimeInterface $expirationTime = null,
+        public array $authors = [],
+        public ?string $section = null,
+        public array $tags = [],
     ) {
     }
 

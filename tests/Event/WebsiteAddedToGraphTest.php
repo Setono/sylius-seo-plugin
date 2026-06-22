@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\Event\WebsiteAddedToGraph;
@@ -14,9 +15,7 @@ final class WebsiteAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_holds_website_and_channel(): void
     {
         $webSite = new WebSite();

@@ -11,13 +11,13 @@ use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
  *
  * @see https://ogp.me/#type_profile
  */
-final class Profile implements TypeInterface
+final readonly class Profile implements TypeInterface
 {
     public function __construct(
-        public readonly ?string $firstName = null,
-        public readonly ?string $lastName = null,
-        public readonly ?string $username = null,
-        public readonly ?string $gender = null,
+        public ?string $firstName = null,
+        public ?string $lastName = null,
+        public ?string $username = null,
+        public ?string $gender = null,
     ) {
     }
 

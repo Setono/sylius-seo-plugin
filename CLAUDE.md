@@ -38,12 +38,20 @@ Follow clean code principles and SOLID design patterns when working with this co
 # Run all tests
 composer phpunit
 
+# Run a single test file
+vendor/bin/phpunit tests/DataMapper/Product/ProductDataMapperTest.php
+
+# Run a single test method by name (BDD method names work well here)
+vendor/bin/phpunit --filter it_maps_variant_data_to_product
+
 # Run tests with coverage
 vendor/bin/phpunit --coverage-clover=.build/logs/clover.xml
 
 # Run mutation tests
 vendor/bin/infection
 ```
+
+PHPUnit bootstraps through the test application (`bootstrap="tests/Application/config/bootstrap.php"`), so a working `tests/Application` (with its dependencies installed) is required to run the suite. The test suite covers `tests/` and mirrors the `src/` namespace layout (one test dir per component).
 
 ### Code Quality
 ```bash
@@ -77,10 +85,10 @@ PHPStan is configured in `phpstan.neon` with:
 ### Linting
 ```bash
 # Lint YAML files (must be run from test application)
-cd tests/Application && bin/console lint:yaml ../../src/Resources
+cd tests/Application && bin/console lint:yaml ../../config ../../translations
 
 # Lint Twig files (must be run from test application)
-cd tests/Application && bin/console lint:twig ../../src/Resources
+cd tests/Application && bin/console lint:twig ../../templates
 
 # Lint Symfony container (must be run from test application)
 cd tests/Application && bin/console lint:container
@@ -140,53 +148,65 @@ Examples:
 
 ## Architecture
 
-### Core Components
+The plugin produces three independent SEO outputs, each with its own pipeline: **Schema.org structured data (JSON-LD)**, **Open Graph metadata**, and **robots.txt**.
 
-#### Data Mappers
-The plugin uses a composite pattern for mapping Sylius entities to Schema.org types. Each Schema.org type has:
-- An interface (e.g., `ProductDataMapperInterface`)
-- A composite mapper (e.g., `CompositeProductDataMapper`)
-- Multiple concrete implementations
+### Structured data (Schema.org / JSON-LD) pipeline
 
-The composite mappers are registered via compiler passes in `SetonoSyliusSEOPlugin::build()` with the tag pattern:
+This is the most involved subsystem. The flow, end to end:
+
+1. **Event subscribers** in `src/EventSubscriber/StructuredData/` listen to Sylius resource controller events (e.g. `sylius.product.show`) — see `getSubscribedEvents()` in each subscriber.
+2. Each subscriber asks the relevant **data mapper** to populate a `Spatie\SchemaOrg\*` object from the Sylius entity, then adds that object to the shared `Spatie\SchemaOrg\Graph` service (a single injected `Graph` instance accumulates everything for the request).
+3. After adding to the graph, the subscriber dispatches a `*AddedToGraph` **event** so other code can extend/override the Schema.org object.
+4. `JsonLdExtension` (Twig) renders the accumulated `Graph` as JSON-LD in the page `<head>`.
+
+**Data mappers** use a composite pattern. Per Schema.org type there is an interface, a `Composite*` mapper, and N concrete mappers (all extending `AbstractDataMapper`). The composites are assembled at compile time: `SetonoSyliusSEOPlugin::build()` registers a `CompositeCompilerPass` (from `setono/composite-compiler-pass`) per type, collecting all services tagged with:
 - `setono_sylius_seo.online_store_data_mapper`
 - `setono_sylius_seo.product_data_mapper`
 - `setono_sylius_seo.product_group_data_mapper`
 - `setono_sylius_seo.website_data_mapper`
 
-Data mappers receive domain entities (e.g., `ProductVariantInterface`) and populate Schema.org objects (e.g., `Spatie\SchemaOrg\Product`).
+To add a new fact to the structured data, write a concrete mapper and tag it — the composite picks it up automatically. Concrete product mappers today: `ProductDataMapper`, `ImageProductDataMapper`, `OffersProductDataMapper` (and `HasVariantProductGroupDataMapper` for groups).
 
-#### Events
-The plugin dispatches events when entities are added to the Schema.org graph:
-- `OnlineStoreAddedToGraph` - when an online store is added
-- `ProductAddedToGraph` - when a product is added
-- `ProductGroupAddedToGraph` - when a product group is added
-- `WebsiteAddedToGraph` - when a website is added
+The `*AddedToGraph` events (`OnlineStoreAddedToGraph`, `ProductAddedToGraph`, `ProductGroupAddedToGraph`, `WebsiteAddedToGraph`) are the public extension point for consumers who don't want to register a mapper.
 
-These events allow extending the Schema.org data via event subscribers.
+### Open Graph pipeline
 
-#### Twig Integration
-- `JsonLdExtension` - provides Twig functions for rendering JSON-LD
-- `RobotsTxtExtension` - provides Twig functions for robots.txt rendering
-- `JsonLdRuntime` - runtime helper for JSON-LD generation
+Parallel in spirit to structured data but a separate hierarchy under `src/OpenGraph/`:
+- `OpenGraph` is the accumulator object; `Property/` (Image, Audio, Video) and `Type/` (Article, Book, Profile, Website, and `Music/*`, `Video/*` subtypes implementing `Type\TypeInterface`) model the OG vocabulary.
+- Subscribers in `src/EventSubscriber/OpenGraph/` (`AddChannelInformationSubscriber`, `AddProductInformationSubscriber`) populate it.
+- `OpenGraphExtension` (Twig) renders the `<meta property="og:*">` tags.
 
-#### URL Generation
-`ProductVariantUrlGeneratorInterface` - generates canonical URLs for product variants
+### robots.txt pipeline
 
-#### Rendering
-`RobotsTxtRendererInterface` - renders robots.txt content
+`RenderRobotsTxtAction` controller (routed via `config/routes.yaml`) → `RobotsTxtRendererInterface` / `RobotsTxtRenderer` builds the content → also exposed through `RobotsTxtExtension` (Twig).
 
-### Service Configuration
+### Template injection (Twig Hooks)
 
-Services are defined in `src/Resources/config/services.xml` with additional configurations in the `services/` subdirectory.
+The plugin injects its templates via Sylius 2 **Twig Hooks**, configured in `SetonoSyliusSEOExtension::prepend()` through `prependExtensionConfig('sylius_twig_hooks', ...)`:
+- `sylius_shop.base#metatags` → `json_ld.html.twig` + `open_graph.html.twig` (shop `<head>`)
+- `sylius_admin.channel.{create,update}.content.form.sections` → `admin/channel/robots_txt.html.twig` (channel admin form; the partial reads the field via `hookable_metadata.context.form.robotsTxt`)
 
-Routes are defined in `src/Resources/config/routes.yaml` and imported into Sylius applications.
+`ChannelTypeExtension` (a `form.type_extension`) still adds the `robotsTxt` field; the hook only renders it.
+
+### Other components
+
+- **URL generation** — `src/UrlGenerator/` generates canonical URLs for product variants.
+- **Image resolution** — `ProductImagesResolverInterface` (with a `CachedProductImagesResolver` decorator) resolves the images used in product structured data / OG tags.
+- **Channel configuration** — consumers store SEO settings on their Channel entity; see "Channel Interface Implementation" below. `ChannelTypeExtension` (a form type extension) adds the SEO fields to Sylius' channel admin form.
+
+### Service configuration
+
+Services are defined with the **PHP DSL** (`ContainerConfigurator`), not XML. `config/services.php` imports per-concern files from `config/services/` (`graph.php`, `open_graph.php`, `event_subscriber.php`, `form.php`, `renderer.php`, `resolver.php`, `twig.php`, `url_generator.php`, `controller.php`); the `config/services/structured_data/` files are loaded conditionally by the extension based on feature flags. When adding a service, put it in the matching file. Note: services are **not** autowired/autoconfigured by default — the plugin's data mappers are tagged explicitly (preserve the tag priorities), while `registerForAutoconfiguration()` in the extension tags consumer-provided mappers.
+
+The bundle overrides `getPath()` to return the package root so Symfony resolves `config/`, `templates/`, and `translations/` from there (the v2 layout — no more `src/Resources/`).
+
+Routes are defined in `config/routes.yaml` and imported into the consuming Sylius application.
 
 ### Helper Functions
 
-The plugin provides global helper functions in `src/Resources/functions.php`:
+The plugin provides global helper functions in `src/functions.php` (autoloaded via composer `files`):
 - `formatAmount(?int $amount): float` - formats money amounts (divides by 100)
-- `sanitizeString(?string $string, bool $stripTags = true, int $maxLength = null): ?string` - sanitizes strings for Schema.org
+- `sanitizeString(?string $string, bool $stripTags = true, ?int $maxLength = null): ?string` - sanitizes strings for Schema.org
 
 ## Channel Interface Implementation
 
@@ -194,9 +214,11 @@ Users must implement `Setono\SyliusSEOPlugin\Model\ChannelInterface` in their Ch
 
 ## PHP Version
 
-Minimum PHP 8.1, tested on PHP 8.1 and 8.2.
+Minimum PHP 8.2, tested on PHP 8.2, 8.3 and 8.4.
 
 ## Symfony/Sylius Versions
 
-- Symfony: 6.4 or 7.0
-- Sylius: ~1.12.13
+- Symfony: 6.4 or 7.4
+- Sylius: ^2.0 (developed/tested against ~2.2)
+
+Symfony version resolution is pinned via the `SYMFONY_REQUIRE` env var + `symfony/flex` (the CI composite actions handle this; locally run `SYMFONY_REQUIRE='~7.4.0' composer update` with flex installed). Without pinning, transitive Symfony packages float to the latest major (8.x), which requires PHP 8.4.

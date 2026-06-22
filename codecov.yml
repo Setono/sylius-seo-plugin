@@ -1,0 +1,10 @@
+coverage:
+    status:
+        project:
+            default:
+                target: auto
+                # Absorb small coverage fluctuations from refactors; real regressions still fail
+                threshold: 1%
+        patch:
+            default:
+                target: auto

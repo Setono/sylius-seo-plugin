@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\Product;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\DataMapper\Product\OffersProductDataMapper;
@@ -22,9 +23,7 @@ final class OffersProductDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_offer_with_in_stock_availability(): void
     {
         $currency = $this->prophesize(CurrencyInterface::class);
@@ -65,9 +64,7 @@ final class OffersProductDataMapperTest extends TestCase
         self::assertSame(ItemAvailability::InStock, $offer->getProperty('availability'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_offer_with_out_of_stock_availability(): void
     {
         $currency = $this->prophesize(CurrencyInterface::class);
@@ -105,9 +102,7 @@ final class OffersProductDataMapperTest extends TestCase
         self::assertSame(ItemAvailability::OutOfStock, $offer->getProperty('availability'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_does_not_map_when_no_channel_pricing(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -133,9 +128,7 @@ final class OffersProductDataMapperTest extends TestCase
         self::assertNull($product->getProperty('offers'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_null_price(): void
     {
         $currency = $this->prophesize(CurrencyInterface::class);
@@ -173,9 +166,7 @@ final class OffersProductDataMapperTest extends TestCase
         self::assertSame(0.0, $offer->getProperty('price'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_null_currency(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

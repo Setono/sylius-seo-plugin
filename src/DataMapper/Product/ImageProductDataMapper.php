@@ -8,9 +8,9 @@ use Setono\SyliusSEOPlugin\Resolver\ProductImagesResolverInterface;
 use Spatie\SchemaOrg\Product;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-final class ImageProductDataMapper implements ProductDataMapperInterface
+final readonly class ImageProductDataMapper implements ProductDataMapperInterface
 {
-    public function __construct(private readonly ProductImagesResolverInterface $productImagesResolver)
+    public function __construct(private ProductImagesResolverInterface $productImagesResolver)
     {
     }
 

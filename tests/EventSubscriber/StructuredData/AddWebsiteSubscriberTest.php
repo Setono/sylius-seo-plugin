@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\EventSubscriber\StructuredData;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -24,9 +25,7 @@ final class AddWebsiteSubscriberTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_subscribes_to_kernel_request(): void
     {
         $events = AddWebsiteSubscriber::getSubscribedEvents();
@@ -35,9 +34,7 @@ final class AddWebsiteSubscriberTest extends TestCase
         self::assertSame('populate', $events[KernelEvents::REQUEST]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_populates_website_on_homepage(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -69,9 +66,7 @@ final class AddWebsiteSubscriberTest extends TestCase
         $subscriber->populate($event);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_does_not_populate_on_non_main_request(): void
     {
         $channelContext = $this->prophesize(ChannelContextInterface::class);
@@ -100,9 +95,7 @@ final class AddWebsiteSubscriberTest extends TestCase
         $subscriber->populate($event);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_does_not_populate_on_wrong_route(): void
     {
         $channelContext = $this->prophesize(ChannelContextInterface::class);
@@ -131,9 +124,7 @@ final class AddWebsiteSubscriberTest extends TestCase
         $subscriber->populate($event);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_uses_custom_route(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

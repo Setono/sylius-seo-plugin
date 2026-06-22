@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\UrlGenerator;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGenerator;
@@ -15,9 +16,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_generates_absolute_url_for_product_variant(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -40,9 +39,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
         self::assertSame('https://example.com/products/cool-product', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_variant_without_product(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -62,9 +59,7 @@ final class ProductVariantUrlGeneratorTest extends TestCase
         self::assertSame('https://example.com/products/', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_product_without_slug(): void
     {
         $product = $this->prophesize(ProductInterface::class);

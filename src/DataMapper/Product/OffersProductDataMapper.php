@@ -14,12 +14,12 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 
-final class OffersProductDataMapper implements ProductDataMapperInterface
+final readonly class OffersProductDataMapper implements ProductDataMapperInterface
 {
     public function __construct(
-        private readonly ChannelContextInterface $channelContext,
-        private readonly ProductVariantUrlGeneratorInterface $productVariantUrlGenerator,
-        private readonly AvailabilityCheckerInterface $availabilityChecker,
+        private ChannelContextInterface $channelContext,
+        private ProductVariantUrlGeneratorInterface $productVariantUrlGenerator,
+        private AvailabilityCheckerInterface $availabilityChecker,
     ) {
     }
 

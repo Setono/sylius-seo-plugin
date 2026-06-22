@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\Website;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -17,9 +18,7 @@ final class CompositeWebsiteDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_calls_all_registered_mappers(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -38,9 +37,7 @@ final class CompositeWebsiteDataMapperTest extends TestCase
         $compositeMapper->map($channel->reveal(), $webSite);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_logs_error_when_mapper_throws_exception(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -63,9 +60,7 @@ final class CompositeWebsiteDataMapperTest extends TestCase
         $compositeMapper->map($channel->reveal(), $webSite);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_works_with_no_mappers(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\ProductGroup;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -19,9 +20,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_all_enabled_variants_to_product_group(): void
     {
         $variant1 = $this->prophesize(ProductVariantInterface::class);
@@ -47,9 +46,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
         self::assertCount(2, $hasVariant);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_product_with_no_variants(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -68,9 +65,7 @@ final class HasVariantProductGroupDataMapperTest extends TestCase
         self::assertEmpty($hasVariant);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_single_variant(): void
     {
         $variant = $this->prophesize(ProductVariantInterface::class);

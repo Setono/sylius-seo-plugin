@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Renderer;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Renderer\RobotsTxtRenderer;
 use Twig\Environment;
@@ -11,9 +12,7 @@ use Twig\Loader\ArrayLoader;
 
 final class RobotsTxtRendererTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_plain_robots_txt(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -30,9 +29,7 @@ TXT;
         self::assertSame($robotsTxt, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_robots_txt_with_twig_expressions(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -59,9 +56,7 @@ TXT;
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_empty_string(): void
     {
         $twig = new Environment(new ArrayLoader());
@@ -72,9 +67,7 @@ TXT;
         self::assertSame('', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_robots_txt_with_twig_conditionals(): void
     {
         $twig = new Environment(new ArrayLoader());

@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait ChannelTrait
 {
-    /** @ORM\Column(type="text", nullable=true) */
     #[ORM\Column(type: 'text', nullable: true)]
     protected ?string $robotsTxt = null;
 

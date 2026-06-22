@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (vykresluje se jako šablona Twig)
+        robots_txt_exists: Existuje fyzický soubor robots.txt
+        robots_txt_exists_body: Chcete-li tuto funkci používat, musíte jej odstranit. Obsah souboru je zobrazen níže.

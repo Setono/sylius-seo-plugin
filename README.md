@@ -6,28 +6,73 @@
 [![Code Coverage][ico-code-coverage]][link-code-coverage]
 [![Mutation testing][ico-infection]][link-infection]
 
-The intention of this plugin is to add all the missing SEO features to your Sylius store.
+Add the SEO features that Sylius is missing — structured data, Open Graph metadata and a manageable
+`robots.txt` — with sensible defaults and zero template changes.
 
-For now this plugin has:
+Once installed, the plugin automatically enriches your storefront's `<head>` on every page, so search
+engines and social networks understand your catalog out of the box.
 
-- [x] Schema.org data generation
-- [x] robots.txt file creation and management
+## Features
+
+- **🔎 Schema.org structured data (JSON-LD)** — automatically generates and renders structured data
+  for your storefront:
+  - `OnlineStore` and `WebSite` on the homepage (the `WebSite` node can expose a
+    [Sitelinks Search Box](https://developers.google.com/search/docs/appearance/structured-data/sitelinks-searchbox))
+  - `Product` / `ProductGroup` on product pages, including images and offers (price, availability,
+    canonical variant URLs)
+
+  The data is rendered as a single JSON-LD graph in the shop `<head>`.
+- **📣 Open Graph metadata** — emits `<meta property="og:*">` tags (title, description, site name,
+  locale, images, …) for rich link previews on social platforms, populated from your channel and
+  products.
+- **🤖 robots.txt management** — edit a `robots.txt` per channel straight from the admin panel and
+  serve it at `/robots.txt`. The content is rendered as a Twig template, so it can be dynamic.
+- **🧩 Extensible by design** — add or override any fact in the structured data with a tagged data
+  mapper, or hook into the dedicated events. Nothing is hardcoded.
+- **🌍 Translations** — the admin UI ships with translations for 16 locales.
+
+## Requirements
+
+| Package | Version          |
+|---------|------------------|
+| PHP     | `>= 8.2`         |
+| Symfony | `6.4` or `7.4`   |
+| Sylius  | `^2.0`           |
+
+> Using Sylius 1.x? Use the [`1.x`](https://github.com/Setono/sylius-seo-plugin/tree/1.x) branch
+> (`^1.0`) instead.
 
 ## Installation
+
+### 1. Require the plugin
 
 ```shell
 composer require setono/sylius-seo-plugin
 ```
 
-### Import routing
+### 2. Register the plugin
+
+```php
+# config/bundles.php
+
+return [
+    // ...
+    Setono\SyliusSEOPlugin\SetonoSyliusSEOPlugin::class => ['all' => true],
+];
+```
+
+### 3. Import the routing
 
 ```yaml
 # config/routes/setono_sylius_seo.yaml
 setono_sylius_seo:
-    resource: "@SetonoSyliusSEOPlugin/Resources/config/routes.yaml"
+    resource: "@SetonoSyliusSEOPlugin/config/routes.yaml"
 ```
 
-### Implement `ChannelInterface`
+### 4. Implement `ChannelInterface`
+
+The plugin stores the `robots.txt` content on your channel. Implement the plugin's `ChannelInterface`
+and use the `ChannelTrait` on your Channel entity:
 
 ```php
 <?php
@@ -40,30 +85,133 @@ use Setono\SyliusSEOPlugin\Model\ChannelInterface;
 use Setono\SyliusSEOPlugin\Model\ChannelTrait;
 use Sylius\Component\Core\Model\Channel as BaseChannel;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="sylius_channel")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'sylius_channel')]
 class Channel extends BaseChannel implements ChannelInterface
 {
     use ChannelTrait;
 }
 ```
 
-### Update your database schema
+### 5. Update your database schema
 
 ```shell
 php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate -n
 ```
 
+That's it — structured data and Open Graph tags are now rendered on your storefront automatically.
+
+## Usage
+
+### Structured data & Open Graph
+
+There is nothing to wire up in your templates. The plugin injects its output into the shop `<head>`
+via Sylius Twig Hooks, so visiting the homepage or a product page already produces the JSON-LD graph
+and the `og:*` meta tags. Use Google's
+[Rich Results Test](https://search.google.com/test/rich-results) to verify the structured data.
+
+### robots.txt
+
+Go to **Admin → Channels → (edit a channel)** and fill in the **Robots.txt** field. The content is
+served at `/robots.txt` for that channel's domain.
+
+> If a physical `public/robots.txt` file exists it is served by your web server and shadows this
+> route. The admin form warns you when that is the case.
+
+## Configuration
+
+All structured data features are enabled by default. The full configuration with its defaults:
+
+```yaml
+# config/packages/setono_sylius_seo.yaml
+setono_sylius_seo:
+    # Service id of the canonical product variant URL generator. Override with your own implementation.
+    product_variant_url_generator: 'Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGenerator'
+
+    structured_data:
+        product:
+            enabled: true
+        online_store:
+            enabled: true
+        website:
+            # Disabled by default. Enable it to add a WebSite node with a Sitelinks Search Box.
+            enabled: false
+            search_url_template:
+                route: app_shop_search # your own route handling search queries
+                query_parameter: q     # the query parameter that route expects
+```
+
+To turn a feature off, disable it:
+
+```yaml
+setono_sylius_seo:
+    structured_data:
+        product:
+            enabled: false
+```
+
+## Extending
+
+### Add or override structured data
+
+Each Schema.org type is built by a set of *data mappers*. To add a new fact, create a class
+implementing the relevant interface — it is autoconfigured and picked up automatically:
+
+| Schema.org type | Interface to implement                                                  |
+|-----------------|-------------------------------------------------------------------------|
+| Product         | `Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface`        |
+| Product group   | `Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface` |
+| Online store    | `Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapperInterface`   |
+| Website         | `Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface`           |
+
+```php
+use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
+use Spatie\SchemaOrg\Product;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+
+final class MpnProductDataMapper implements ProductDataMapperInterface
+{
+    public function map(ProductVariantInterface $productVariant, Product $product): void
+    {
+        // enrich the generated Schema.org Product with your own data
+        $product->mpn($productVariant->getCode());
+    }
+}
+```
+
+### Events
+
+After each object is added to the graph the plugin dispatches an event you can subscribe to in order
+to extend or replace the generated data:
+
+- `Setono\SyliusSEOPlugin\Event\OnlineStoreAddedToGraph`
+- `Setono\SyliusSEOPlugin\Event\ProductAddedToGraph`
+- `Setono\SyliusSEOPlugin\Event\ProductGroupAddedToGraph`
+- `Setono\SyliusSEOPlugin\Event\WebsiteAddedToGraph`
+
+## Contributing
+
+```shell
+composer install
+composer phpunit      # run the unit tests
+composer analyse      # run static analysis
+composer check-style  # check the coding standard
+```
+
+See the test application in `tests/Application` for a runnable Sylius store with the plugin installed.
+
+## License
+
+This plugin is released under the [MIT License](LICENSE).
+
 [ico-version]: https://poser.pugx.org/setono/sylius-seo-plugin/v/stable
 [ico-license]: https://poser.pugx.org/setono/sylius-seo-plugin/license
 [ico-github-actions]: https://github.com/Setono/sylius-seo-plugin/workflows/build/badge.svg
 [ico-code-coverage]: https://codecov.io/gh/Setono/sylius-seo-plugin/graph/badge.svg
-[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2Fsylius-seo-plugin%2Fmaster
+[ico-infection]: https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FSetono%2Fsylius-seo-plugin%2F2.x
 
 [link-packagist]: https://packagist.org/packages/setono/sylius-seo-plugin
 [link-github-actions]: https://github.com/Setono/sylius-seo-plugin/actions
 [link-code-coverage]: https://codecov.io/gh/Setono/sylius-seo-plugin
-[link-infection]: https://dashboard.stryker-mutator.io/reports/github.com/Setono/sylius-seo-plugin/master
+[link-infection]: https://dashboard.stryker-mutator.io/reports/github.com/Setono/sylius-seo-plugin/2.x

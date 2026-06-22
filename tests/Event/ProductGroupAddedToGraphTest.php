@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Event;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\Event\ProductGroupAddedToGraph;
@@ -14,9 +15,7 @@ final class ProductGroupAddedToGraphTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_holds_product_group_only(): void
     {
         $productGroup = new ProductGroup();
@@ -27,9 +26,7 @@ final class ProductGroupAddedToGraphTest extends TestCase
         self::assertNull($event->storeProduct);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_holds_product_group_with_store_product(): void
     {
         $productGroup = new ProductGroup();

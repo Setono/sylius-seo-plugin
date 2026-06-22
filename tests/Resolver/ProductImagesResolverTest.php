@@ -6,6 +6,7 @@ namespace Setono\SyliusSEOPlugin\Tests\Resolver;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\Resolver\ProductImagesResolver;
@@ -18,9 +19,7 @@ final class ProductImagesResolverTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_resolves_images_from_product_variant(): void
     {
         $image1 = $this->prophesize(ImageInterface::class);
@@ -56,9 +55,7 @@ final class ProductImagesResolverTest extends TestCase
         ], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_resolves_variant_from_product_interface(): void
     {
         $image = $this->prophesize(ImageInterface::class);
@@ -86,9 +83,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/media/cache/image.jpg'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_array_when_product_has_no_variant(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -108,9 +103,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_falls_back_to_product_images_when_variant_has_none(): void
     {
         $productImage = $this->prophesize(ImageInterface::class);
@@ -139,9 +132,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/media/cache/product-image.jpg'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_array_when_variant_has_no_product(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class);
@@ -161,9 +152,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_skips_images_with_null_path(): void
     {
         $imageWithPath = $this->prophesize(ImageInterface::class);
@@ -194,9 +183,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/media/cache/image.jpg'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_uses_custom_filter(): void
     {
         $image = $this->prophesize(ImageInterface::class);
@@ -222,9 +209,7 @@ final class ProductImagesResolverTest extends TestCase
         self::assertSame(['https://example.com/media/cache/custom_filter/image.jpg'], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_array_when_variant_and_product_have_no_images(): void
     {
         $product = $this->prophesize(ProductInterface::class);

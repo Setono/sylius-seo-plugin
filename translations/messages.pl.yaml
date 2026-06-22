@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (renderowany jako szablon Twig)
+        robots_txt_exists: Istnieje fizyczny plik robots.txt
+        robots_txt_exists_body: Musisz go usunąć, aby korzystać z tej funkcji. Zawartość pliku jest wyświetlana poniżej.

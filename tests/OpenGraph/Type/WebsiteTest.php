@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Website;
 
 final class WebsiteTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $website = new Website();
@@ -20,9 +19,7 @@ final class WebsiteTest extends TestCase
         self::assertSame('website', $website->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_html(): void
     {
         $website = new Website();
@@ -30,9 +27,7 @@ final class WebsiteTest extends TestCase
         self::assertSame('', $website->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $og = (new OpenGraph())

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Property\Audio;
@@ -14,9 +15,7 @@ use Setono\SyliusSEOPlugin\OpenGraph\Type\Website;
 
 final class OpenGraphTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_empty_open_graph(): void
     {
         $og = new OpenGraph();
@@ -33,9 +32,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame([], $og->getAudios());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_title(): void
     {
         $og = (new OpenGraph())->title('My Page Title');
@@ -43,9 +40,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('My Page Title', $og->getTitle());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_type(): void
     {
         $type = new Website();
@@ -54,9 +49,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame($type, $og->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_url(): void
     {
         $og = (new OpenGraph())->url('https://example.com');
@@ -64,9 +57,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('https://example.com', $og->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_description(): void
     {
         $og = (new OpenGraph())->description('A brief description of my page.');
@@ -74,9 +65,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('A brief description of my page.', $og->getDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_determiner(): void
     {
         $og = (new OpenGraph())->determiner('the');
@@ -84,9 +73,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('the', $og->getDeterminer());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_locale(): void
     {
         $og = (new OpenGraph())->locale('en_US');
@@ -94,9 +81,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('en_US', $og->getLocale());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_locale_alternates(): void
     {
         $og = (new OpenGraph())
@@ -106,9 +91,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame(['fr_FR', 'de_DE'], $og->getLocaleAlternates());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_site_name(): void
     {
         $og = (new OpenGraph())->siteName('My Website');
@@ -116,9 +99,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('My Website', $og->getSiteName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_image_from_url(): void
     {
         $og = (new OpenGraph())->image('https://example.com/image.jpg');
@@ -128,9 +109,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('https://example.com/image.jpg', $images[0]->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_image_from_object(): void
     {
         $image = (new Image('https://example.com/image.jpg'))
@@ -143,9 +122,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame($image, $images[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_multiple_images(): void
     {
         $og = (new OpenGraph())
@@ -155,9 +132,7 @@ final class OpenGraphTest extends TestCase
         self::assertCount(2, $og->getImages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_video_from_url(): void
     {
         $og = (new OpenGraph())->video('https://example.com/video.mp4');
@@ -167,9 +142,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('https://example.com/video.mp4', $videos[0]->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_video_from_object(): void
     {
         $video = (new Video('https://example.com/video.mp4'))
@@ -182,9 +155,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame($video, $videos[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_audio_from_url(): void
     {
         $og = (new OpenGraph())->audio('https://example.com/audio.mp3');
@@ -194,9 +165,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('https://example.com/audio.mp3', $audios[0]->getUrl());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_adds_audio_from_object(): void
     {
         $audio = (new Audio('https://example.com/audio.mp3'))
@@ -209,9 +178,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame($audio, $audios[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_supports_fluent_interface(): void
     {
         $og = (new OpenGraph())
@@ -232,9 +199,7 @@ final class OpenGraphTest extends TestCase
         self::assertCount(1, $og->getImages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_all_basic_properties(): void
     {
         $og = (new OpenGraph())
@@ -261,9 +226,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString('<meta property="og:image" content="https://example.com/image.jpg">', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_type_specific_properties(): void
     {
         $og = (new OpenGraph())
@@ -278,9 +241,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString('<meta property="profile:last_name" content="Doe">', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_multiple_images_with_structured_properties_in_correct_order(): void
     {
         $og = (new OpenGraph())
@@ -298,9 +259,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString($expected, $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_default_type_when_no_other_data(): void
     {
         $og = new OpenGraph();
@@ -308,9 +267,7 @@ final class OpenGraphTest extends TestCase
         self::assertSame('<meta property="og:type" content="website">', $og->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_basic_html_meta_tags(): void
     {
         $og = (new OpenGraph())
@@ -323,9 +280,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString('<meta property="og:type" content="website">', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_escapes_html_special_characters_in_content(): void
     {
         $og = (new OpenGraph())
@@ -336,9 +291,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString('content="Title with &quot;quotes&quot; &amp; &lt;special&gt; chars"', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_multiple_locale_alternates(): void
     {
         $og = (new OpenGraph())
@@ -351,9 +304,7 @@ final class OpenGraphTest extends TestCase
         self::assertStringContainsString('<meta property="og:locale:alternate" content="de_DE">', $html);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_image_with_structured_properties(): void
     {
         $og = (new OpenGraph())

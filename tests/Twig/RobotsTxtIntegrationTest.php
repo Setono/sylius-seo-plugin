@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\Test;
 use Setono\SyliusSEOPlugin\Twig\RobotsTxtExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Test\IntegrationTestCase;
 
 final class RobotsTxtIntegrationTest extends IntegrationTestCase
@@ -32,19 +34,27 @@ final class RobotsTxtIntegrationTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function getExtensions(): array
-    {
-        return [new RobotsTxtExtension($this->tempDir)];
-    }
-
-    protected function getFixturesDir(): string
+    protected static function getFixturesDirectory(): string
     {
         return __DIR__ . '/Fixtures/robots_txt';
     }
 
+    // Twig < 3.13 (resolved when sylius/sylius is removed during static analysis) still has
+    // getFixturesDir() as an abstract method; implement it so the class stays concrete there.
+    protected function getFixturesDir(): string
+    {
+        return self::getFixturesDirectory();
+    }
+
     /**
-     * @test
+     * @return list<ExtensionInterface>
      */
+    protected function getExtensions(): array
+    {
+        return [new RobotsTxtExtension($this->tempDir)];
+    }
+
+    #[Test]
     public function it_returns_null_when_no_robots_txt_exists(): void
     {
         $extension = new RobotsTxtExtension($this->tempDir);
@@ -52,9 +62,7 @@ final class RobotsTxtIntegrationTest extends IntegrationTestCase
         self::assertNull($extension->existingRobotsTxt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_content_when_robots_txt_exists(): void
     {
         $content = "User-agent: *\nDisallow: /admin";

@@ -7,9 +7,9 @@ namespace Setono\SyliusSEOPlugin\UrlGenerator;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-final class ProductVariantUrlGenerator implements ProductVariantUrlGeneratorInterface
+final readonly class ProductVariantUrlGenerator implements ProductVariantUrlGeneratorInterface
 {
-    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
     }
 

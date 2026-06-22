@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\Website;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapper;
@@ -17,9 +18,7 @@ final class WebsiteDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_channel_with_hostname_to_website(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -43,9 +42,7 @@ final class WebsiteDataMapperTest extends TestCase
         self::assertSame('https://www.example.com', $webSite->getProperty('url'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_uses_url_generator_when_no_hostname(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);
@@ -75,9 +72,7 @@ final class WebsiteDataMapperTest extends TestCase
         self::assertSame('https://localhost/shop', $webSite->getProperty('url'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_search_action_with_url_template(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

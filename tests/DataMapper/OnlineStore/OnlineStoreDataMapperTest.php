@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\OnlineStore;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\OnlineStoreDataMapper;
@@ -18,9 +19,7 @@ final class OnlineStoreDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_channel_data_to_online_store(): void
     {
         $shopBillingData = $this->prophesize(ShopBillingDataInterface::class);
@@ -61,9 +60,7 @@ final class OnlineStoreDataMapperTest extends TestCase
         self::assertSame('1000', $address->getProperty('postalCode'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_uses_url_generator_when_no_hostname(): void
     {
         $shopBillingData = $this->prophesize(ShopBillingDataInterface::class);
@@ -92,9 +89,7 @@ final class OnlineStoreDataMapperTest extends TestCase
         self::assertSame('https://localhost/shop', $onlineStore->getProperty('url'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_null_shop_billing_data(): void
     {
         $channel = $this->prophesize(ChannelInterface::class);

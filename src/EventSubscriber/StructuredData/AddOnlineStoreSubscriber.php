@@ -20,14 +20,14 @@ use Webmozart\Assert\Assert;
  * Google recommends adding the OnlineStore schema to the homepage only
  * See https://developers.google.com/search/docs/appearance/structured-data/organization
  */
-final class AddOnlineStoreSubscriber implements EventSubscriberInterface
+final readonly class AddOnlineStoreSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly Graph $graph,
-        private readonly OnlineStoreDataMapperInterface $onlineStoreDataMapper,
-        private readonly ChannelContextInterface $channelContext,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly string $route = 'sylius_shop_homepage',
+        private Graph $graph,
+        private OnlineStoreDataMapperInterface $onlineStoreDataMapper,
+        private ChannelContextInterface $channelContext,
+        private EventDispatcherInterface $eventDispatcher,
+        private string $route = 'sylius_shop_homepage',
     ) {
     }
 

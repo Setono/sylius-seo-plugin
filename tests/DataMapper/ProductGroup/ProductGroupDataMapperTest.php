@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\DataMapper\ProductGroup;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapper;
@@ -15,9 +16,7 @@ final class ProductGroupDataMapperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_product_data_to_product_group(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -44,9 +43,7 @@ final class ProductGroupDataMapperTest extends TestCase
         self::assertSame('https://example.com/products/test-product', $productGroup->getProperty('url'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_truncates_description_to_5000_characters(): void
     {
         $longDescription = str_repeat('A', 6000);
@@ -74,9 +71,7 @@ final class ProductGroupDataMapperTest extends TestCase
         self::assertLessThanOrEqual(5000, strlen($description));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_strips_html_tags_from_description(): void
     {
         $product = $this->prophesize(ProductInterface::class);
@@ -100,9 +95,7 @@ final class ProductGroupDataMapperTest extends TestCase
         self::assertSame('Product description', $productGroup->getProperty('description'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_null_description(): void
     {
         $product = $this->prophesize(ProductInterface::class);

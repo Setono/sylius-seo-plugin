@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Tests\OpenGraph\Type\Video;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\OpenGraph\Type\Video\Episode;
 
 final class EpisodeTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_correct_type(): void
     {
         $episode = new Episode();
@@ -20,9 +19,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('video.episode', $episode->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_html_by_default(): void
     {
         $episode = new Episode();
@@ -30,9 +27,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_actors(): void
     {
         $episode = new Episode(actors: [
@@ -46,9 +41,7 @@ final class EpisodeTest extends TestCase
         self::assertSame($expected, $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_actor_roles(): void
     {
         $episode = new Episode(actorRoles: ['Main Character', 'Villain']);
@@ -59,9 +52,7 @@ final class EpisodeTest extends TestCase
         self::assertSame($expected, $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_directors(): void
     {
         $episode = new Episode(directors: ['https://example.com/director/1']);
@@ -69,9 +60,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('<meta property="video:director" content="https://example.com/director/1">', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_writers(): void
     {
         $episode = new Episode(writers: ['https://example.com/writer/1']);
@@ -79,9 +68,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('<meta property="video:writer" content="https://example.com/writer/1">', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_duration(): void
     {
         $episode = new Episode(duration: 2400);
@@ -89,9 +76,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('<meta property="video:duration" content="2400">', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_release_date(): void
     {
         $date = new \DateTimeImmutable('2024-03-15T00:00:00+00:00');
@@ -100,9 +85,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('<meta property="video:release_date" content="2024-03-15T00:00:00+00:00">', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_tags(): void
     {
         $episode = new Episode(tags: ['drama', 'mystery']);
@@ -113,9 +96,7 @@ final class EpisodeTest extends TestCase
         self::assertSame($expected, $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_renders_series(): void
     {
         $episode = new Episode(series: 'https://example.com/show/1');
@@ -123,9 +104,7 @@ final class EpisodeTest extends TestCase
         self::assertSame('<meta property="video:series" content="https://example.com/show/1">', $episode->toHtml());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_works_with_open_graph(): void
     {
         $releaseDate = new \DateTimeImmutable('2024-03-15T00:00:00+00:00');

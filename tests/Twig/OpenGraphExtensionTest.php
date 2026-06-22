@@ -6,6 +6,7 @@ namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
 use Setono\SyliusSEOPlugin\OpenGraph\OpenGraph;
 use Setono\SyliusSEOPlugin\Twig\OpenGraphExtension;
+use Twig\Extension\ExtensionInterface;
 use Twig\Test\IntegrationTestCase;
 
 final class OpenGraphExtensionTest extends IntegrationTestCase
@@ -19,13 +20,23 @@ final class OpenGraphExtensionTest extends IntegrationTestCase
         $this->openGraph = new OpenGraph();
     }
 
-    public function getExtensions(): array
-    {
-        return [new OpenGraphExtension($this->openGraph)];
-    }
-
-    protected function getFixturesDir(): string
+    protected static function getFixturesDirectory(): string
     {
         return __DIR__ . '/Fixtures/open_graph';
+    }
+
+    // Twig < 3.13 (resolved when sylius/sylius is removed during static analysis) still has
+    // getFixturesDir() as an abstract method; implement it so the class stays concrete there.
+    protected function getFixturesDir(): string
+    {
+        return self::getFixturesDirectory();
+    }
+
+    /**
+     * @return list<ExtensionInterface>
+     */
+    protected function getExtensions(): array
+    {
+        return [new OpenGraphExtension($this->openGraph)];
     }
 }
