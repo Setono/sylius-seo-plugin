@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\Checker\UrlResolver;
 
+use Setono\CompositeCompilerPass\CompositeService;
 use Setono\SyliusSEOPlugin\Model\PageInterface;
 
 /**
  * Delegates URL resolution to the first registered page-type resolver that supports the page.
  * Also exposes the list of available page types for the admin form.
+ *
+ * The resolvers are collected by the composite compiler pass registered in the plugin bundle.
+ *
+ * @extends CompositeService<PageUrlResolverInterface>
  */
-final class CompositeUrlResolver implements UrlResolverInterface
+final class CompositeUrlResolver extends CompositeService implements UrlResolverInterface
 {
-    /**
-     * @param iterable<PageUrlResolverInterface> $resolvers
-     */
-    public function __construct(private readonly iterable $resolvers)
-    {
-    }
-
     public function resolve(PageInterface $page): string
     {
-        foreach ($this->resolvers as $resolver) {
+        foreach ($this->services as $resolver) {
             if ($resolver->supports($page)) {
                 return $resolver->resolve($page);
             }
@@ -36,7 +34,7 @@ final class CompositeUrlResolver implements UrlResolverInterface
     public function getTypes(): array
     {
         $types = [];
-        foreach ($this->resolvers as $resolver) {
+        foreach ($this->services as $resolver) {
             $types[] = $resolver->getType();
         }
 

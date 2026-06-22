@@ -32,6 +32,7 @@ use Setono\SyliusSEOPlugin\Checker\Fetcher\PageFetcherInterface;
 use Setono\SyliusSEOPlugin\Checker\IssuePersister;
 use Setono\SyliusSEOPlugin\Checker\IssuePersisterInterface;
 use Setono\SyliusSEOPlugin\Checker\UrlResolver\ChannelUrlGenerator;
+use Setono\SyliusSEOPlugin\Checker\UrlResolver\ChannelUrlGeneratorInterface;
 use Setono\SyliusSEOPlugin\Checker\UrlResolver\CompositeUrlResolver;
 use Setono\SyliusSEOPlugin\Checker\UrlResolver\CustomRoutePageUrlResolver;
 use Setono\SyliusSEOPlugin\Checker\UrlResolver\HomepagePageUrlResolver;
@@ -111,27 +112,27 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ChannelUrlGenerator::class)
         ->args([service('router')])
     ;
+    $services->alias(ChannelUrlGeneratorInterface::class, ChannelUrlGenerator::class);
 
     $services->set(HomepagePageUrlResolver::class)
-        ->args([service(ChannelUrlGenerator::class)])
+        ->args([service(ChannelUrlGeneratorInterface::class)])
         ->tag('setono_sylius_seo.page_url_resolver', ['priority' => -100])
     ;
     $services->set(ProductPageUrlResolver::class)
-        ->args([service(ChannelUrlGenerator::class), service('sylius.repository.product')])
+        ->args([service(ChannelUrlGeneratorInterface::class), service('sylius.repository.product')])
         ->tag('setono_sylius_seo.page_url_resolver', ['priority' => -110])
     ;
     $services->set(TaxonPageUrlResolver::class)
-        ->args([service(ChannelUrlGenerator::class), service('sylius.repository.taxon')])
+        ->args([service(ChannelUrlGeneratorInterface::class), service('sylius.repository.taxon')])
         ->tag('setono_sylius_seo.page_url_resolver', ['priority' => -120])
     ;
     $services->set(CustomRoutePageUrlResolver::class)
-        ->args([service(ChannelUrlGenerator::class)])
+        ->args([service(ChannelUrlGeneratorInterface::class)])
         ->tag('setono_sylius_seo.page_url_resolver', ['priority' => -130])
     ;
 
-    $services->set(CompositeUrlResolver::class)
-        ->args([tagged_iterator('setono_sylius_seo.page_url_resolver')])
-    ;
+    // The resolvers are collected into this composite by the compiler pass in the plugin bundle
+    $services->set(CompositeUrlResolver::class);
     $services->alias(UrlResolverInterface::class, CompositeUrlResolver::class);
 
     // Fetching

@@ -8,7 +8,7 @@ use Setono\SyliusSEOPlugin\Model\PageInterface;
 
 abstract class AbstractPageUrlResolver implements PageUrlResolverInterface
 {
-    public function __construct(protected readonly ChannelUrlGenerator $urlGenerator)
+    public function __construct(protected readonly ChannelUrlGeneratorInterface $urlGenerator)
     {
     }
 

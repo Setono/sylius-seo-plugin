@@ -19,7 +19,7 @@ final class ProductPageUrlResolver extends AbstractPageUrlResolver
      * @param ProductRepositoryInterface<ProductInterface> $productRepository
      */
     public function __construct(
-        ChannelUrlGenerator $urlGenerator,
+        ChannelUrlGeneratorInterface $urlGenerator,
         private readonly ProductRepositoryInterface $productRepository,
     ) {
         parent::__construct($urlGenerator);

@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
  * `framework.router.default_uri` when running outside a request); the host is overridden with the
  * page's channel hostname so each channel is fetched on its own domain.
  */
-final class ChannelUrlGenerator
+final class ChannelUrlGenerator implements ChannelUrlGeneratorInterface
 {
     public function __construct(private readonly RouterInterface $router)
     {

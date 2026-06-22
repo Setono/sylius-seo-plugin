@@ -6,6 +6,7 @@ namespace Setono\SyliusSEOPlugin;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Setono\CompositeCompilerPass\CompositeCompilerPass;
+use Setono\SyliusSEOPlugin\Checker\UrlResolver\CompositeUrlResolver;
 use Setono\SyliusSEOPlugin\DataMapper\OnlineStore\CompositeOnlineStoreDataMapper;
 use Setono\SyliusSEOPlugin\DataMapper\Product\CompositeProductDataMapper;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\CompositeProductGroupDataMapper;
@@ -59,6 +60,11 @@ final class SetonoSyliusSEOPlugin extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeCompilerPass(
             CompositeWebsiteDataMapper::class,
             'setono_sylius_seo.website_data_mapper',
+        ));
+
+        $container->addCompilerPass(new CompositeCompilerPass(
+            CompositeUrlResolver::class,
+            'setono_sylius_seo.page_url_resolver',
         ));
     }
 }

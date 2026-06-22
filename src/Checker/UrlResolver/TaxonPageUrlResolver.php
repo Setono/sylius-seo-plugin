@@ -18,7 +18,7 @@ final class TaxonPageUrlResolver extends AbstractPageUrlResolver
      * @param TaxonRepositoryInterface<TaxonInterface> $taxonRepository
      */
     public function __construct(
-        ChannelUrlGenerator $urlGenerator,
+        ChannelUrlGeneratorInterface $urlGenerator,
         private readonly TaxonRepositoryInterface $taxonRepository,
     ) {
         parent::__construct($urlGenerator);
