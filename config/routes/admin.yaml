@@ -1,0 +1,46 @@
+setono_sylius_seo_admin_page:
+    resource: |
+        alias: setono_sylius_seo.page
+        section: admin
+        templates: "@SyliusAdmin\\shared\\crud"
+        except: ['show']
+        redirect: update
+        grid: setono_sylius_seo_admin_page
+        form:
+            type: Setono\SyliusSEOPlugin\Form\Type\PageType
+        permission: true
+    type: sylius.resource
+
+setono_sylius_seo_admin_issue:
+    resource: |
+        alias: setono_sylius_seo.issue
+        section: admin
+        templates: "@SyliusAdmin\\shared\\crud"
+        except: ['create', 'show', 'update']
+        grid: setono_sylius_seo_admin_issue
+        permission: true
+    type: sylius.resource
+
+setono_sylius_seo_admin_page_run:
+    path: /seo-pages/{id}/run
+    methods: [GET]
+    defaults:
+        _controller: Setono\SyliusSEOPlugin\Controller\Admin\RunPageChecksAction
+
+setono_sylius_seo_admin_run_all:
+    path: /seo-pages/run-all
+    methods: [GET]
+    defaults:
+        _controller: Setono\SyliusSEOPlugin\Controller\Admin\RunAllChecksAction
+
+setono_sylius_seo_admin_issue_ignore:
+    path: /seo-issues/{id}/ignore
+    methods: [GET]
+    defaults:
+        _controller: Setono\SyliusSEOPlugin\Controller\Admin\IgnoreIssueAction
+
+setono_sylius_seo_admin_issue_unignore:
+    path: /seo-issues/{id}/unignore
+    methods: [GET]
+    defaults:
+        _controller: Setono\SyliusSEOPlugin\Controller\Admin\UnignoreIssueAction

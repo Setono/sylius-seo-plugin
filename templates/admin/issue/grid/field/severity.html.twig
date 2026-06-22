@@ -1,0 +1,2 @@
+{% set colors = {'notice': 'bg-secondary', 'warning': 'bg-warning', 'error': 'bg-danger', 'critical': 'bg-danger'} %}
+<span class="badge {{ colors[data.value]|default('bg-secondary') }} text-uppercase">{{ ('setono_sylius_seo.severity.' ~ data.value)|trans }}</span>

@@ -27,6 +27,11 @@ engines and social networks understand your catalog out of the box.
   products.
 - **🤖 robots.txt management** — edit a `robots.txt` per channel straight from the admin panel and
   serve it at `/robots.txt`. The content is rendered as a Twig template, so it can be dynamic.
+- **🩺 SEO checks** — define the pages you want to monitor in the admin, fetch them over
+  HTTP, and run them through a battery of generic checks (HTTP status, title, meta description, H1,
+  canonical, robots/noindex, Open Graph, JSON-LD, mixed content, …). Detected problems are listed in
+  an admin grid with severities and can be ignored. You can even define ad-hoc checks from the admin
+  (assert any CSS/XPath selector's content, including a JSON path into a JSON-LD block) — no code.
 - **🧩 Extensible by design** — add or override any fact in the structured data with a tagged data
   mapper, or hook into the dedicated events. Nothing is hardcoded.
 - **🌍 Translations** — the admin UI ships with translations for 16 locales.
@@ -119,6 +124,47 @@ served at `/robots.txt` for that channel's domain.
 > If a physical `public/robots.txt` file exists it is served by your web server and shadows this
 > route. The admin form warns you when that is the case.
 
+### SEO checks
+
+This feature adds two database tables (`setono_sylius_seo__page` and `setono_sylius_seo__issue`).
+The admin routes are registered automatically under `/admin` when you import the plugin routing
+(installation step 3), and the tables are created by the migration you generate in installation
+step 5 (`doctrine:migrations:diff` + `migrate`).
+
+Then, in the admin:
+
+- Go to **Admin → SEO → Pages to test** and add the pages you care about. A page points at a Sylius
+  route via a *page type* (`Homepage`, `Product`, `Taxon` or a custom route); for the dynamic types
+  you can pick a representative product/taxon code, or leave it empty to auto-pick one. Tick the
+  checks that should run on each page.
+- Run the checks — per page with the **Run checks** row action, or all at once on the command line:
+
+  ```shell
+  bin/console setono:sylius-seo:detect-issues          # all enabled pages
+  bin/console setono:sylius-seo:detect-issues --channel=FASHION_WEB
+  bin/console setono:sylius-seo:detect-issues --page=42
+  ```
+
+- Review the results under **Admin → SEO → Issues**, filter by severity/status/check, and **ignore**
+  the ones you don't care about. Ignored issues stay ignored across re-runs, and issues that are no
+  longer detected are automatically marked as *resolved*.
+
+Pages are fetched over real HTTP using each channel's hostname. On the command line there is no
+incoming request, so the scheme/host/port used to build the URLs come from the framework's
+[`framework.router.default_uri`](https://symfony.com/doc/current/routing.html#generating-urls-in-commands).
+When testing against a local server, set it to the URL your app is served on (for example the one
+`symfony serve` exposes via the `SYMFONY_DEFAULT_ROUTE_URL` environment variable).
+
+#### Ad-hoc checks (no code)
+
+Two built-in checks let you assert almost anything from the admin, without writing PHP:
+
+- **Element content** — select an element with a CSS or XPath selector, optionally read an attribute
+  or extract a value with a JSON path, then assert it `contains` / `equals` / `matches` (regex) /
+  `exists` / is `absent`. For example, to assert the price inside a JSON-LD block:
+  selector `script#seo-ggg`, JSON path `$.offers[0].price`, assertion `equals`, value `19.99`.
+- **Element exists** — assert that the number of elements matching a selector is within a range.
+
 ## Configuration
 
 All structured data features are enabled by default. The full configuration with its defaults:
@@ -189,6 +235,40 @@ to extend or replace the generated data:
 - `Setono\SyliusSEOPlugin\Event\ProductAddedToGraph`
 - `Setono\SyliusSEOPlugin\Event\ProductGroupAddedToGraph`
 - `Setono\SyliusSEOPlugin\Event\WebsiteAddedToGraph`
+
+### Add a custom SEO check
+
+Implement `IssueDetectorInterface` — it is autoconfigured, so tagging is optional. The detector
+receives a neutral `Inspection` (URL, HTTP status, all response headers, raw body and the lazily
+parsed DOM) and yields `DetectedIssue` value objects. Once registered, your check becomes selectable
+on every page in the admin (its label/description come from the
+`setono_sylius_seo.check.<code>.{label,description}` translation keys).
+
+```php
+use Setono\SyliusSEOPlugin\Checker\DetectedIssue;
+use Setono\SyliusSEOPlugin\Checker\Detector\IssueDetectorInterface;
+use Setono\SyliusSEOPlugin\Checker\Inspection;
+use Setono\SyliusSEOPlugin\Model\Severity;
+
+final class FaviconDetector implements IssueDetectorInterface
+{
+    public function getCode(): string
+    {
+        return 'favicon';
+    }
+
+    public function detect(Inspection $inspection, array $config = []): iterable
+    {
+        $crawler = $inspection->getCrawler();
+        if (null !== $crawler && 0 === $crawler->filter('link[rel~="icon"]')->count()) {
+            yield new DetectedIssue($this->getCode(), Severity::Notice, 'app.issue.favicon');
+        }
+    }
+}
+```
+
+To make the check configurable from the admin, implement `ConfigurableIssueDetectorInterface` instead
+and return the Symfony form type used to edit its configuration from `getConfigFormType()`.
 
 ## Contributing
 
