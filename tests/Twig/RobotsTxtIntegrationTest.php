@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Tests\Twig;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
 use Setono\SyliusSEOPlugin\Twig\RobotsTxtExtension;
+use Twig\Extension\ExtensionInterface;
+use Twig\Test\IntegrationTestCase;
 
-final class RobotsTxtIntegrationTest extends TestCase
+final class RobotsTxtIntegrationTest extends IntegrationTestCase
 {
     private string $tempDir;
 
@@ -31,6 +32,19 @@ final class RobotsTxtIntegrationTest extends TestCase
         }
 
         parent::tearDown();
+    }
+
+    protected static function getFixturesDirectory(): string
+    {
+        return __DIR__ . '/Fixtures/robots_txt';
+    }
+
+    /**
+     * @return list<ExtensionInterface>
+     */
+    protected function getExtensions(): array
+    {
+        return [new RobotsTxtExtension($this->tempDir)];
     }
 
     #[Test]

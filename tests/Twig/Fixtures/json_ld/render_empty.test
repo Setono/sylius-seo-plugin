@@ -1,0 +1,8 @@
+--TEST--
+Render empty JSON-LD graph outputs empty script
+--TEMPLATE--
+{{ setono_sylius_seo_render_json_ld() }}
+--DATA--
+return [];
+--EXPECT--
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[]}</script>
