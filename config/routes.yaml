@@ -1,2 +1,6 @@
 setono_sylius_seo_global:
     resource: "@SetonoSyliusSEOPlugin/config/routes/global.yaml"
+
+setono_sylius_seo_admin:
+    resource: "@SetonoSyliusSEOPlugin/config/routes/admin.yaml"
+    prefix: /admin

@@ -6,11 +6,14 @@ namespace Setono\SyliusSEOPlugin\Repository;
 
 use Setono\SyliusSEOPlugin\Model\IssueInterface;
 use Setono\SyliusSEOPlugin\Model\PageInterface;
+use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 
-interface IssueRepositoryInterface
+/**
+ * @template T of IssueInterface
+ * @extends RepositoryInterface<T>
+ */
+interface IssueRepositoryInterface extends RepositoryInterface
 {
-    public function findOneById(int $id): ?IssueInterface;
-
     public function findOneByFingerprint(string $fingerprint): ?IssueInterface;
 
     /**

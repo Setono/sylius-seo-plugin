@@ -1,5 +1,0 @@
-setono_sylius_seo:
-    checks:
-        # Point all page fetches at a port that refuses connections, so functional tests fail fast
-        # and deterministically instead of hitting a real host.
-        base_url: 'http://127.0.0.1:9'

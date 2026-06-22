@@ -126,22 +126,10 @@ served at `/robots.txt` for that channel's domain.
 
 ### SEO checks
 
-This feature adds two database tables. To use it:
-
-1. Import the admin routing **under your admin prefix**:
-
-   ```yaml
-   # config/routes/setono_sylius_seo_admin.yaml
-   setono_sylius_seo_admin:
-       resource: "@SetonoSyliusSEOPlugin/config/routes/admin.yaml"
-       prefix: '/%sylius_admin.path_name%'
-   ```
-
-2. Update your database schema (the plugin ships migrations for MySQL/MariaDB and PostgreSQL):
-
-   ```shell
-   bin/console doctrine:migrations:migrate
-   ```
+This feature adds two database tables (`setono_sylius_seo__page` and `setono_sylius_seo__issue`).
+The admin routes are registered automatically under `/admin` when you import the plugin routing
+(installation step 3), and the tables are created by the migration you generate in installation
+step 5 (`doctrine:migrations:diff` + `migrate`).
 
 Then, in the admin:
 
@@ -161,9 +149,11 @@ Then, in the admin:
   the ones you don't care about. Ignored issues stay ignored across re-runs, and issues that are no
   longer detected are automatically marked as *resolved*.
 
-Pages are fetched over real HTTP using the channel hostname (and the `https` scheme by default). When
-testing locally, point the checks at your running server with `base_url` (see the configuration
-below).
+Pages are fetched over real HTTP using each channel's hostname. On the command line there is no
+incoming request, so the scheme/host/port used to build the URLs come from the framework's
+[`framework.router.default_uri`](https://symfony.com/doc/current/routing.html#generating-urls-in-commands).
+When testing against a local server, set it to the URL your app is served on (for example the one
+`symfony serve` exposes via the `SYMFONY_DEFAULT_ROUTE_URL` environment variable).
 
 #### Ad-hoc checks (no code)
 
@@ -196,13 +186,6 @@ setono_sylius_seo:
             search_url_template:
                 route: app_shop_search # your own route handling search queries
                 query_parameter: q     # the query parameter that route expects
-
-    checks:
-        # Scheme used when building page URLs from a channel hostname.
-        scheme: https
-        # Optional. Build all page URLs against this scheme://host[:port] instead of the channel
-        # hostname. Handy for local/staging testing, e.g. 'http://127.0.0.1:8000'.
-        base_url: null
 ```
 
 To turn a feature off, disable it:

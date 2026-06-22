@@ -17,6 +17,9 @@ final class CheckRunner implements CheckRunnerInterface
 {
     private readonly LoggerInterface $logger;
 
+    /**
+     * @param PageRepositoryInterface<PageInterface> $pageRepository
+     */
     public function __construct(
         private readonly UrlResolverInterface $urlResolver,
         private readonly PageFetcherInterface $pageFetcher,

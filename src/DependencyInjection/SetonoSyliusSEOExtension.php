@@ -11,22 +11,18 @@ use Setono\SyliusSEOPlugin\DataMapper\Product\ProductDataMapperInterface;
 use Setono\SyliusSEOPlugin\DataMapper\ProductGroup\ProductGroupDataMapperInterface;
 use Setono\SyliusSEOPlugin\DataMapper\Website\WebsiteDataMapperInterface;
 use Setono\SyliusSEOPlugin\Model\Issue;
-use Setono\SyliusSEOPlugin\Model\IssueInterface;
 use Setono\SyliusSEOPlugin\Model\IssueStatus;
 use Setono\SyliusSEOPlugin\Model\Page;
-use Setono\SyliusSEOPlugin\Model\PageInterface;
 use Setono\SyliusSEOPlugin\Model\Severity;
-use Setono\SyliusSEOPlugin\Repository\IssueRepository;
-use Setono\SyliusSEOPlugin\Repository\PageRepository;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGeneratorInterface;
+use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-final class SetonoSyliusSEOExtension extends Extension implements PrependExtensionInterface
+final class SetonoSyliusSEOExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -34,17 +30,20 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
          * @psalm-suppress PossiblyNullArgument
          *
          * @var array{
+         *     driver: string,
+         *     resources: array<string, array<string, mixed>>,
          *     product_variant_url_generator: string,
          *     structured_data: array{
          *         online_store: array{ enabled: bool },
          *         product: array{ enabled: bool },
          *         website: array{ enabled: bool, search_url_template?: array{ route: string, query_parameter: string } }
-         *     },
-         *     checks: array{ scheme: string, base_url: string|null }
+         *     }
          * } $config
          */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__, 2) . '/config'));
+
+        $this->registerResources('setono_sylius_seo', $config['driver'], $config['resources'], $container);
 
         $container
             ->registerForAutoconfiguration(OnlineStoreDataMapperInterface::class)
@@ -83,7 +82,8 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
         self::registerOnlineStoreConfig($config['structured_data']['online_store'], $container, $loader);
         self::registerProductConfig($config['structured_data']['product'], $container, $loader);
         self::registerWebsiteConfig($config['structured_data']['website'], $container, $loader);
-        self::registerChecksConfig($config['checks'], $container, $loader);
+
+        $loader->load('services/checks.php');
     }
 
     public function prepend(ContainerBuilder $container): void
@@ -128,51 +128,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
             ],
         ]);
 
-        $container->prependExtensionConfig('doctrine', [
-            'orm' => [
-                'resolve_target_entities' => [
-                    PageInterface::class => Page::class,
-                    IssueInterface::class => Issue::class,
-                ],
-                'mappings' => [
-                    'SetonoSyliusSEOPlugin' => [
-                        'is_bundle' => false,
-                        'type' => 'attribute',
-                        'dir' => \dirname(__DIR__) . '/Model',
-                        'prefix' => 'Setono\SyliusSEOPlugin\Model',
-                        'alias' => 'SetonoSyliusSEOPlugin',
-                    ],
-                ],
-            ],
-        ]);
-
-        $container->prependExtensionConfig('sylius_resource', self::resourceConfiguration());
         $container->prependExtensionConfig('sylius_grid', self::gridConfiguration());
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private static function resourceConfiguration(): array
-    {
-        return [
-            'resources' => [
-                'setono_sylius_seo.page' => [
-                    'classes' => [
-                        'model' => Page::class,
-                        'interface' => PageInterface::class,
-                        'repository' => PageRepository::class,
-                    ],
-                ],
-                'setono_sylius_seo.issue' => [
-                    'classes' => [
-                        'model' => Issue::class,
-                        'interface' => IssueInterface::class,
-                        'repository' => IssueRepository::class,
-                    ],
-                ],
-            ],
-        ];
     }
 
     /**
@@ -200,7 +156,7 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
                         'channel' => ['type' => 'string', 'label' => 'sylius.ui.channel', 'path' => 'channel.name'],
                         'type' => ['type' => 'string', 'label' => 'sylius.ui.type'],
                         'checks' => ['type' => 'twig', 'label' => 'setono_sylius_seo.ui.checks_count', 'path' => '.', 'options' => ['template' => '@SetonoSyliusSEOPlugin/admin/page/grid/field/checks_count.html.twig']],
-                        'enabled' => ['type' => 'twig', 'label' => 'sylius.ui.enabled', 'options' => ['template' => '@SetonoSyliusSEOPlugin/admin/grid/field/yes_no.html.twig']],
+                        'enabled' => ['type' => 'twig', 'label' => 'sylius.ui.enabled', 'options' => ['template' => '@SyliusUi/grid/field/yes_no.html.twig']],
                     ],
                     'actions' => [
                         'main' => ['create' => ['type' => 'create']],
@@ -301,16 +257,5 @@ final class SetonoSyliusSEOExtension extends Extension implements PrependExtensi
         if (isset($config['search_url_template'])) {
             $container->setParameter('setono_sylius_seo.structured_data.website.search_url_template', $config['search_url_template']);
         }
-    }
-
-    /**
-     * @param array{ scheme: string, base_url: string|null } $config
-     */
-    private static function registerChecksConfig(array $config, ContainerBuilder $container, LoaderInterface $loader): void
-    {
-        $container->setParameter('setono_sylius_seo.checks.scheme', $config['scheme']);
-        $container->setParameter('setono_sylius_seo.checks.base_url', $config['base_url']);
-
-        $loader->load('services/checks.php');
     }
 }

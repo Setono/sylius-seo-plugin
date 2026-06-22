@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace Setono\SyliusSEOPlugin\DependencyInjection;
 
+use Setono\SyliusSEOPlugin\Form\Type\PageType;
+use Setono\SyliusSEOPlugin\Model\Issue;
+use Setono\SyliusSEOPlugin\Model\IssueInterface;
+use Setono\SyliusSEOPlugin\Model\Page;
+use Setono\SyliusSEOPlugin\Model\PageInterface;
+use Setono\SyliusSEOPlugin\Repository\IssueRepository;
+use Setono\SyliusSEOPlugin\Repository\PageRepository;
 use Setono\SyliusSEOPlugin\UrlGenerator\ProductVariantUrlGenerator;
+use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
+use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Sylius\Resource\Factory\Factory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -55,18 +65,43 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('checks')
-                    ->info('Configuration for the SEO checks feature (detecting SEO issues on user-defined pages).')
+                ->scalarNode('driver')
+                    ->defaultValue(SyliusResourceBundle::DRIVER_DOCTRINE_ORM)
+                    ->cannotBeEmpty()
+                ->end()
+                ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('scheme')
-                            ->defaultValue('https')
-                            ->cannotBeEmpty()
-                            ->info('The scheme used when building page URLs from a channel hostname (unless base_url is set).')
+                        ->arrayNode('page')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(Page::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(PageInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(PageRepository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(PageType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
-                        ->scalarNode('base_url')
-                            ->defaultNull()
-                            ->info('Optional. When set, page URLs are built against this scheme://host[:port] instead of the channel hostname. Useful for local/staging testing.')
+                        ->arrayNode('issue')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(Issue::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(IssueInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(IssueRepository::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

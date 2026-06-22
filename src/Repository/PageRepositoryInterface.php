@@ -6,11 +6,14 @@ namespace Setono\SyliusSEOPlugin\Repository;
 
 use Setono\SyliusSEOPlugin\Model\PageInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
+use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 
-interface PageRepositoryInterface
+/**
+ * @template T of PageInterface
+ * @extends RepositoryInterface<T>
+ */
+interface PageRepositoryInterface extends RepositoryInterface
 {
-    public function findOneById(int $id): ?PageInterface;
-
     /**
      * @return list<PageInterface>
      */

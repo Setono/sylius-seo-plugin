@@ -7,11 +7,13 @@ namespace Setono\SyliusSEOPlugin\Form\Type;
 use Setono\SyliusSEOPlugin\Checker\UrlResolver\CompositeUrlResolver;
 use Setono\SyliusSEOPlugin\Model\Page;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelChoiceType;
+use Sylius\Component\Locale\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 
@@ -20,8 +22,10 @@ use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
  */
 final class PageType extends AbstractType
 {
-    public function __construct(private readonly CompositeUrlResolver $urlResolver)
-    {
+    public function __construct(
+        private readonly CompositeUrlResolver $urlResolver,
+        private readonly LocaleProviderInterface $localeProvider,
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -33,10 +37,11 @@ final class PageType extends AbstractType
             ->add('channel', ChannelChoiceType::class, [
                 'label' => 'sylius.ui.channel',
             ])
-            ->add('localeCode', TextType::class, [
+            ->add('localeCode', ChoiceType::class, [
                 'label' => 'sylius.ui.locale',
                 'required' => false,
-                'help' => 'Leave empty to use the channel default locale, e.g. en_US',
+                'placeholder' => 'setono_sylius_seo.ui.use_channel_default',
+                'choices' => $this->localeChoices(),
             ])
             ->add('type', ChoiceType::class, [
                 'label' => 'sylius.ui.type',
@@ -82,6 +87,21 @@ final class PageType extends AbstractType
         $choices = [];
         foreach ($this->urlResolver->getTypes() as $type) {
             $choices[ucfirst(str_replace('_', ' ', $type))] = $type;
+        }
+
+        return $choices;
+    }
+
+    /**
+     * The store's enabled locales, mapped as "display name" => "code".
+     *
+     * @return array<string, string>
+     */
+    private function localeChoices(): array
+    {
+        $choices = [];
+        foreach ($this->localeProvider->getAvailableLocalesCodes() as $code) {
+            $choices[Locales::getName($code)] = $code;
         }
 
         return $choices;

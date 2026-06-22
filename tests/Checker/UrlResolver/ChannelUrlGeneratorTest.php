@@ -13,6 +13,7 @@ use Setono\SyliusSEOPlugin\Model\Page;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Locale\Model\LocaleInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
 final class ChannelUrlGeneratorTest extends TestCase
@@ -20,25 +21,36 @@ final class ChannelUrlGeneratorTest extends TestCase
     use ProphecyTrait;
 
     #[Test]
-    public function it_builds_an_absolute_url_from_the_channel_hostname_and_scheme(): void
+    public function it_overrides_the_request_context_host_with_the_channel_hostname(): void
     {
+        $context = new RequestContext('', 'GET', 'localhost', 'http');
+
         $router = $this->prophesize(RouterInterface::class);
-        $router->generate('sylius_shop_homepage', ['_locale' => 'en_US'], UrlGeneratorInterface::ABSOLUTE_PATH)->willReturn('/en_US');
+        $router->getContext()->willReturn($context);
+        // The generator sets the channel hostname on the context before generating, so the router
+        // produces an absolute URL on the channel's own domain.
+        $router->generate('sylius_shop_homepage', ['_locale' => 'en_US'], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->will(fn (): string => $context->getScheme() . '://' . $context->getHost() . '/en_US')
+        ;
 
-        $generator = new ChannelUrlGenerator($router->reveal(), 'https', null);
+        $generator = new ChannelUrlGenerator($router->reveal());
 
-        self::assertSame('https://example.com/en_US', $generator->generate($this->page('example.com', 'en_US'), 'sylius_shop_homepage'));
+        self::assertSame('http://example.com/en_US', $generator->generate($this->page('example.com', 'en_US'), 'sylius_shop_homepage'));
     }
 
     #[Test]
-    public function it_prefers_the_configured_base_url_over_the_channel_hostname(): void
+    public function it_restores_the_original_request_context_host_after_generating(): void
     {
+        $context = new RequestContext('', 'GET', 'localhost', 'http');
+
         $router = $this->prophesize(RouterInterface::class);
-        $router->generate('sylius_shop_homepage', Argument::any(), UrlGeneratorInterface::ABSOLUTE_PATH)->willReturn('/en_US');
+        $router->getContext()->willReturn($context);
+        $router->generate('sylius_shop_homepage', Argument::any(), UrlGeneratorInterface::ABSOLUTE_URL)->willReturn('http://example.com/en_US');
 
-        $generator = new ChannelUrlGenerator($router->reveal(), 'https', 'http://127.0.0.1:8080');
+        $generator = new ChannelUrlGenerator($router->reveal());
+        $generator->generate($this->page('example.com', 'en_US'), 'sylius_shop_homepage');
 
-        self::assertSame('http://127.0.0.1:8080/en_US', $generator->generate($this->page('example.com', 'en_US'), 'sylius_shop_homepage'));
+        self::assertSame('localhost', $context->getHost());
     }
 
     #[Test]

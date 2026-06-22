@@ -7,12 +7,16 @@ namespace Setono\SyliusSEOPlugin\Checker;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Clock\ClockInterface;
 use Setono\SyliusSEOPlugin\Model\Issue;
+use Setono\SyliusSEOPlugin\Model\IssueInterface;
 use Setono\SyliusSEOPlugin\Model\IssueStatus;
 use Setono\SyliusSEOPlugin\Model\PageInterface;
 use Setono\SyliusSEOPlugin\Repository\IssueRepositoryInterface;
 
 final class IssuePersister implements IssuePersisterInterface
 {
+    /**
+     * @param IssueRepositoryInterface<IssueInterface> $issueRepository
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly IssueRepositoryInterface $issueRepository,

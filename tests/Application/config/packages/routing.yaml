@@ -1,8 +1,21 @@
+parameters:
+    # Fallback for the SEO checks URL generation when not running through the Symfony CLI web server.
+    # `symfony serve` overrides this with the real local server URL (e.g. http://127.0.0.1:8000).
+    env(SYMFONY_DEFAULT_ROUTE_URL): 'http://localhost'
+
 framework:
     router:
         strict_requirements: false
-        
+
 when@dev:
     framework:
         router:
             strict_requirements: true
+            # Lets the SEO checks fetch the running application instead of a guessed host
+            default_uri: '%env(SYMFONY_DEFAULT_ROUTE_URL)%'
+
+when@test:
+    framework:
+        router:
+            # A port that refuses connections, so functional tests fail fast and deterministically
+            default_uri: 'http://127.0.0.1:9'

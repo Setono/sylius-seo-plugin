@@ -43,26 +43,21 @@ use Setono\SyliusSEOPlugin\Controller\Admin\IgnoreIssueAction;
 use Setono\SyliusSEOPlugin\Controller\Admin\RunAllChecksAction;
 use Setono\SyliusSEOPlugin\Controller\Admin\RunPageChecksAction;
 use Setono\SyliusSEOPlugin\Controller\Admin\UnignoreIssueAction;
-use Setono\SyliusSEOPlugin\Form\Type\CheckAssignmentType;
+use Setono\SyliusSEOPlugin\EventSubscriber\AdminMenuSubscriber;
 use Setono\SyliusSEOPlugin\Form\Type\Check\ElementContentConfigType;
 use Setono\SyliusSEOPlugin\Form\Type\Check\ElementExistsConfigType;
 use Setono\SyliusSEOPlugin\Form\Type\Check\HeaderConfigType;
 use Setono\SyliusSEOPlugin\Form\Type\Check\StatusCodeConfigType;
+use Setono\SyliusSEOPlugin\Form\Type\CheckAssignmentType;
 use Setono\SyliusSEOPlugin\Form\Type\PageType;
-use Setono\SyliusSEOPlugin\Menu\AdminMenuListener;
-use Setono\SyliusSEOPlugin\Model\Issue;
 use Setono\SyliusSEOPlugin\Model\Page;
-use Setono\SyliusSEOPlugin\Repository\IssueRepository;
 use Setono\SyliusSEOPlugin\Repository\IssueRepositoryInterface;
-use Setono\SyliusSEOPlugin\Repository\PageRepository;
 use Setono\SyliusSEOPlugin\Repository\PageRepositoryInterface;
 use Sylius\Bundle\UiBundle\Twig\Component\ResourceFormComponent;
 
 /*
  * Services for the SEO "checks" feature (issue #2): user-defined pages are fetched over HTTP
  * and run through a battery of generic issue detectors, producing issues shown in the admin.
- *
- * This file is only loaded when `setono_sylius_seo.checks.enabled` is true (see the extension).
  */
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -108,26 +103,13 @@ return static function (ContainerConfigurator $container): void {
     ;
     $services->alias(DetectorRegistryInterface::class, DetectorRegistry::class);
 
-    // Repositories (resolved from Doctrine so they are available before the resources are registered)
-    $services->set(PageRepository::class)
-        ->factory([service('doctrine.orm.entity_manager'), 'getRepository'])
-        ->args([Page::class])
-    ;
-    $services->alias(PageRepositoryInterface::class, PageRepository::class);
-
-    $services->set(IssueRepository::class)
-        ->factory([service('doctrine.orm.entity_manager'), 'getRepository'])
-        ->args([Issue::class])
-    ;
-    $services->alias(IssueRepositoryInterface::class, IssueRepository::class);
+    // Repositories — the resource repositories registered by the extension's registerResources() call
+    $services->alias(PageRepositoryInterface::class, 'setono_sylius_seo.repository.page');
+    $services->alias(IssueRepositoryInterface::class, 'setono_sylius_seo.repository.issue');
 
     // URL resolution: builds the absolute URL to fetch for each page
     $services->set(ChannelUrlGenerator::class)
-        ->args([
-            service('router'),
-            param('setono_sylius_seo.checks.scheme'),
-            param('setono_sylius_seo.checks.base_url'),
-        ])
+        ->args([service('router')])
     ;
 
     $services->set(HomepagePageUrlResolver::class)
@@ -193,7 +175,7 @@ return static function (ContainerConfigurator $container): void {
 
     // Admin form types
     $services->set(PageType::class)
-        ->args([service(CompositeUrlResolver::class)])
+        ->args([service(CompositeUrlResolver::class), service('sylius.provider.locale')])
         ->tag('form.type')
     ;
     $services->set(CheckAssignmentType::class)
@@ -214,8 +196,8 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     // Admin menu
-    $services->set(AdminMenuListener::class)
-        ->tag('kernel.event_listener', ['event' => 'sylius.menu.admin.main', 'method' => '__invoke'])
+    $services->set(AdminMenuSubscriber::class)
+        ->tag('kernel.event_subscriber')
     ;
 
     // Admin controllers (custom actions)

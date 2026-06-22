@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Checker\UrlResolver;
 
 use Setono\SyliusSEOPlugin\Model\PageInterface;
-use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelInterface as CoreChannelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Builds absolute URLs for a page's channel from the command line, where there is no incoming
- * request to derive the host/scheme from. The path comes from the router; the authority comes
- * from the configured base URL, or the channel hostname plus the configured scheme.
+ * Builds absolute URLs for a page from the command line, where there is no incoming request.
+ *
+ * The scheme/host/port come from the router's request context (configure it with the framework's
+ * `framework.router.default_uri` when running outside a request); the host is overridden with the
+ * page's channel hostname so each channel is fetched on its own domain.
  */
 final class ChannelUrlGenerator
 {
-    public function __construct(
-        private readonly RouterInterface $router,
-        private readonly string $scheme = 'https',
-        private readonly ?string $baseUrl = null,
-    ) {
+    public function __construct(private readonly RouterInterface $router)
+    {
     }
 
     /**
@@ -34,9 +32,20 @@ final class ChannelUrlGenerator
             $parameters['_locale'] = $localeCode;
         }
 
-        $path = $this->router->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_PATH);
+        $context = $this->router->getContext();
+        $originalHost = $context->getHost();
 
-        return $this->authority($page->getChannel()) . $path;
+        $hostname = $page->getChannel()?->getHostname();
+
+        try {
+            if (null !== $hostname && '' !== $hostname) {
+                $context->setHost($hostname);
+            }
+
+            return $this->router->generate($route, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
+        } finally {
+            $context->setHost($originalHost);
+        }
     }
 
     /**
@@ -52,19 +61,5 @@ final class ChannelUrlGenerator
         }
 
         return $localeCode;
-    }
-
-    private function authority(?ChannelInterface $channel): string
-    {
-        if (null !== $this->baseUrl && '' !== $this->baseUrl) {
-            return rtrim($this->baseUrl, '/');
-        }
-
-        $hostname = $channel?->getHostname();
-        if (null === $hostname || '' === $hostname) {
-            $hostname = 'localhost';
-        }
-
-        return $this->scheme . '://' . $hostname;
     }
 }

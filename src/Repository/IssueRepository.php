@@ -9,16 +9,12 @@ use Setono\SyliusSEOPlugin\Model\PageInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Webmozart\Assert\Assert;
 
+/**
+ * @template T of IssueInterface
+ * @implements IssueRepositoryInterface<T>
+ */
 class IssueRepository extends EntityRepository implements IssueRepositoryInterface
 {
-    public function findOneById(int $id): ?IssueInterface
-    {
-        $issue = $this->find($id);
-        Assert::nullOrIsInstanceOf($issue, IssueInterface::class);
-
-        return $issue;
-    }
-
     public function findOneByFingerprint(string $fingerprint): ?IssueInterface
     {
         $issue = $this->findOneBy(['fingerprint' => $fingerprint]);

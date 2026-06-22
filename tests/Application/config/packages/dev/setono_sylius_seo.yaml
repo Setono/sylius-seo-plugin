@@ -1,6 +1,0 @@
-setono_sylius_seo:
-    checks:
-        # In local development the shop runs on a non-standard port, so point the checker at it
-        # explicitly (the channel hostname alone has no port). Using the channel's "localhost" host
-        # means Sylius still resolves the right channel for the fetched page.
-        base_url: 'http://localhost:8099'

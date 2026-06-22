@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Setono\SyliusSEOPlugin\Command;
 
 use Setono\SyliusSEOPlugin\Checker\CheckRunnerInterface;
+use Setono\SyliusSEOPlugin\Model\PageInterface;
 use Setono\SyliusSEOPlugin\Repository\PageRepositoryInterface;
 use Sylius\Component\Channel\Model\ChannelInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
@@ -23,6 +24,7 @@ use Webmozart\Assert\Assert;
 final class DetectIssuesCommand extends Command
 {
     /**
+     * @param PageRepositoryInterface<PageInterface> $pageRepository
      * @param ChannelRepositoryInterface<ChannelInterface> $channelRepository
      */
     public function __construct(
@@ -49,7 +51,7 @@ final class DetectIssuesCommand extends Command
         Assert::nullOrString($pageId);
 
         if (null !== $pageId) {
-            $page = $this->pageRepository->findOneById((int) $pageId);
+            $page = $this->pageRepository->find((int) $pageId);
             if (null === $page) {
                 $io->error(sprintf('No page found with id "%s"', $pageId));
 

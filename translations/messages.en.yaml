@@ -25,6 +25,7 @@ setono_sylius_seo:
         issues: Issues
         checks: Checks
         add_check: Add check
+        use_channel_default: Use the channel default
     flash:
         checks_run: 'The SEO checks have been run'
         issue_ignored: 'The issue has been ignored'

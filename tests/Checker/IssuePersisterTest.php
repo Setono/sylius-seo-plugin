@@ -14,6 +14,7 @@ use Psr\Clock\ClockInterface;
 use Setono\SyliusSEOPlugin\Checker\DetectedIssue;
 use Setono\SyliusSEOPlugin\Checker\IssuePersister;
 use Setono\SyliusSEOPlugin\Model\Issue;
+use Setono\SyliusSEOPlugin\Model\IssueInterface;
 use Setono\SyliusSEOPlugin\Model\IssueStatus;
 use Setono\SyliusSEOPlugin\Model\Page;
 use Setono\SyliusSEOPlugin\Model\Severity;
@@ -29,6 +30,7 @@ final class IssuePersisterTest extends TestCase
     public function it_inserts_a_new_open_issue(): void
     {
         $entityManager = $this->prophesize(EntityManagerInterface::class);
+        /** @var ObjectProphecy<IssueRepositoryInterface<IssueInterface>> $repository */
         $repository = $this->prophesize(IssueRepositoryInterface::class);
         $repository->findOneByFingerprint(Argument::type('string'))->willReturn(null);
 
@@ -84,6 +86,7 @@ final class IssuePersisterTest extends TestCase
 
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->flush()->shouldBeCalled();
+        /** @var ObjectProphecy<IssueRepositoryInterface<IssueInterface>> $repository */
         $repository = $this->prophesize(IssueRepositoryInterface::class);
         $repository->findByPage(Argument::type(Page::class))->willReturn([$open, $seenOpen, $ignored]);
 
@@ -98,6 +101,7 @@ final class IssuePersisterTest extends TestCase
     {
         $entityManager = $this->prophesize(EntityManagerInterface::class);
         $entityManager->flush()->shouldBeCalled();
+        /** @var ObjectProphecy<IssueRepositoryInterface<IssueInterface>> $repository */
         $repository = $this->prophesize(IssueRepositoryInterface::class);
         $repository->findOneByFingerprint(Argument::type('string'))->willReturn($issue);
 
@@ -120,7 +124,7 @@ final class IssuePersisterTest extends TestCase
 
     /**
      * @param ObjectProphecy<EntityManagerInterface> $entityManager
-     * @param ObjectProphecy<IssueRepositoryInterface> $repository
+     * @param ObjectProphecy<IssueRepositoryInterface<IssueInterface>> $repository
      */
     private function persister(ObjectProphecy $entityManager, ObjectProphecy $repository): IssuePersister
     {
