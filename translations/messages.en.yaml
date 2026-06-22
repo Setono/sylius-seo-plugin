@@ -8,3 +8,116 @@ setono_sylius_seo:
         robots_txt: Robots.txt (is rendered as a Twig template)
         robots_txt_exists: A physical robots.txt file exists
         robots_txt_exists_body: You have to remove it to use this functionality. The contents of the file is displayed below.
+        run_checks: Run checks
+        run_all_checks: Run all checks
+        ignore: Ignore
+        unignore: Restore
+        checks_count: 'Checks'
+        last_seen: Last seen
+        severity: Severity
+        check: Check
+        message: Message
+        url: URL
+        status: Status
+        page: Page
+        pages: Pages
+        issue: Issue
+        issues: Issues
+        checks: Checks
+        add_check: Add check
+    flash:
+        checks_run: 'The SEO checks have been run'
+        issue_ignored: 'The issue has been ignored'
+        issue_restored: 'The issue has been restored'
+    menu:
+        seo: SEO
+        pages: Pages to test
+        issues: Issues
+    severity:
+        notice: Notice
+        warning: Warning
+        error: Error
+        critical: Critical
+    status:
+        open: Open
+        ignored: Ignored
+        resolved: Resolved
+    check:
+        http_status_ok:
+            label: 'HTTP status is 200'
+            description: 'Flags pages that do not return HTTP 200 (broken links, server errors, unexpected redirects).'
+        status_code:
+            label: 'HTTP status code'
+            description: 'Asserts that the page returns a specific HTTP status code.'
+        x_robots_tag_noindex:
+            label: 'No noindex in X-Robots-Tag header'
+            description: 'Flags an X-Robots-Tag response header containing "noindex".'
+        meta_robots_noindex:
+            label: 'No noindex in meta robots'
+            description: 'Flags a meta robots tag containing "noindex" on an indexable page.'
+        title_present:
+            label: 'Title present'
+            description: 'Flags a page with a missing or empty title element.'
+        title_length:
+            label: 'Title length'
+            description: 'Flags a title that is too short or too long for search results.'
+        meta_description_present:
+            label: 'Meta description present'
+            description: 'Flags a page with a missing or empty meta description.'
+        meta_description_length:
+            label: 'Meta description length'
+            description: 'Flags a meta description that is too short or too long for search result snippets.'
+        h1_present:
+            label: 'Exactly one H1'
+            description: 'Flags a page that does not have exactly one h1 element.'
+        canonical_present:
+            label: 'Canonical link present'
+            description: 'Flags a page without a canonical link, or with an empty/relative canonical href.'
+        image_alt:
+            label: 'Images have alt text'
+            description: 'Flags img elements that have no alt attribute.'
+        html_lang:
+            label: 'Document language'
+            description: 'Flags a document without a lang attribute on the html element.'
+        viewport_meta:
+            label: 'Responsive viewport'
+            description: 'Flags a page without a responsive viewport meta tag.'
+        open_graph_present:
+            label: 'Open Graph tags'
+            description: 'Flags a page missing the core Open Graph tags (og:title, og:type, og:image).'
+        json_ld_valid:
+            label: 'Valid JSON-LD'
+            description: 'Flags JSON-LD blocks whose contents are not valid JSON.'
+        mixed_content:
+            label: 'No mixed content'
+            description: 'Flags an HTTPS page that loads sub-resources over plain HTTP.'
+        element_exists:
+            label: 'Element exists'
+            description: 'Asserts that the number of elements matching a CSS or XPath selector is within a range.'
+        element_content:
+            label: 'Element content'
+            description: 'Asserts something about the content of an element selected by a CSS or XPath selector.'
+        header:
+            label: 'Response header'
+            description: 'Asserts something about a response header.'
+    issue:
+        http_status_ok: 'The page returned HTTP status %status% instead of 200.'
+        status_code: 'Expected HTTP status %expected% but the page returned %actual%.'
+        x_robots_tag_noindex: 'The X-Robots-Tag response header contains "noindex", which removes the page from search results.'
+        meta_robots_noindex: 'The page has a meta robots tag containing "noindex".'
+        title_present: 'The page has no (or an empty) title element.'
+        title_length: 'The title is %length% characters long; aim for between %min% and %max%.'
+        meta_description_present: 'The page has no meta description.'
+        meta_description_length: 'The meta description is %length% characters long; aim for between %min% and %max%.'
+        h1_present: 'The page has %count% h1 elements; it should have exactly one.'
+        canonical_present: 'The page has no canonical link.'
+        canonical_relative: 'The canonical link is not an absolute URL: %href%.'
+        image_alt: '%count% image(s) are missing an alt attribute.'
+        html_lang: 'The html element has no lang attribute.'
+        viewport_meta: 'The page has no responsive viewport meta tag.'
+        open_graph_present: 'Missing Open Graph tags: %properties%.'
+        json_ld_valid: 'A JSON-LD block contains invalid JSON: %error%.'
+        mixed_content: 'The HTTPS page loads %count% resource(s) over insecure HTTP.'
+        element_exists: 'Expected %min%–%max% element(s) matching "%selector%" but found %count%.'
+        element_content: 'The content of "%selector%" failed the "%assertion%" assertion (expected "%value%", got "%actual%").'
+        header: 'The "%name%" response header failed the "%assertion%" assertion (expected "%value%", got "%actual%").'

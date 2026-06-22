@@ -21,13 +21,17 @@ Follow clean code principles and SOLID design patterns when working with this co
 - Write code that is easy to test and extend
 
 ### Testing Requirements
+New functionality must be **thoroughly tested with both unit tests and functional tests where applicable**, and any feature with an admin UI or end-to-end flow must additionally be **verified using the Playwright MCP** (drive the running test application in a browser and observe the real behavior — do not rely on automated tests alone for UI flows).
+
 - Write unit tests for all new functionality (if it makes sense)
+- Write functional tests where applicable (PHPUnit `WebTestCase` against `tests/Application`, using `symfony/browser-kit`) for commands, controllers, and request/response behavior
 - Follow the BDD-style naming convention for test methods (e.g., `it_should_do_something_when_condition_is_met`)
 - **MUST use Prophecy for mocking** - Use the `ProphecyTrait` and `$this->prophesize()` for all mocks, NOT PHPUnit's `$this->createMock()`
 - **Form testing** - Use Symfony's best practices for form testing as documented at https://symfony.com/doc/current/form/unit_testing.html
   - Extend `Symfony\Component\Form\Test\TypeTestCase` for form type tests
   - Use `$this->factory->create()` to create form instances
   - Test form submission, validation, and data transformation
+- **Browser verification (Playwright MCP)** - For admin UI / end-to-end features, run the test app (`symfony serve`) and use the Playwright MCP to exercise the real flow before considering the work done
 - Ensure tests are isolated and don't depend on external state
 - Test both happy path and edge cases
 
