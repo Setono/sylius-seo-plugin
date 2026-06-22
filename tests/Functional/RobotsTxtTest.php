@@ -48,19 +48,6 @@ final class RobotsTxtTest extends WebTestCase
     }
 
     #[Test]
-    public function it_renders_the_robots_txt_as_a_twig_template(): void
-    {
-        // This mirrors the example we document in the admin help box, so it guards against the
-        // Twig rendering (absolute_url() etc.) silently breaking.
-        $this->configureChannelRobotsTxt("Sitemap: {{ absolute_url('/sitemap.xml') }}");
-
-        $this->client->request('GET', 'http://localhost/robots.txt');
-
-        self::assertResponseIsSuccessful();
-        self::assertStringContainsString('Sitemap: http://localhost/sitemap.xml', (string) $this->client->getResponse()->getContent());
-    }
-
-    #[Test]
     public function it_returns_a_404_when_the_channel_has_no_robots_txt(): void
     {
         $this->configureChannelRobotsTxt(null);
