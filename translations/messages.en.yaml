@@ -8,3 +8,8 @@ setono_sylius_seo:
         robots_txt: Robots.txt (is rendered as a Twig template)
         robots_txt_exists: A physical robots.txt file exists
         robots_txt_exists_body: You have to remove it to use this functionality. The contents of the file is displayed below.
+        robots_txt_twig_heading: This field is rendered as a Twig template
+        robots_txt_twig_info: 'You can use Twig to make the robots.txt dynamic. The Symfony "app" global and routing functions are available. A few practical examples:'
+        robots_txt_twig_example_sitemap: 'Point to your sitemap on the current domain (works across channels without hardcoding the host):'
+        robots_txt_twig_example_environment: 'Keep non-production environments out of search engines:'
+        robots_txt_twig_example_route: 'Reference a Symfony route so the URL stays correct even if the path changes:'

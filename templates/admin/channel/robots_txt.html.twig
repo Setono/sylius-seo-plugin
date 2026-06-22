@@ -13,6 +13,23 @@
             </div>
         {% endif %}
 
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">{{ 'setono_sylius_seo.ui.robots_txt_twig_heading'|trans }}</h4>
+            <p>{{ 'setono_sylius_seo.ui.robots_txt_twig_info'|trans }}</p>
+
+            <p class="mb-1"><strong>{{ 'setono_sylius_seo.ui.robots_txt_twig_example_sitemap'|trans }}</strong></p>
+            <pre class="mb-3">{% verbatim %}Sitemap: {{ absolute_url('/sitemap.xml') }}{% endverbatim %}</pre>
+
+            <p class="mb-1"><strong>{{ 'setono_sylius_seo.ui.robots_txt_twig_example_environment'|trans }}</strong></p>
+            <pre class="mb-3">{% verbatim %}{% if app.environment != 'prod' %}
+User-agent: *
+Disallow: /
+{% endif %}{% endverbatim %}</pre>
+
+            <p class="mb-1"><strong>{{ 'setono_sylius_seo.ui.robots_txt_twig_example_route'|trans }}</strong></p>
+            <pre class="mb-0">{% verbatim %}Sitemap: {{ url('sylius_shop_homepage') }}{% endverbatim %}</pre>
+        </div>
+
         {{ form_row(hookable_metadata.context.form.robotsTxt) }}
     </div>
 </div>
