@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (renderöidään Twig-mallina)
+        robots_txt_exists: Fyysinen robots.txt-tiedosto on olemassa
+        robots_txt_exists_body: Sinun on poistettava se käyttääksesi tätä toimintoa. Tiedoston sisältö näytetään alla.

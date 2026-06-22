@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (este randat ca un șablon Twig)
+        robots_txt_exists: Există un fișier robots.txt fizic
+        robots_txt_exists_body: Trebuie să îl eliminați pentru a utiliza această funcționalitate. Conținutul fișierului este afișat mai jos.

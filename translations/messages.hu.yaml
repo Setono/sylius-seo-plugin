@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (Twig sablonként jelenik meg)
+        robots_txt_exists: Létezik egy fizikai robots.txt fájl
+        robots_txt_exists_body: El kell távolítania, hogy használhassa ezt a funkciót. A fájl tartalma alább látható.

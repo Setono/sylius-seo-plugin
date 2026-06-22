@@ -1,0 +1,5 @@
+setono_sylius_seo:
+    ui:
+        robots_txt: Robots.txt (se renderiza como una plantilla Twig)
+        robots_txt_exists: Existe un archivo robots.txt físico
+        robots_txt_exists_body: Debes eliminarlo para usar esta funcionalidad. El contenido del archivo se muestra a continuación.
